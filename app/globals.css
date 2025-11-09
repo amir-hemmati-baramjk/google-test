@@ -1,26 +1,63 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary-color: #2f0075;
+  --secondry-color: #6200f6;
+  --accent-color: #411fca;
+  --goust-color: #eee5fd;
+  --pink-color: #fe2464;
+  --red-color: #e80008;
+  --error-color: #d53430;
+  --primary-bg-gradient: radial-gradient(
+    circle,
+    rgba(63, 94, 251, 1) 0%,
+    rgba(43, 0, 107, 1) 100%
+  );
+  --primary-gradient: linear-gradient(
+    90deg,
+    rgba(47, 0, 117, 1) 0%,
+    rgba(93, 0, 234, 1) 100%
+  );
+  --secondry-gradient: linear-gradient(
+    90deg,
+    rgba(5, 27, 110, 1) 0%,
+    rgba(9, 50, 198, 1) 100%
+  );
+  --turquoise-gradient: linear-gradient(
+    90deg,
+    rgba(3, 99, 114, 1) 0%,
+    rgba(6, 182, 211, 1) 100%
+  );
+  --magenta-gradient: linear-gradient(
+    90deg,
+    rgba(119, 23, 70, 1) 0%,
+    rgba(210, 41, 125, 1) 100%
+  );
+  --orange-gradient: linear-gradient(
+    90deg,
+    rgba(233, 5, 7, 1) 0%,
+    rgba(255, 102, 0, 1) 100%
+  );
+  --light-purple-gradient: linear-gradient(
+    90deg,
+    rgba(170, 69, 255, 1) 0%,
+    rgba(116, 18, 233, 1) 100%
+  );
+  --light-blue-gradient: linear-gradient(
+    90deg,
+    rgba(0, 176, 220, 1) 0%,
+    rgba(11, 78, 229, 1) 100%
+  );
+  --light-orange-gradient: linear-gradient(
+    90deg,
+    rgba(255, 102, 0, 1) 0%,
+    rgba(232, 0, 8, 1) 100%
+  );
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  /* body {
+    background-color: var(--color-app-bg);
+    color: var(--color-base-content, #000);
+  } */
 }
