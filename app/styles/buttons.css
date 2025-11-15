@@ -1,0 +1,160 @@
+/* ----------------------- */
+/* Base Button */
+/* ----------------------- */
+.btn {
+  @apply inline-flex items-center justify-center font-semibold transition-all outline-none duration-200  rounded-[10px];
+  @apply gap-2; /* فاصله بین آیکون و متن */
+}
+
+/* ----------------------- */
+/* Sizes */
+/* ----------------------- */
+.btn-xs {
+  @apply px-2 py-1 text-xs;
+}
+.btn-sm {
+  @apply px-3 py-1.5 text-sm;
+}
+.btn {
+  @apply px-4 py-2 text-base;
+} /* normal */
+.btn-lg {
+  @apply px-6 py-3 text-lg;
+}
+
+/* ----------------------- */
+/* Shapes */
+/* ----------------------- */
+.btn-rounded {
+  @apply rounded-full;
+}
+.btn-square {
+  @apply rounded-none;
+}
+.btn-wide {
+  @apply w-auto min-w-[120px];
+}
+.btn-block {
+  @apply w-full;
+}
+
+/* ----------------------- */
+/* Flat Color Variants */
+/* ----------------------- */
+.btn-primary {
+  @apply bg-primary text-white hover:bg-primary/90;
+}
+.btn-secondary {
+  @apply bg-secondary text-white hover:bg-secondary/90;
+}
+.btn-accent {
+  @apply bg-accent text-white hover:bg-accent/90;
+}
+.btn-success {
+  @apply bg-success text-white hover:bg-success/90;
+}
+.btn-info {
+  @apply bg-info text-white hover:bg-info/90;
+}
+.btn-warning {
+  @apply bg-warning text-black hover:bg-warning/90;
+}
+.btn-error {
+  @apply bg-error text-white hover:bg-error/90;
+}
+
+/* ----------------------- */
+/* Gradient Variants */
+/* ----------------------- */
+.btn-primary-bg-gradient {
+  @apply bg-[radial-gradient(circle,#3f5efb_0%,#2b006b_100%)] text-white;
+}
+.btn-primary-gradient {
+  @apply bg-[linear-gradient(90deg,#2f0075_0%,#5d00ea_100%)] text-white;
+}
+.btn-secondary-gradient {
+  @apply bg-[linear-gradient(90deg,#051b6e_0%,#0932c6_100%)] text-white;
+}
+.btn-turquoise-gradient {
+  @apply bg-[linear-gradient(90deg,#036372_0%,#06b6d3_100%)] text-white;
+}
+.btn-magenta-gradient {
+  @apply bg-[linear-gradient(90deg,#771746_0%,#d2297d_100%)] text-white;
+}
+.btn-white {
+  @apply text-white;
+}
+.btn-orange-gradient {
+  @apply bg-[linear-gradient(90deg,#e90507_0%,#ff6600_100%)] text-white;
+}
+.btn-light-purple-gradient {
+  @apply bg-[linear-gradient(90deg,#aa45ff_0%,#7412e9_100%)] text-white;
+}
+.btn-light-blue-gradient {
+  @apply bg-[linear-gradient(90deg,#00b0dc_0%,#0b4ee5_100%)] text-white;
+}
+.btn-light-orange-gradient {
+  @apply bg-[linear-gradient(90deg,#ff6600_0%,#e80008_100%)] text-white;
+}
+
+/* ----------------------- */
+/* Outline Variant */
+/* ----------------------- */
+/* Outline buttons */
+.btn-outline {
+  @apply bg-transparent border hover:text-white;
+}
+
+.btn-outline.btn-primary {
+  @apply border-primary text-primary hover:text-white;
+}
+.btn-outline.btn-secondary {
+  @apply border-secondary text-secondary hover:text-white;
+}
+.btn-outline.btn-accent {
+  @apply border-accent text-accent hover:text-white;
+}
+.btn-outline.btn-info {
+  @apply border-info text-info hover:text-white;
+}
+.btn-outline.btn-success {
+  @apply border-success text-success hover:text-white;
+}
+.btn-outline.btn-warning {
+  @apply border-warning text-warning hover:text-white;
+}
+.btn-outline.btn-error {
+  @apply border-error text-error hover:text-white;
+}
+
+/* Gradients */
+.btn-outline.btn-primary-bg-gradient,
+.btn-outline.btn-primary-gradient,
+.btn-outline.btn-secondary-gradient,
+.btn-outline.btn-turquoise-gradient,
+.btn-outline.btn-magenta-gradient,
+.btn-outline.btn-orange-gradient,
+.btn-outline.btn-light-purple-gradient,
+.btn-outline.btn-light-blue-gradient,
+.btn-outline.btn-light-orange-gradient {
+  @apply border-white text-white;
+}
+
+/* ----------------------- */
+/* Link Variant */
+/* ----------------------- */
+.btn-link {
+  @apply bg-transparent underline;
+}
+
+/* ----------------------- */
+/* Disabled */
+.btn:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+/* ----------------------- */
+/* Animated Icon */
+.animated-icon {
+  @apply transition-transform duration-300;
+}

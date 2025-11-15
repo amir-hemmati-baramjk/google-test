@@ -1,11 +1,13 @@
-import Image from "next/image";
-import DesignSystem from "./_components/DesignSystem/DesignSystem";
+import Banner from "./_components/homePage/banner/Banner";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+    <div className="min-h-screen  bg-main-bg p-5">
       {/* <Colors /> */}
-      <DesignSystem />
+      {/* <DesignSystem /> */}
+      {/* <AboutIcon /> */}
+      {/* <NavigationMenu /> */}
+      <Banner />
     </div>
   );
 }

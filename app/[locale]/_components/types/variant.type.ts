@@ -1,0 +1,18 @@
+export type Variant =
+  | "primary"
+  | "secondary"
+  | "accent"
+  | "info"
+  | "success"
+  | "warning"
+  | "error"
+  | "primary-bg-gradient"
+  | "primary-gradient"
+  | "secondary-gradient"
+  | "turquoise-gradient"
+  | "magenta-gradient"
+  | "orange-gradient"
+  | "light-purple-gradient"
+  | "light-blue-gradient"
+  | "light-orange-gradient"
+  | "white";

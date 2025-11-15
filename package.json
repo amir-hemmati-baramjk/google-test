@@ -11,10 +11,16 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.90.9",
+    "autoprefixer": "^10.4.21",
+    "classnames": "^2.5.1",
     "colord": "^2.9.3",
     "next": "16.0.1",
+    "next-intl": "^4.5.2",
+    "postcss": "8.4.30",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "tailwindcss": "3.3.3"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.2",
@@ -22,7 +28,6 @@
     "@storybook/addon-docs": "^10.0.6",
     "@storybook/addon-vitest": "^10.0.6",
     "@storybook/nextjs-vite": "^10.0.6",
-    "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -33,7 +38,6 @@
     "eslint-plugin-storybook": "^10.0.6",
     "playwright": "^1.56.1",
     "storybook": "^10.0.6",
-    "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^4.0.8"
   }
