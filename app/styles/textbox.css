@@ -1,0 +1,10 @@
+.textbox {
+  @apply h-12 w-full rounded-[10px] px-3  outline-none bg-white border-[#C8C8C8] placeholder:text-[#C8C8C8] text-primary font-[700] text-[16px] border-[1px];
+}
+&[disabled],
+&:disabled {
+  @apply pointer-events-none bg-white/40;
+}
+&-ghost {
+  @apply h-12 w-full rounded-[10px] px-3  outline-none bg-white border-[#efefef] placeholder:text-[#efefef] text-primary font-[700] text-[16px] border-[1px];
+}

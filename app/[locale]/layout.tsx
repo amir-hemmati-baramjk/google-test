@@ -31,9 +31,7 @@ export default function RootLayout({
 }) {
   return (
     <QueryProvider>
-      <LocaleLayoutWrapper params={params} fontClass={cairo.variable}>
-        {children}
-      </LocaleLayoutWrapper>
+      <LocaleLayoutWrapper params={params}>{children}</LocaleLayoutWrapper>
     </QueryProvider>
   );
 }

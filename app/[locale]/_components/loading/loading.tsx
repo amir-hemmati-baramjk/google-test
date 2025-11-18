@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import classNames from "classnames";
-import { LoadingProps } from "./loading.types";
+import { LoadingProps } from "../../../../type/components/loading.types";
 
 const sizeClasses: Record<string, string> = {
   tiny: "loading-xs",

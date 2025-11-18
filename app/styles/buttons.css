@@ -2,7 +2,7 @@
 /* Base Button */
 /* ----------------------- */
 .btn {
-  @apply inline-flex items-center justify-center font-semibold transition-all outline-none duration-200  rounded-[10px];
+  @apply inline-flex items-center justify-center font-semibold transition-all outline-none duration-200  rounded-[16px];
   @apply gap-2; /* فاصله بین آیکون و متن */
 }
 
@@ -16,7 +16,7 @@
   @apply px-3 py-1.5 text-sm;
 }
 .btn {
-  @apply px-4 py-2 text-base;
+  @apply px-8 py-2.5 text-base;
 } /* normal */
 .btn-lg {
   @apply px-6 py-3 text-lg;

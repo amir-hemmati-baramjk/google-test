@@ -5,6 +5,7 @@
 @import "./styles/components.css";
 @layer base {
   :root {
+    --font-cario: "Cairo", sans-serif;
     --primary-color: #2f0075;
     --secondry-color: #6200f6;
     --accent-color: #411fca;
@@ -58,4 +59,7 @@
       rgba(232, 0, 8, 1) 100%
     );
   }
+}
+html {
+  font-family: var(--font-cario);
 }

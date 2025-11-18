@@ -2,7 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import { colord } from "colord";
-import { ColorEntry, TypographyStyle } from "./designSystemBase.type";
+import {
+  ColorEntry,
+  TypographyStyle,
+} from "../../../../type/components/designSystemBase.type";
 
 const baseTypography: TypographyStyle[] = [
   {

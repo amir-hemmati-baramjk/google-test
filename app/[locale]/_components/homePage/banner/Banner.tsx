@@ -29,7 +29,7 @@ export default function Banner() {
     },
   ];
   return (
-    <div className="m-auto max-w-[1200px] w-full bg-primary-bg-gradient p-3 lg:p-12 gap-5 mt-5 flex justify-between items-center text-white rounded-[16px]">
+    <div className="m-auto max-w-[1400px] w-full bg-primary-bg-gradient p-3 lg:p-12 gap-5 mt-5 flex justify-between items-center text-white rounded-[16px]">
       <div className="flex flex-col gap-5 lg:gap-16">
         <div className="flex  items-center gap-2 lg:gap-5 ">
           <Image

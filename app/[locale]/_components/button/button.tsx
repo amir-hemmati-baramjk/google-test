@@ -1,8 +1,12 @@
 "use client";
-import { Size } from "../types/size.type";
+import { Size } from "../../../../type/components/size.type";
 import classNames from "classnames";
+
 import { Loading } from "../loading/loading";
-import { ButtonProps, ButtonShape } from "./button.types";
+import {
+  ButtonProps,
+  ButtonShape,
+} from "../../../../type/components/button.types";
 
 const sizeClasses: Record<Size, string> = {
   tiny: "btn-xs",
@@ -48,8 +52,8 @@ export const Button: React.FC<ButtonProps> = ({
 
   return (
     <button type={type} disabled={isDisabled} className={classes} {...rest}>
-      {isLoading && <Loading type={loadingType} variant={variant} />}
-      {!isLoading && children}
+      {isLoading && <Loading type={loadingType} />}
+      {!isLoading && (children as string)}
     </button>
   );
 };

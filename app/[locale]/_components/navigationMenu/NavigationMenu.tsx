@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import Image from "next/image";
 import { HomeIcon } from "../icons/HomeIcon";
@@ -9,12 +9,19 @@ import { TournamentIcon } from "../icons/TournamentIcon";
 import { ProfileIcon } from "../icons/ProfileIcon";
 import { Button } from "../button/button";
 import { useTranslations } from "next-intl";
-import { Variant } from "../types/variant.type";
+import { Variant } from "../../../../type/components/variant.type";
 
 export default function NavigationMenu() {
   const t = useTranslations("navigation");
   const router = useRouter();
   const pathname = usePathname();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 450);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const menuItems = [
     {
@@ -37,21 +44,26 @@ export default function NavigationMenu() {
       name: t("tournaments"),
       href: "/tournament",
       icon: <TournamentIcon />,
-      requiresLogin: true,
       variant: "orange-gradient",
     },
     {
       name: t("profile"),
       href: "/profile",
       icon: <ProfileIcon />,
-      requiresLogin: true,
       variant: "light-blue-gradient",
     },
   ];
 
   return (
-    <div className="p-5 bg-primary-bg-gradient">
-      <div className="container mx-auto flex justify-between items-center">
+    <div
+      className={`w-full hidden  lg:block bg-primary-bg-gradient transition-all duration-500 ease-out
+        ${
+          isScrolled
+            ? "fixed top-0 left-0 right-0 z-50 shadow-lg translate-y-0 opacity-100"
+            : "relative shadow-none -translate-y-5 opacity-100 mt-10"
+        }`}
+    >
+      <div className="container mx-auto flex justify-between items-center p-5">
         {/* Logo */}
         <div className="flex justify-center items-center gap-5 text-white">
           <Image
@@ -73,7 +85,6 @@ export default function NavigationMenu() {
               item.href === "/"
                 ? pathname === "/"
                 : pathname.startsWith(item.href);
-
             return (
               <Button
                 key={index}
