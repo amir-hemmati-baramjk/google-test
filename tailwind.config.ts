@@ -6,7 +6,7 @@ const config: Config = {
     extend: {
       colors: {
         primary: "#2f0075",
-        secondary: "#6200f6",
+        secondary: "#5D00EA",
         accent: "#411fca",
         ghost: "#eee5fd",
         pink: "#fe2464",
@@ -17,6 +17,8 @@ const config: Config = {
         success: "#22c55e",
         warning: "#facc15",
         "main-bg": "#18023A",
+        "light-blue": "#B9C6F3",
+        "light-purple": "#EEE5FD",
       },
       screens: {
         xs: "320px",
@@ -45,25 +47,9 @@ const config: Config = {
           "linear-gradient(90deg, #00b0dc 0%, #0b4ee5 100%)",
         "light-orange-gradient":
           "linear-gradient(90deg, #ff6600 0%, #e80008 100%)",
+        "category-card-bg-gradient":
+          "linear-gradient(220deg,rgba(249, 77, 8, 1) 0%, rgba(0, 43, 255, 1) 100%)",
       },
-      gridTemplateRows: {
-        12: "repeat(12, minmax(0, 1fr))",
-        15: "repeat(15, minmax(0, 1fr))",
-        20: "repeat(20, minmax(0, 1fr))",
-      },
-      gridTemplateColumns: {},
-      gridColumn: {},
-      gridRow: {
-        "span-7": "span 7 / span 7",
-        "span-8": "span 8 / span 8",
-        "span-9": "span 9 / span 9",
-        "span-11": "span 11 / span 11",
-        "span-12": "span 12 / span 12",
-        "span-13": "span 13 / span 13",
-        "span-14": "span 14 / span 14",
-        "span-18": "span 18 / span 18",
-      },
-
       borderRadius: {},
     },
   },

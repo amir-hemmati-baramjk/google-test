@@ -10,7 +10,7 @@ export const ExitIcon: React.FC<IconProps> = ({ size = 24, className }) => {
     <svg
       width={size}
       height={size}
-      viewBox="0 0 24 24"
+      viewBox="-3 -4 24 24"
       className={className}
       fill="none"
     >

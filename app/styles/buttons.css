@@ -2,8 +2,8 @@
 /* Base Button */
 /* ----------------------- */
 .btn {
-  @apply inline-flex items-center justify-center font-semibold transition-all outline-none duration-200  rounded-[16px];
-  @apply gap-2; /* فاصله بین آیکون و متن */
+  @apply inline-flex items-center justify-center font-semibold transition-all outline-none duration-200 border-[2px] rounded-[16px];
+  @apply gap-2;
 }
 
 /* ----------------------- */
@@ -29,7 +29,7 @@
   @apply rounded-full;
 }
 .btn-square {
-  @apply rounded-none;
+  @apply rounded-[6px];
 }
 .btn-wide {
   @apply w-auto min-w-[120px];
@@ -42,25 +42,25 @@
 /* Flat Color Variants */
 /* ----------------------- */
 .btn-primary {
-  @apply bg-primary text-white hover:bg-primary/90;
+  @apply bg-primary text-white hover:bg-primary/90 border-primary;
 }
 .btn-secondary {
-  @apply bg-secondary text-white hover:bg-secondary/90;
+  @apply bg-secondary text-white hover:bg-secondary/90 border-secondary;
 }
 .btn-accent {
-  @apply bg-accent text-white hover:bg-accent/90;
+  @apply bg-accent text-white hover:bg-accent/90 border-accent;
 }
 .btn-success {
-  @apply bg-success text-white hover:bg-success/90;
+  @apply bg-success text-white hover:bg-success/90 border-success;
 }
 .btn-info {
-  @apply bg-info text-white hover:bg-info/90;
+  @apply bg-info text-white hover:bg-info/90 border-info;
 }
 .btn-warning {
-  @apply bg-warning text-black hover:bg-warning/90;
+  @apply bg-warning text-black hover:bg-warning/90 border-warning;
 }
 .btn-error {
-  @apply bg-error text-white hover:bg-error/90;
+  @apply bg-error text-white hover:bg-error/90 border-error;
 }
 
 /* ----------------------- */
@@ -82,7 +82,7 @@
   @apply bg-[linear-gradient(90deg,#771746_0%,#d2297d_100%)] text-white;
 }
 .btn-white {
-  @apply text-white;
+  @apply text-white border-white;
 }
 .btn-orange-gradient {
   @apply bg-[linear-gradient(90deg,#e90507_0%,#ff6600_100%)] text-white;
@@ -102,14 +102,14 @@
 /* ----------------------- */
 /* Outline buttons */
 .btn-outline {
-  @apply bg-transparent border hover:text-white;
+  @apply bg-transparent  border-[2px] hover:text-white;
 }
 
 .btn-outline.btn-primary {
   @apply border-primary text-primary hover:text-white;
 }
 .btn-outline.btn-secondary {
-  @apply border-secondary text-secondary hover:text-white;
+  @apply border-secondary text-secondary hover:text-white bg-light-purple hover:bg-secondary;
 }
 .btn-outline.btn-accent {
   @apply border-accent text-accent hover:text-white;
@@ -137,7 +137,7 @@
 .btn-outline.btn-light-purple-gradient,
 .btn-outline.btn-light-blue-gradient,
 .btn-outline.btn-light-orange-gradient {
-  @apply border-white text-white;
+  @apply border-none;
 }
 
 /* ----------------------- */
@@ -150,7 +150,7 @@
 /* ----------------------- */
 /* Disabled */
 .btn:disabled {
-  @apply opacity-50 cursor-not-allowed;
+  @apply opacity-50 cursor-not-allowed !bg-[#ccc];
 }
 
 /* ----------------------- */

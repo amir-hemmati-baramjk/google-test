@@ -1,9 +1,9 @@
-import { User } from "@/type/api/user/user.type";
 import { httpService } from "../httpService";
+import { Tag } from "@/type/api/categories/categories.type";
 
-export const getUserProfile = async () => {
+export const getUserTag = async () => {
   try {
-    const response = await httpService.get<User>("/user/profile");
+    const response = await httpService.get<Tag[]>("/tag");
     return response;
   } catch (error: any) {
     return {
