@@ -1,32 +1,53 @@
+"use client";
 import React from "react";
 import AssistanceBox from "../../../_components/AssistanceBox";
+import { useParams, useSearchParams } from "next/navigation";
+import { useGameStore } from "@/stores/gameStore";
 
 export default function GameQuestionLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { questionId, id: gameId } = useParams();
+  const searchParams = useSearchParams();
+  const validQuestionId = Array.isArray(questionId)
+    ? questionId[0]
+    : questionId;
+  const validGameId = Array.isArray(gameId) ? gameId[0] : gameId;
+
+  const { teamOneName, teamOnePoints, teamTwoName, teamTwoPoints, turn } =
+    useGameStore();
+
   return (
     <div className="flex justify-center items-center gap-5 flex-col sm:flex-row p-3 h-full">
       {children}
       <div className="flex flex-row sm:flex-col xl:justify-around gap-3 md:gap-8  w-full sm:w-1/3 sm:py-5">
         <div className="w-1/2 sm:w-full flex flex-col gap-3">
           <p className="text-sm text-center md:text-md lg:text-lg xl:text-xl text-white">
-            baramjk
+            {teamOneName}
           </p>
           <div className="w-full text-md md:text-lg lg:text-xl xl:text-2xl text-center rounded-[10px] bg-light-purple text-secondary border-[2px] border-secondary text-secondry py-1">
-            1000
+            {teamOnePoints}
           </div>
-          <AssistanceBox />
+          <AssistanceBox
+            team={1}
+            context="question"
+            questionId={validQuestionId}
+          />
         </div>
         <div className="w-1/2 sm:w-full flex flex-col gap-3">
           <p className="text-sm text-center md:text-md lg:text-lg xl:text-xl text-white">
-            baramjk
+            {teamTwoName}
           </p>
           <div className="w-full text-md md:text-lg lg:text-xl xl:text-2xl text-center rounded-[10px] bg-light-purple text-secondary border-[2px] border-secondary text-secondry py-1">
-            1000
+            {teamTwoPoints}
           </div>
-          <AssistanceBox />
+          <AssistanceBox
+            team={2}
+            context="question"
+            questionId={validQuestionId}
+          />
         </div>
       </div>
     </div>

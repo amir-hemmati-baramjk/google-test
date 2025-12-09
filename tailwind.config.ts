@@ -49,6 +49,8 @@ const config: Config = {
           "linear-gradient(90deg, #ff6600 0%, #e80008 100%)",
         "category-card-bg-gradient":
           "linear-gradient(220deg,rgba(249, 77, 8, 1) 0%, rgba(0, 43, 255, 1) 100%)",
+        "green-gradient":
+          "linear-gradient(90deg,rgba(79, 232, 154, 1) 0%, rgba(4, 156, 60, 1) 100%)",
       },
       borderRadius: {},
     },

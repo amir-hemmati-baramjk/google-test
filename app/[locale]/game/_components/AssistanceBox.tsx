@@ -1,328 +1,278 @@
 "use client";
-
 import React from "react";
-import { Button } from "../../_components/button/button";
-import { ChangeQuestionIcon } from "../../_components/icons/ChangeQuestionIcon";
-import { DoublePointsIcon } from "../../_components/icons/DoublePointsIcon";
-import { FiftyByFiftyIcon } from "../../_components/icons/FiftyByFiftyIcon";
-import { SkipQuestionIcon } from "../../_components/icons/SkipQuestionIcon";
-import { TakePointsIcon } from "../../_components/icons/TakePointsIcon";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useParams, useRouter } from "next/navigation";
-import { useGameStore } from "@/stores/gameStore";
-import { putChangeQuestion } from "@/core/game/change-question-service";
-import { putDoublePoints } from "@/core/game/double-points-service";
-import { putSkipQuestion } from "@/core/game/skip-question-service";
-import { putTakePoints } from "@/core/game/take-points-service";
-import { putFiftyFifty } from "@/core/game/fifty-fifty-service";
 import { toast } from "react-toastify";
+import { useGameStore } from "@/stores/gameStore";
 
-export default function AssistanceBox() {
+import { putChangeQuestion } from "@/core/game/change-question-service";
+import { putSkipQuestion } from "@/core/game/skip-question-service";
+import { putFiftyFifty } from "@/core/game/fifty-fifty-service";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { ChangeQuestionIcon } from "../../_components/icons/ChangeQuestionIcon";
+import { Button } from "../../_components/button/button";
+import { SkipQuestionIcon } from "../../_components/icons/SkipQuestionIcon";
+import { FiftyByFiftyIcon } from "../../_components/icons/FiftyByFiftyIcon";
+import { DoublePointsIcon } from "../../_components/icons/DoublePointsIcon";
+import { TakePointsIcon } from "../../_components/icons/TakePointsIcon";
+import { putSilence } from "@/core/game/silence-team-service";
+
+interface AssistanceBoxProps {
+  context: "gameboard" | "question";
+  questionId?: string;
+  team: number;
+}
+
+export default function AssistanceBox({
+  context,
+  questionId,
+  team,
+}: AssistanceBoxProps) {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const { id: gameId, questionId } = useParams();
+  const turn = useGameStore((state) => state.turn);
+  const gameId = useGameStore((state) => state.id);
 
-  // Get data from Zustand store
-  const {
-    changeQuestion: changeQuestionStore,
-    removeTwoAnswerForMultipleChoiceQuestioon: fiftyFiftyStore,
-    changeTakePoint: takePointsStore,
-    changeSkipQuestion: skipQuestionStore,
-    turn,
-    usedChangeQuestionTeamOne,
-    usedChangeQuestionTeamTwo,
-    usedDoublePointTeamOne,
-    usedDoublePointTeamTwo,
-    usedSkipQuestionTeamOne,
-    usedSkipQuestionTeamTwo,
-    usedTakePointsTeamOne,
-    usedTakePointsTeamTwo,
-    usedRemoveOptionTeamOne,
-    usedRemoveOptionTeamTwo,
-  } = useGameStore();
+  const gameStore = useGameStore.getState();
 
-  // Helper function to get valid IDs
-  const getValidIds = () => {
-    const validGameId = Array.isArray(gameId) ? gameId[0] : gameId;
-    const validQuestionId = Array.isArray(questionId)
-      ? questionId[0]
-      : questionId;
-
-    if (!validGameId) {
-      throw new Error("Game ID is missing");
-    }
-
-    return { validGameId, validQuestionId };
-  };
-
-  // Check if assistances are used based on current team
-  const isChangeQuestionUsed =
-    turn === 1 ? usedChangeQuestionTeamOne : usedChangeQuestionTeamTwo;
-  const isDoublePointsUsed =
-    turn === 1 ? usedDoublePointTeamOne : usedDoublePointTeamTwo;
-  const isSkipQuestionUsed =
-    turn === 1 ? usedSkipQuestionTeamOne : usedSkipQuestionTeamTwo;
-  const isTakePointsUsed =
-    turn === 1 ? usedTakePointsTeamOne : usedTakePointsTeamTwo;
-  const isFiftyFiftyUsed =
-    turn === 1 ? usedRemoveOptionTeamOne : usedRemoveOptionTeamTwo;
-
-  // React Query mutations for all assistances
+  // --- Mutations for Question Assistants
   const changeQuestionMutation = useMutation({
     mutationFn: () => {
-      const { validGameId, validQuestionId } = getValidIds();
-      if (!validQuestionId) throw new Error("Question ID is missing");
-      return putChangeQuestion(validGameId, validQuestionId, turn);
+      if (!questionId) throw new Error("Question ID missing");
+      return putChangeQuestion(gameId, questionId, turn);
     },
     onSuccess: (data) => {
       if (data.success && data.data) {
-        const { validGameId, validQuestionId } = getValidIds();
-        if (!validQuestionId) return;
-
-        changeQuestionStore(validGameId, validQuestionId, data.data, turn);
-        router.replace(`/game/${validGameId}/question/${data.data.id}`);
-        queryClient.invalidateQueries({ queryKey: ["game", validGameId] });
-      } else {
-        toast.error(data?.errors || "Failed to change question");
+        gameStore.changeQuestion(gameId, questionId!, data.data, turn);
+        queryClient.invalidateQueries({ queryKey: ["game", gameId] });
+        router.replace(`/game/${gameId}/question/${data?.data?.id}`);
+        toast.success("Question changed!");
       }
     },
-    onError: (error) => {
-      console.error("Change question error:", error);
-      toast.error("An error occurred while changing the question");
-    },
   });
-
-  const doublePointsMutation = useMutation({
-    mutationFn: () => {
-      const { validGameId } = getValidIds();
-      return putDoublePoints(validGameId, turn);
-    },
-    onSuccess: (data) => {
-      if (data.success && data.data) {
-        const { validGameId } = getValidIds();
-        // Update store with double points activation
-        // You might need to add a setGame function or specific double points function
-        queryClient.invalidateQueries({ queryKey: ["game", validGameId] });
-        toast.success("Double points activated! 🎉");
-      } else {
-        toast.error(data?.errors || "Failed to activate double points");
-      }
-    },
-    onError: (error) => {
-      console.error("Double points error:", error);
-      toast.error("An error occurred while activating double points");
-    },
-  });
+  const isChangeQuestionLoading = changeQuestionMutation.isPending;
 
   const skipQuestionMutation = useMutation({
     mutationFn: () => {
-      const { validGameId, validQuestionId } = getValidIds();
-      if (!validQuestionId) throw new Error("Question ID is missing");
-      return putSkipQuestion(validGameId, validQuestionId, turn);
+      if (!questionId) throw new Error("Question ID missing");
+      return putSkipQuestion(gameId, questionId);
     },
-    onSuccess: (data) => {
-      if (data.success && data.data) {
-        const { validGameId, validQuestionId } = getValidIds();
-        if (!validQuestionId) return;
-
-        skipQuestionStore(validGameId, turn, validQuestionId);
-        queryClient.invalidateQueries({ queryKey: ["game", validGameId] });
-        toast.success("Question skipped!");
-      } else {
-        toast.error(data?.errors || "Failed to skip question");
-      }
-    },
-    onError: (error) => {
-      console.error("Skip question error:", error);
-      toast.error("An error occurred while skipping the question");
+    onSuccess: () => {
+      toast.success("Question skipped!");
     },
   });
 
-  const takePointsMutation = useMutation({
+  const silenceMutation = useMutation({
     mutationFn: () => {
-      const { validGameId } = getValidIds();
-      return putTakePoints(validGameId, turn);
+      return putSilence(gameId);
     },
-    onSuccess: (data) => {
-      if (data.success && data.data) {
-        const { validGameId } = getValidIds();
-        takePointsStore(validGameId, turn);
-        queryClient.invalidateQueries({ queryKey: ["game", validGameId] });
-        toast.success("Points taken successfully! 💯");
-      } else {
-        toast.error(data?.errors || "Failed to take points");
-      }
-    },
-    onError: (error) => {
-      console.error("Take points error:", error);
-      toast.error("An error occurred while taking points");
-    },
+    onSuccess: () => toast.success("The opposing team must remain silent."),
   });
+  const isSilenceLoading = silenceMutation.isPending;
+  const isSkipQuestionLoading = skipQuestionMutation.isPending;
 
   const fiftyFiftyMutation = useMutation({
     mutationFn: () => {
-      const { validGameId, validQuestionId } = getValidIds();
-      if (!validQuestionId) throw new Error("Question ID is missing");
-      return putFiftyFifty(validGameId, validQuestionId, turn);
+      if (!questionId) throw new Error("Question ID missing");
+      return putFiftyFifty(gameId, questionId);
     },
-    onSuccess: (data) => {
-      if (data.success && data.data) {
-        const { validGameId, validQuestionId } = getValidIds();
-        if (!validQuestionId) return;
-
-        fiftyFiftyStore(validGameId, validQuestionId, data.data, turn);
-        queryClient.invalidateQueries({ queryKey: ["game", validGameId] });
-        toast.success("50/50 used! Two options removed.");
-      } else {
-        toast.error(data?.errors || "Failed to use 50/50");
-      }
-    },
-    onError: (error) => {
-      console.error("50/50 error:", error);
-      toast.error("An error occurred while using 50/50");
-    },
+    onSuccess: () => toast.success("50/50 used!"),
   });
+  const isFiftyFiftyLoading = fiftyFiftyMutation.isPending;
 
-  // Handler functions with proper checks
-  const handleChangeQuestion = () => {
-    if (isChangeQuestionUsed) return;
-    changeQuestionMutation.mutate();
+  // --- Handler functions
+  const handleChangeQuestion = () => changeQuestionMutation.mutate();
+  const handleSkipQuestion = () => skipQuestionMutation.mutate();
+  const handleFiftyFifty = () => fiftyFiftyMutation.mutate();
+  const handleSilence = () => silenceMutation.mutate();
+
+  // Handle assistant clicks for gameboard context
+  const handleAssistantClick = (
+    assistantType: "doublePoint" | "takePoint" | "silence"
+  ) => {
+    if (context === "gameboard") {
+      // Set pending state and redirect to gameboard
+      if (assistantType === "doublePoint") {
+        gameStore.setPendingDoublePoint(true);
+      } else if (assistantType === "takePoint") {
+        gameStore.setPendingTakePoint(true);
+      } else if (assistantType === "silence") {
+        gameStore.setPendingSilence(true);
+      }
+
+      toast.info("Please select a question to apply the assistant");
+      router.push(`/game/${gameId}`);
+    }
   };
-
-  const handleDoublePoints = () => {
-    if (isDoublePointsUsed) return;
-    doublePointsMutation.mutate();
-  };
-
-  const handleSkipQuestion = () => {
-    if (isSkipQuestionUsed) return;
-    skipQuestionMutation.mutate();
-  };
-
-  const handleTakePoints = () => {
-    if (isTakePointsUsed) return;
-    takePointsMutation.mutate();
-  };
-
-  const handleFiftyFifty = () => {
-    if (isFiftyFiftyUsed) return;
-    fiftyFiftyMutation.mutate();
-  };
-
-  // Check if any mutation is loading
-  const isAnyMutationLoading =
-    changeQuestionMutation.isPending ||
-    doublePointsMutation.isPending ||
-    skipQuestionMutation.isPending ||
-    takePointsMutation.isPending ||
-    fiftyFiftyMutation.isPending;
 
   return (
-    <div className="flex justify-center flex-col items-center gap-1 lg:gap-2">
-      <p className="font-[700] text-secondary text-sm lg:text-lg xl:text-xl 2xl:text-2xl">
-        Assistance
-      </p>
-      <div className="grid grid-cols-3 gap-1 lg:gap-2 text-white w-fit">
-        {/* Change Question */}
-        <Button
-          onClick={handleChangeQuestion}
-          isLoading={changeQuestionMutation.isPending}
-          disabled={
-            isChangeQuestionUsed ||
-            (isAnyMutationLoading && !changeQuestionMutation.isPending)
-          }
-          className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 ${
-            isChangeQuestionUsed ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          variant="light-blue-gradient"
-          shape="square"
-        >
-          <ChangeQuestionIcon size={48} />
-        </Button>
+    <div className="flex flex-col items-center gap-2">
+      <p className="font-bold text-secondary">Assistance</p>
+      <div className="grid grid-cols-3 gap-2">
+        {context === "question" && (
+          <>
+            <Button
+              onClick={handleChangeQuestion}
+              isLoading={isChangeQuestionLoading}
+              className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14`}
+              variant="light-blue-gradient"
+              shape="square"
+              isDisabled={
+                !gameStore?.canUseChangeQuestion ||
+                gameStore?.turn !== team ||
+                (team == 1 && gameStore?.usedChangeQuestionTeamOne) ||
+                (team == 2 && gameStore?.usedChangeQuestionTeamTwo)
+              }
+            >
+              <ChangeQuestionIcon size={48} />
+            </Button>
+            <Button
+              className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 `}
+              onClick={handleSkipQuestion}
+              isLoading={isSkipQuestionLoading}
+              variant="light-orange-gradient"
+              shape="square"
+              isDisabled={
+                !gameStore?.canUseSkipQuestion ||
+                gameStore?.turn !== team ||
+                (team == 1 && gameStore?.usedSkipQuestionTeamOne) ||
+                (team == 2 && gameStore?.usedSkipQuestionTeamTwo)
+              }
+            >
+              <SkipQuestionIcon size={48} />
+            </Button>
+            <Button
+              className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 `}
+              onClick={handleSilence}
+              isLoading={isSilenceLoading}
+              variant="primary"
+              shape="square"
+              isDisabled={true}
+            >
+              <Image
+                alt="red card icons"
+                width={48}
+                height={48}
+                src={"/icons/redCard.svg"}
+              />
+            </Button>
+            <Button
+              className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 `}
+              onClick={handleFiftyFifty}
+              isLoading={isFiftyFiftyLoading}
+              variant="light-purple-gradient"
+              shape="square"
+              isDisabled={
+                !gameStore?.canUseRemoveTwoOption ||
+                gameStore?.turn !== team ||
+                (team == 1 && gameStore?.usedRemoveOptionTeamOne) ||
+                (team == 2 && gameStore?.usedRemoveOptionTeamTwo)
+              }
+            >
+              <FiftyByFiftyIcon size={48} />
+            </Button>
+            <Button
+              variant="magenta-gradient"
+              shape="square"
+              className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 `}
+              isDisabled={true}
+            >
+              <DoublePointsIcon size={48} />
+            </Button>
+            <Button
+              variant="orange-gradient"
+              shape="square"
+              className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 `}
+              isDisabled={true}
+            >
+              <TakePointsIcon size={48} />
+            </Button>
+          </>
+        )}
 
-        {/* Double Points */}
-        <Button
-          onClick={handleDoublePoints}
-          isLoading={doublePointsMutation.isPending}
-          disabled={
-            isDoublePointsUsed ||
-            (isAnyMutationLoading && !doublePointsMutation.isPending)
-          }
-          className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 ${
-            isDoublePointsUsed ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          variant="light-orange-gradient"
-          shape="square"
-        >
-          <DoublePointsIcon size={48} />
-        </Button>
-
-        {/* 50/50 */}
-        <Button
-          onClick={handleFiftyFifty}
-          isLoading={fiftyFiftyMutation.isPending}
-          disabled={
-            isFiftyFiftyUsed ||
-            (isAnyMutationLoading && !fiftyFiftyMutation.isPending)
-          }
-          className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 ${
-            isFiftyFiftyUsed ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          variant="light-purple-gradient"
-          shape="square"
-        >
-          <FiftyByFiftyIcon size={48} />
-        </Button>
-
-        {/* Skip Question */}
-        <Button
-          onClick={handleSkipQuestion}
-          isLoading={skipQuestionMutation.isPending}
-          disabled={
-            isSkipQuestionUsed ||
-            (isAnyMutationLoading && !skipQuestionMutation.isPending)
-          }
-          className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 ${
-            isSkipQuestionUsed ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          variant="magenta-gradient"
-          shape="square"
-        >
-          <SkipQuestionIcon size={48} />
-        </Button>
-
-        {/* Take Points */}
-        <Button
-          onClick={handleTakePoints}
-          isLoading={takePointsMutation.isPending}
-          disabled={
-            isTakePointsUsed ||
-            (isAnyMutationLoading && !takePointsMutation.isPending)
-          }
-          className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 ${
-            isTakePointsUsed ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          variant="orange-gradient"
-          shape="square"
-        >
-          <TakePointsIcon size={48} />
-        </Button>
-
-        {/* Extra Button (You can remove or repurpose this) */}
-        <Button
-          className="!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 opacity-50 cursor-not-allowed"
-          variant="secondary-gradient"
-          shape="square"
-          disabled
-        >
-          <ChangeQuestionIcon size={48} />
-        </Button>
+        {context === "gameboard" && (
+          <>
+            <Button
+              onClick={handleChangeQuestion}
+              isLoading={isChangeQuestionLoading}
+              className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14`}
+              variant="light-blue-gradient"
+              shape="square"
+              isDisabled={true}
+            >
+              <ChangeQuestionIcon size={48} />
+            </Button>
+            <Button
+              className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 `}
+              onClick={handleSkipQuestion}
+              isLoading={isSkipQuestionLoading}
+              variant="light-orange-gradient"
+              shape="square"
+              isDisabled={true}
+            >
+              <SkipQuestionIcon size={48} />
+            </Button>
+            <Button
+              className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 `}
+              onClick={() => handleAssistantClick("silence")}
+              isLoading={isSilenceLoading}
+              variant="primary"
+              shape="square"
+              isDisabled={
+                !gameStore?.canUseSilence ||
+                gameStore?.turn !== team ||
+                (team == 1 && gameStore?.usedSilenceTeamOne) ||
+                (team == 2 && gameStore?.usedSilenceTeamTwo)
+              }
+            >
+              <Image
+                alt="red card icons"
+                width={48}
+                height={48}
+                src={"/icons/redCard.svg"}
+              />
+            </Button>
+            <Button
+              className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 `}
+              onClick={handleFiftyFifty}
+              isLoading={isFiftyFiftyLoading}
+              variant="light-purple-gradient"
+              shape="square"
+              isDisabled={true}
+            >
+              <FiftyByFiftyIcon size={48} />
+            </Button>
+            <Button
+              variant="magenta-gradient"
+              shape="square"
+              className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 `}
+              onClick={() => handleAssistantClick("doublePoint")}
+              isDisabled={
+                !gameStore?.canUseDoublePoint ||
+                gameStore?.turn !== team ||
+                (team == 1 && gameStore?.usedDoublePointTeamOne) ||
+                (team == 2 && gameStore?.usedDoublePointTeamTwo)
+              }
+            >
+              <DoublePointsIcon size={48} />
+            </Button>
+            <Button
+              variant="orange-gradient"
+              shape="square"
+              className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 `}
+              onClick={() => handleAssistantClick("takePoint")}
+              isDisabled={
+                !gameStore?.canUseTakePoints ||
+                gameStore?.turn !== team ||
+                (team == 1 && gameStore?.usedTakePointsTeamOne) ||
+                (team == 2 && gameStore?.usedTakePointsTeamTwo)
+              }
+            >
+              <TakePointsIcon size={48} />
+            </Button>
+          </>
+        )}
       </div>
-
-      {/* Status indicators */}
-      {isAnyMutationLoading && (
-        <p className="text-secondary text-xs mt-1">Processing...</p>
-      )}
     </div>
   );
 }

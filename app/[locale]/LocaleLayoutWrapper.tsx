@@ -9,6 +9,7 @@ import Script from "next/script";
 import NavigationMenu from "./_components/navigationMenu/NavigationMenu";
 import BottomDoc from "./_components/bottomDoc/BottomDoc";
 import ClientLayoutWrapper from "./ClientLayoutWrapper";
+import { ToastContainer } from "react-toastify";
 
 const cairo = Cairo({
   display: "swap",
@@ -83,6 +84,7 @@ export default async function LocaleLayoutWrapper({
         <QueryProvider>
           <NextIntlClientProvider locale={locale} messages={messages}>
             <ClientLayoutWrapper locale={locale}>
+              <ToastContainer />
               {children}
             </ClientLayoutWrapper>
           </NextIntlClientProvider>

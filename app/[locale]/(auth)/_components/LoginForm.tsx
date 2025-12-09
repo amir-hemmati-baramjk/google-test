@@ -14,8 +14,11 @@ import { loginUser } from "@/core/auth/login-service";
 import { toast } from "react-toastify";
 import { sendAppTokenToServer } from "@/core/auth/set-app-token-notification";
 import EmailTextBox from "../../_components/inputs/EmailTextBox";
-import { SignIn } from "@/type/api/auth/auth.types";
-import { getSignInSchema } from "@/type/api/auth/auth.schema";
+import { SignIn, SignInWithEmail } from "@/type/api/auth/auth.types";
+import {
+  getSignInSchema,
+  getSignInWithEmailSchema,
+} from "@/type/api/auth/auth.schema";
 
 const LoginForm = () => {
   const t = useTranslations("index");
@@ -29,14 +32,13 @@ const LoginForm = () => {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<SignIn>({
-    resolver: zodResolver(getSignInSchema(t)),
+  } = useForm<SignInWithEmail>({
+    resolver: zodResolver(getSignInWithEmailSchema(t)),
     mode: "onChange",
   });
 
-  const onSubmit = async (data: SignIn) => {
+  const onSubmit = async (data: SignInWithEmail) => {
     setIsLoading(true);
-
     try {
       // Call login function with options
       const result = await loginUser(data);
@@ -63,7 +65,7 @@ const LoginForm = () => {
       <EmailTextBox
         {...register("userName")}
         name="userName"
-        label={t("phone-number")}
+        label={t("email-address")}
         placeholder={t("please-enter")}
         error={errors.userName}
         disabled={isLoading}

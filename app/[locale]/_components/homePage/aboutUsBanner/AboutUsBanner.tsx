@@ -10,13 +10,12 @@ import { FiftyByFiftyIcon } from "../../icons/FiftyByFiftyIcon";
 export default function AboutUsBanner() {
   const t = useTranslations("homepage.Assistance");
 
-  // **Map برای گرادیِنت‌ها**
   const gradientMap: Record<string, string> = {
     "secondary-gradient": "bg-secondary-gradient",
     "light-orange-gradient": "bg-light-orange-gradient",
     "light-blue-gradient": "bg-light-blue-gradient",
     "light-purple-gradient": "bg-light-purple-gradient",
-    "light-green-gradient": "bg-light-green-gradient",
+    "green-gradient": "bg-light-green-gradient",
   };
 
   const assistanceItems = [
@@ -48,7 +47,7 @@ export default function AboutUsBanner() {
       icon: <FiftyByFiftyIcon size={50} />,
       name: t("remove-two-options"),
       description: t("remove-two-options-hint"),
-      varient: "light-green-gradient",
+      varient: "green-gradient",
     },
   ];
 

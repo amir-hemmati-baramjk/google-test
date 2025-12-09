@@ -4,14 +4,13 @@ import { Game } from "@/type/api/game/game.type";
 
 export const putTakePoints = async (
   gameId: string,
-  team: number
+  questionid: string
 ): Promise<ApiResponse<Game>> => {
   try {
     const response = await httpService.put<Game>(
-      `/game/${gameId}/useTakePoints?team=${team}`,
+      `/game/${gameId}/setTakePoints/${questionid}`,
       {}
     );
-
     return response;
   } catch (error: any) {
     return {

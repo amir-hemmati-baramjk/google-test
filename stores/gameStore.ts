@@ -35,12 +35,47 @@ interface GameState extends Game {
     questionId: string
   ) => void;
   changeTurn: (gameId: string, newTurn?: number) => void;
-  // Add the new function here
   useSilence: (gameId: string, team: number) => void;
+
+  // New booleans and helpers for "can use" flags and pending query flags
+  canUseRemoveTwoOption: boolean;
+  canUseDoublePoint: boolean;
+  canUseTakePoints: boolean;
+  canUseSilence: boolean;
+  canUseSkipQuestion: boolean;
+  canUseChangeQuestion: boolean;
+  setCanUseRemoveTwoOption: (value: boolean) => void;
+  setCanUseDoublePoint: (value: boolean) => void;
+  setCanUseTakePoints: (value: boolean) => void;
+  setCanUseSilence: (value: boolean) => void;
+  setCanUseSkipQuestion: (value: boolean) => void;
+  setCanUseChangeQuestion: (value: boolean) => void;
+
+  // pending flags (set on game page when user activates Double/Take via query)
+  pendingDoublePoint: boolean;
+  pendingTakePoint: boolean;
+  pendingSilence: boolean;
+  setPendingDoublePoint: (value: boolean) => void;
+  setPendingTakePoint: (value: boolean) => void;
+  setPendingSilence: (value: boolean) => void;
+
+  // Missing setters
+  setUsedDoublePointTeamOne: (value: boolean) => void;
+  setUsedDoublePointTeamTwo: (value: boolean) => void;
+  setUsedTakePointsTeamOne: (value: boolean) => void;
+  setUsedTakePointsTeamTwo: (value: boolean) => void;
+  setUsedSilenceTeamOne: (value: boolean) => void;
+  setUsedSilenceTeamTwo: (value: boolean) => void;
+  setUsedChangeQuestionTeamOne: (value: boolean) => void;
+  setUsedChangeQuestionTeamTwo: (value: boolean) => void;
+  setUsedSkipQuestionTeamOne: (value: boolean) => void;
+  setUsedSkipQuestionTeamTwo: (value: boolean) => void;
+  setUsedRemoveOptionTeamOne: (value: boolean) => void;
+  setUsedRemoveOptionTeamTwo: (value: boolean) => void;
 }
 
 export const useGameStore = create<GameState>((set, get) => ({
-  // --- Your existing initial state remains the same
+  // initial state based on previous provided fields
   answer: null,
   whoAnswer: null,
   id: "",
@@ -86,14 +121,148 @@ export const useGameStore = create<GameState>((set, get) => ({
   time400: 70,
   time600: 100,
   assistants: null,
+
+  // New canUse flags defaults (true by default — adjust as needed)
+  canUseRemoveTwoOption: true,
+  canUseDoublePoint: true,
+  canUseTakePoints: true,
+  canUseSilence: true,
+  canUseSkipQuestion: true,
+  canUseChangeQuestion: true,
+  pendingDoublePoint: false,
+  pendingTakePoint: false,
+  pendingSilence: false,
+
+  // setters
   setScrollX: (x: number) => set({ scrollX: x }),
 
-  // --- Your existing functions remain the same
+  setCanUseRemoveTwoOption: (value: boolean) =>
+    set((state) => {
+      if (state?.assistants?.length) {
+        return {
+          ...state,
+          canUseRemoveTwoOption: state.assistants.includes("Remove2Options"),
+        };
+      } else {
+        return {
+          ...state,
+          canUseRemoveTwoOption: value,
+        };
+      }
+    }),
+
+  setCanUseDoublePoint: (value: boolean) =>
+    set((state) => {
+      if (state?.assistants?.length) {
+        return {
+          ...state,
+          canUseDoublePoint: state.assistants.includes("DoublePoints"),
+        };
+      } else {
+        return {
+          ...state,
+          canUseDoublePoint: value,
+        };
+      }
+    }),
+
+  setCanUseTakePoints: (value: boolean) =>
+    set((state) => {
+      if (state?.assistants?.length) {
+        return {
+          ...state,
+          canUseTakePoints: state.assistants.includes("TakePoints"),
+        };
+      } else {
+        return {
+          ...state,
+          canUseTakePoints: value,
+        };
+      }
+    }),
+
+  setCanUseSilence: (value: boolean) =>
+    set((state) => {
+      if (state?.assistants?.length) {
+        return {
+          ...state,
+          canUseSilence: state.assistants.includes("UseSilence"),
+        };
+      } else {
+        return {
+          ...state,
+          canUseSilence: value,
+        };
+      }
+    }),
+
+  setCanUseSkipQuestion: (value: boolean) =>
+    set((state) => {
+      if (state?.assistants?.length) {
+        return {
+          ...state,
+          canUseSkipQuestion: state.assistants.includes("SkipQuestion"),
+        };
+      } else {
+        return {
+          ...state,
+          canUseSkipQuestion: value,
+        };
+      }
+    }),
+
+  setCanUseChangeQuestion: (value: boolean) =>
+    set((state) => {
+      if (state?.assistants?.length) {
+        return {
+          ...state,
+          canUseChangeQuestion: state.assistants.includes("ChangeQuestion"),
+        };
+      } else {
+        return {
+          ...state,
+          canUseChangeQuestion: value,
+        };
+      }
+    }),
+
+  setPendingDoublePoint: (value: boolean) => set({ pendingDoublePoint: value }),
+  setPendingTakePoint: (value: boolean) => set({ pendingTakePoint: value }),
+  setPendingSilence: (value: boolean) => set({ pendingSilence: value }),
+
+  // Missing setters
+  setUsedDoublePointTeamOne: (value: boolean) =>
+    set((state) => ({ ...state, usedDoublePointTeamOne: value })),
+  setUsedDoublePointTeamTwo: (value: boolean) =>
+    set((state) => ({ ...state, usedDoublePointTeamTwo: value })),
+  setUsedTakePointsTeamOne: (value: boolean) =>
+    set((state) => ({ ...state, usedTakePointsTeamOne: value })),
+  setUsedTakePointsTeamTwo: (value: boolean) =>
+    set((state) => ({ ...state, usedTakePointsTeamTwo: value })),
+  setUsedSilenceTeamOne: (value: boolean) =>
+    set((state) => ({ ...state, usedSilenceTeamOne: value })),
+  setUsedSilenceTeamTwo: (value: boolean) =>
+    set((state) => ({ ...state, usedSilenceTeamTwo: value })),
+  setUsedChangeQuestionTeamOne: (value: boolean) =>
+    set((state) => ({ ...state, usedChangeQuestionTeamOne: value })),
+  setUsedChangeQuestionTeamTwo: (value: boolean) =>
+    set((state) => ({ ...state, usedChangeQuestionTeamTwo: value })),
+  setUsedSkipQuestionTeamOne: (value: boolean) =>
+    set((state) => ({ ...state, usedSkipQuestionTeamOne: value })),
+  setUsedSkipQuestionTeamTwo: (value: boolean) =>
+    set((state) => ({ ...state, usedSkipQuestionTeamTwo: value })),
+  setUsedRemoveOptionTeamOne: (value: boolean) =>
+    set((state) => ({ ...state, usedRemoveOptionTeamOne: value })),
+  setUsedRemoveOptionTeamTwo: (value: boolean) =>
+    set((state) => ({ ...state, usedRemoveOptionTeamTwo: value })),
+
+  // core functions (as before)
   setGame: (game) => set(game),
   setAnswer: (value) => set({ answer: value }),
   clearAnswer: () => set({ answer: null }),
   setWhoAnswer: (value) => set({ whoAnswer: value }),
   clearWhoAnswer: () => set({ whoAnswer: null }),
+
   findQuestionById: (id) => {
     const { categories } = get();
     for (const category of categories) {
@@ -153,6 +322,10 @@ export const useGameStore = create<GameState>((set, get) => ({
           team === 1 ? true : state.usedRemoveOptionTeamOne,
         usedRemoveOptionTeamTwo:
           team === 2 ? true : state.usedRemoveOptionTeamTwo,
+        usedRemoveOptionTeamOneQuestionId:
+          team === 1 ? questionId : state.usedRemoveOptionTeamOneQuestionId,
+        usedRemoveOptionTeamTwoQuestionId:
+          team === 2 ? questionId : state.usedRemoveOptionTeamTwoQuestionId,
         categories: state.categories.map((cat) => ({
           ...cat,
           questions: cat.questions.map((q) =>

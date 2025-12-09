@@ -2,17 +2,20 @@
 import { useGameStore } from "@/stores/gameStore";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
-import AssistanceBox from "../_components/AssistanceBox";
+
 import { Button } from "../../_components/button/button";
 import { PlusIcon } from "../../_components/icons/PlusIcon";
 import { ArrowLeftIcon } from "../../_components/icons/ArrowLeftIcon";
 import { ArrowRightIcon } from "../../_components/icons/ArrowRightIcon";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import AssistanceBox from "../_components/AssistanceBox";
 
 export default function Page() {
   const game = useGameStore();
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(6);
+  const router = useRouter();
 
   // تعداد آیتم‌ها در هر صفحه بر اساس breakpoint
   const getItemsPerPage = () => {
@@ -68,7 +71,24 @@ export default function Page() {
     }
   };
 
-  console.log(game);
+  // Handle question click with assistant pending state
+  const handleQuestionClick = (questionId: string) => {
+    const gameStore = useGameStore.getState();
+    let url = `/game/${game.id}/question/${questionId}`;
+
+    if (gameStore.pendingDoublePoint) {
+      url += "?assistant=doublePoint";
+      gameStore.setPendingDoublePoint(false);
+    } else if (gameStore.pendingTakePoint) {
+      url += "?assistant=takePoint";
+      gameStore.setPendingTakePoint(false);
+    } else if (gameStore.pendingSilence) {
+      url += "?assistant=silence";
+      gameStore.setPendingSilence(false);
+    }
+
+    router.push(url);
+  };
 
   return (
     <>
@@ -104,11 +124,14 @@ export default function Page() {
                         {item?.questions
                           ?.filter((q: any) => q?.points === points)
                           .map((q: any, qIndex: number) => (
-                            <Link
+                            <button
                               key={q.id}
-                              href={`/game/${game?.id}/question/${q?.id}`}
+                              onClick={() => handleQuestionClick(q.id)}
+                              disabled={q.isAnswered}
                               className={`text-center flex justify-center items-center ${
-                                q.isAnswered ? "text-[#ccc]" : "text-primary"
+                                q.isAnswered
+                                  ? "text-[#ccc] cursor-not-allowed"
+                                  : "text-primary cursor-pointer"
                               } ${
                                 qIndex === 0
                                   ? "border-r-primary border-r-[1px]"
@@ -116,7 +139,7 @@ export default function Page() {
                               }`}
                             >
                               {q.points}
-                            </Link>
+                            </button>
                           ))}
                       </div>
                     ))}
@@ -132,18 +155,12 @@ export default function Page() {
                         key={points}
                         className="w-full py-2 grid grid-cols-2 text-sm lg:text-lg xl:text-xl 2xl:text-2xl bg-[#EEE5FD] font-bold rounded-[12px]"
                       >
-                        <Link
-                          href={`/game/${game?.id}/question/${item?.id}`}
-                          className="text-center flex justify-center items-center text-primary border-r-primary border-r-[1px]"
-                        >
+                        <div className="text-center flex justify-center items-center text-primary border-r-primary border-r-[1px]">
                           {points}
-                        </Link>
-                        <Link
-                          href={`/game/${game?.id}/question/${item?.id}`}
-                          className="text-center flex justify-center items-center text-primary"
-                        >
+                        </div>
+                        <div className="text-center flex justify-center items-center text-primary">
                           {points}
-                        </Link>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -160,15 +177,14 @@ export default function Page() {
             size="small"
             variant="primary"
             shape="square"
-            //   disabled={isPending}
-            //   isLoading={isPending}
             onClick={prevPage}
+            disabled={currentPage === 0}
           >
-            <ArrowRightIcon />
+            <ArrowLeftIcon />
           </Button>
 
           <p className="text-gray-700">
-            {currentPage + 1} {totalPages}
+            {currentPage + 1} / {totalPages}
           </p>
 
           <Button
@@ -176,11 +192,10 @@ export default function Page() {
             size="small"
             variant="primary"
             shape="square"
-            //   disabled={isPending}
-            //   isLoading={isPending}
             onClick={nextPage}
+            disabled={currentPage >= totalPages - 1}
           >
-            <ArrowLeftIcon />
+            <ArrowRightIcon />
           </Button>
         </div>
       </div>
@@ -189,31 +204,24 @@ export default function Page() {
           <div className="flex justify-center items-center gap-5 w-full mt-auto">
             <div className="w-full text-center gap-2 flex flex-col justify-between items-center lg:gap-2 2xl:gap-3 text-[10px] md:text-[16px] lg:text-[14px]  xl:text-[24px]">
               <p className="text-white font-bold bg-light-purple-gradient text-sm lg:text-lg xl:text-xl 3xl:text-2xl w-full rounded-[10px] py-1.5 lg:py-2 xl:py-3">
-                {/* {team === 1 ? game?.teamOneName : game?.teamTwoName} */}{" "}
-                baramjk
+                {game?.teamOneName}
               </p>
               <div className="w-full flex justify-between items-center gap-2 p-1 m-auto rounded-[8px] h-fit">
                 <Button
                   className="!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14"
                   variant="primary"
                   shape="square"
-                  //   disabled={isPending}
-                  //   isLoading={isPending}
-                  //   onClick={() => handleChange(100)}
                 >
                   <PlusIcon />
                 </Button>
                 <p className="border-[2px] text-sm sm:text-md lg:text-lg xl:text-xl 2xl:text-2xl border-primary rounded-[8px] w-2/3 py-2 flex justify-center items-center text-primary font-[700]">
-                  1200
+                  {game?.teamOnePoints}
                 </p>
                 <Button
                   className="!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14"
                   size="small"
                   variant="primary"
                   shape="square"
-                  //   disabled={isPending}
-                  //   isLoading={isPending}
-                  //   onClick={() => handleChange(-100)}
                 >
                   <PlusIcon />
                 </Button>
@@ -221,50 +229,32 @@ export default function Page() {
             </div>
           </div>
           <div className="w-full sm:w-2/3">
-            <AssistanceBox />
+            <AssistanceBox team={1} context="gameboard" />
           </div>
         </div>
-        <div className="hidden h-full sm:flex w-1/4 p-5 ">
-          {/* <div className="w-full h-full bg-white flex justify-center items-center">
-            {" "}
-            <Image
-              alt="falta-logo"
-              src="/icons/logo.svg"
-              width={40}
-              height={40}
-              className="w-[45px] h-[45px] lg:w-[60px] lg:h-[60px]"
-            />
-          </div> */}
-        </div>
+        <div className="hidden h-full sm:flex w-1/4 p-5 "></div>
         <div className="w-1/2 sm:w-2/5 px-2 flex gap-2 justify-center items-center flex-col sm:flex-row ">
           <div className="flex justify-center items-center gap-5 w-full mt-auto">
             <div className="w-full text-center gap-2 flex flex-col justify-between items-center lg:gap-2 2xl:gap-3 text-[10px] md:text-[16px] lg:text-[14px]  xl:text-[24px]">
               <p className="text-white font-bold bg-light-purple-gradient text-sm lg:text-lg xl:text-xl 3xl:text-2xl w-full rounded-[10px] py-1.5 lg:py-2 xl:py-3">
-                {/* {team === 1 ? game?.teamOneName : game?.teamTwoName} */}{" "}
-                baramjk
+                {game?.teamTwoName}
               </p>
               <div className="w-full flex justify-between items-center gap-2 p-1 m-auto rounded-[8px] h-fit">
                 <Button
                   className="!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14"
                   variant="primary"
                   shape="square"
-                  //   disabled={isPending}
-                  //   isLoading={isPending}
-                  //   onClick={() => handleChange(100)}
                 >
                   <PlusIcon />
                 </Button>
                 <p className="border-[2px] text-sm sm:text-md lg:text-lg xl:text-xl 2xl:text-2xl border-primary rounded-[8px] w-2/3 py-2 flex justify-center items-center text-primary font-[700]">
-                  1200
+                  {game?.teamTwoPoints}
                 </p>
                 <Button
                   className="!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14"
                   size="small"
                   variant="primary"
                   shape="square"
-                  //   disabled={isPending}
-                  //   isLoading={isPending}
-                  //   onClick={() => handleChange(-100)}
                 >
                   <PlusIcon />
                 </Button>
@@ -272,7 +262,7 @@ export default function Page() {
             </div>
           </div>
           <div className="w-full sm:w-2/3">
-            <AssistanceBox />
+            <AssistanceBox team={2} context="gameboard" />
           </div>
         </div>
       </div>

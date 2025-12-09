@@ -4,12 +4,11 @@ import { Question } from "@/type/api/game/game.type";
 
 export const putFiftyFifty = async (
   gameId: string,
-  questionId: string,
-  team: number
+  questionId: string
 ): Promise<ApiResponse<Question>> => {
   try {
     const response = await httpService.put<Question>(
-      `/game/${gameId}/removeTwoAnswerForMultipleChoiceQuestioon/${questionId}?team=${team}`,
+      `/game/${gameId}/disableoption/${questionId}`,
       {}
     );
 

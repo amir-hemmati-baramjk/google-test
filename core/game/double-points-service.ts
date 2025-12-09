@@ -4,11 +4,11 @@ import { Game } from "@/type/api/game/game.type";
 
 export const putDoublePoints = async (
   gameId: string,
-  team: number
+  questionId: string
 ): Promise<ApiResponse<Game>> => {
   try {
     const response = await httpService.put<Game>(
-      `/game/${gameId}/useDoublePoint?team=${team}`,
+      `/game/${gameId}/setDoublePoint/${questionId}`,
       {}
     );
 
