@@ -11,6 +11,7 @@ import {
   refreshTokenLS,
   userDataSS,
 } from "@/localeStorage/storage";
+
 import { BaseApiResponse, ApiResponse } from "./httpSercive.types";
 
 // Custom type definitions
@@ -25,7 +26,6 @@ interface QueuedRequest {
   config: InternalAxiosRequestConfig;
 }
 
-// Default configuration
 const DEFAULT_CONFIG = {
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   headers: { "Content-Type": "application/json" },
@@ -38,6 +38,8 @@ class HttpService {
   private isRefreshing = false;
   private refreshQueue: QueuedRequest[] = [];
 
+  private client = axios.create(DEFAULT_CONFIG);
+
   private constructor() {
     this.setupInterceptors();
   }
@@ -49,9 +51,7 @@ class HttpService {
     return HttpService.instance;
   }
 
-  private client = axios.create(DEFAULT_CONFIG);
-
-  private setupInterceptors(): void {
+  private setupInterceptors() {
     this.client.interceptors.request.use(
       this.handleRequest.bind(this),
       this.handleRequestError.bind(this)
@@ -63,17 +63,13 @@ class HttpService {
     );
   }
 
-  private handleRequest(
-    config: InternalAxiosRequestConfig
-  ): InternalAxiosRequestConfig {
-    if ((config as CustomAxiosRequestConfig)._skipAuth) {
-      return config;
-    }
+  private handleRequest(config: CustomAxiosRequestConfig) {
+    if (config._skipAuth) return config;
 
-    const accessToken = accessTokenLs.get();
-    if (accessToken && config.headers) {
+    const token = accessTokenLs.get();
+    if (token && config.headers) {
       const headers = config.headers as AxiosHeaders;
-      headers.set("Authorization", `Bearer ${accessToken}`);
+      headers.set("Authorization", `Bearer ${token}`);
     }
 
     if (config.method?.toLowerCase() === "get") {
@@ -83,53 +79,55 @@ class HttpService {
       };
     }
 
+    if (config.data instanceof FormData) {
+      if (config.headers instanceof axios.AxiosHeaders) {
+        config.headers.set("Content-Type", "multipart/form-data");
+      } else {
+        config.headers = new axios.AxiosHeaders({
+          "Content-Type": "multipart/form-data",
+        });
+      }
+    }
+
     return config;
   }
 
-  private handleRequestError(error: AxiosError): Promise<AxiosError> {
+  private handleRequestError(error: AxiosError) {
     return Promise.reject(error);
   }
 
-  // Transform successful responses to match your frontend interface
-  private handleResponse(
-    response: AxiosResponse<BaseApiResponse>
-  ): AxiosResponse {
-    // You can transform the response here if needed
+  private handleResponse(response: AxiosResponse<BaseApiResponse>) {
     return response;
   }
 
-  private async handleResponseError(error: AxiosError): Promise<AxiosResponse> {
+  private async handleResponseError(error: AxiosError) {
     const originalRequest = error.config as CustomAxiosRequestConfig;
 
-    // Handle 401 errors (Unauthorized)
     if (
       error.response?.status === 401 &&
       originalRequest &&
       !originalRequest._retry
     ) {
-      return this.handleUnauthorizedError(originalRequest);
+      return this.handleUnauthorized(originalRequest);
     }
 
     return Promise.reject(error);
   }
 
-  private async handleUnauthorizedError(
-    originalRequest: CustomAxiosRequestConfig
-  ): Promise<AxiosResponse> {
+  private async handleUnauthorized(originalRequest: CustomAxiosRequestConfig) {
     if (this.isRefreshing) {
       return new Promise((resolve, reject) => {
-        this.refreshQueue.push({ config: originalRequest, resolve, reject });
+        this.refreshQueue.push({ resolve, reject, config: originalRequest });
       });
     }
 
-    this.isRefreshing = true;
     originalRequest._retry = true;
+    this.isRefreshing = true;
 
     try {
       const newTokens = await this.refreshToken();
       await this.processQueuedRequests(newTokens.accessToken);
 
-      // Retry original request with new token
       originalRequest.headers = originalRequest.headers || {};
       (originalRequest.headers as AxiosHeaders).set(
         "Authorization",
@@ -137,10 +135,10 @@ class HttpService {
       );
 
       return this.client(originalRequest);
-    } catch (refreshError) {
-      await this.processQueuedRequestsWithError(refreshError as Error);
-      this.handleLogout();
-      return Promise.reject(refreshError);
+    } catch (err) {
+      await this.processQueuedRequestsWithError(err as Error);
+      this.logout();
+      return Promise.reject(err);
     } finally {
       this.isRefreshing = false;
     }
@@ -150,39 +148,30 @@ class HttpService {
     accessToken: string;
     refreshToken: string;
   }> {
-    const refreshToken = refreshTokenLS.get();
+    const rToken = refreshTokenLS.get();
 
-    if (!refreshToken) {
-      throw new Error("No refresh token available");
-    }
+    if (!rToken) throw new Error("No refresh token found");
 
     const response = await this.client.post<
-      BaseApiResponse<{
-        accessToken: string;
-        refreshToken: string;
-      }>
-    >(process.env.NEXT_PUBLIC_REFRESH_TOKEN_URL!, { refreshToken }, {
+      BaseApiResponse<{ accessToken: string; refreshToken: string }>
+    >(process.env.NEXT_PUBLIC_REFRESH_TOKEN_URL!, { refreshToken: rToken }, {
       _skipAuth: true,
     } as CustomAxiosRequestConfig);
+    const data = response.data.data;
+    accessTokenLs.set(data.accessToken);
+    refreshTokenLS.set(data.refreshToken);
 
-    // Extract data from your API response structure
-    const { accessToken, refreshToken: newRefreshToken } = response.data.data;
-
-    accessTokenLs.set(accessToken);
-    refreshTokenLS.set(newRefreshToken);
-
-    return { accessToken, refreshToken: newRefreshToken };
+    return data;
   }
 
-  private async processQueuedRequests(accessToken: string): Promise<void> {
+  private async processQueuedRequests(accessToken: string) {
     await Promise.all(
-      this.refreshQueue.map(({ config, resolve, reject }) => {
+      this.refreshQueue.map(({ resolve, reject, config }) => {
         config.headers = config.headers || {};
         (config.headers as AxiosHeaders).set(
           "Authorization",
           `Bearer ${accessToken}`
         );
-
         this.client(config).then(resolve).catch(reject);
       })
     );
@@ -190,12 +179,12 @@ class HttpService {
     this.refreshQueue = [];
   }
 
-  private async processQueuedRequestsWithError(error: Error): Promise<void> {
-    this.refreshQueue.forEach(({ reject }) => reject(error));
+  private async processQueuedRequestsWithError(err: Error) {
+    this.refreshQueue.forEach(({ reject }) => reject(err));
     this.refreshQueue = [];
   }
 
-  private handleLogout(): void {
+  private logout() {
     refreshTokenLS.remove();
     accessTokenLs.remove();
     userDataSS.remove();
@@ -206,11 +195,7 @@ class HttpService {
     }
   }
 
-  // Public methods that transform backend response to frontend format
-  public async get<T>(
-    url: string,
-    config?: InternalAxiosRequestConfig
-  ): Promise<ApiResponse<T>> {
+  public async get<T>(url: string, config?: InternalAxiosRequestConfig) {
     return this.request<T>("GET", url, undefined, config);
   }
 
@@ -218,7 +203,7 @@ class HttpService {
     url: string,
     data?: any,
     config?: InternalAxiosRequestConfig
-  ): Promise<ApiResponse<T>> {
+  ) {
     return this.request<T>("POST", url, data, config);
   }
 
@@ -226,7 +211,7 @@ class HttpService {
     url: string,
     data?: any,
     config?: InternalAxiosRequestConfig
-  ): Promise<ApiResponse<T>> {
+  ) {
     return this.request<T>("PUT", url, data, config);
   }
 
@@ -234,14 +219,11 @@ class HttpService {
     url: string,
     data?: any,
     config?: InternalAxiosRequestConfig
-  ): Promise<ApiResponse<T>> {
+  ) {
     return this.request<T>("PATCH", url, data, config);
   }
 
-  public async delete<T>(
-    url: string,
-    config?: InternalAxiosRequestConfig
-  ): Promise<ApiResponse<T>> {
+  public async delete<T>(url: string, config?: InternalAxiosRequestConfig) {
     return this.request<T>("DELETE", url, undefined, config);
   }
 
@@ -252,70 +234,75 @@ class HttpService {
     config?: InternalAxiosRequestConfig
   ): Promise<ApiResponse<T>> {
     try {
-      const response: AxiosResponse<BaseApiResponse<T>> = await this.client({
-        method,
-        url,
-        data,
-        ...config,
-      });
-
-      // Transform backend response to frontend format
-      return this.transformResponse<T>(response);
-    } catch (error: any) {
-      return this.transformError<T>(error);
+      const res = await this.client({ method, url, data, ...config });
+      return this.mapSuccess<T>(res);
+    } catch (err) {
+      return this.mapError<T>(err);
     }
   }
 
-  // Transform successful backend response to frontend format
-  private transformResponse<T>(
+  private mapSuccess<T>(
     response: AxiosResponse<BaseApiResponse<T>>
   ): ApiResponse<T> {
-    const backendResponse = response.data;
+    const data = response.data;
 
     return {
-      success:
-        backendResponse.statusCode >= 200 && backendResponse.statusCode < 300,
-      data: backendResponse.data,
-      errors: backendResponse.errors.length > 0 ? backendResponse.errors : null,
-      statusCode: backendResponse.statusCode,
-      message: backendResponse.message,
+      success: data.statusCode >= 200 && data.statusCode < 300,
+      data: data.data,
+      errors: data.errors?.length ? data.errors : null,
+      statusCode: data.statusCode,
+      message: data.message,
     };
   }
 
-  // Transform error response to frontend format
-  private transformError<T>(error: any): ApiResponse<T> {
-    const axiosError = error as AxiosError<BaseApiResponse>;
+  private mapError<T>(error: any): ApiResponse<T> {
+    const axiosErr = error as AxiosError<BaseApiResponse>;
 
-    // If we have a response from backend with your structure
-    if (axiosError.response?.data) {
-      const backendError = axiosError.response.data;
-
+    // Network failure
+    if (axiosErr.request && !axiosErr.response) {
       return {
         success: false,
         data: undefined,
-        errors:
-          backendError.errors.length > 0
-            ? backendError.errors
-            : backendError.message,
-        statusCode: backendError.statusCode,
-        message: backendError.message,
+        errors: "Network connection lost",
+        message: "NETWORK_ERROR",
+        statusCode: 0,
       };
     }
 
-    // Network errors or other Axios errors
+    // Timeout
+    if (axiosErr.code === "ECONNABORTED") {
+      return {
+        success: false,
+        data: undefined,
+        errors: "Request timeout",
+        message: "TIMEOUT",
+        statusCode: 0,
+      };
+    }
+
+    // Backend error response
+    if (axiosErr.response?.data) {
+      const eData = axiosErr.response.data;
+      return {
+        success: false,
+        data: undefined,
+        errors: eData.errors?.length ? eData.errors : eData.message,
+        statusCode: eData.statusCode,
+        message: eData.message,
+      };
+    }
+
+    // Unknown
     return {
       success: false,
-      errors: axiosError.message || "An error occurred",
       data: undefined,
-      statusCode: axiosError.response?.status,
+      errors: axiosErr.message,
+      message: "UNKNOWN_ERROR",
+      statusCode: axiosErr.response?.status,
     };
   }
 
-  // Methods for public endpoints
-  public async publicGet<T>(
-    url: string,
-    config?: InternalAxiosRequestConfig
-  ): Promise<ApiResponse<T>> {
+  public async publicGet<T>(url: string, config?: InternalAxiosRequestConfig) {
     return this.get<T>(url, {
       ...config,
       _skipAuth: true,
@@ -326,7 +313,7 @@ class HttpService {
     url: string,
     data?: any,
     config?: InternalAxiosRequestConfig
-  ): Promise<ApiResponse<T>> {
+  ) {
     return this.post<T>(url, data, {
       ...config,
       _skipAuth: true,

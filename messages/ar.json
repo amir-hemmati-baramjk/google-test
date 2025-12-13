@@ -89,6 +89,140 @@
     "have-account": "هل لديك حساب بالفعل؟",
     "login-now": "سجّل الآن"
   },
+  "profile": {
+    "title": "الملف الشخصي",
+    "subtitle": "المحاسبة والمعلومات الشخصية",
+    "stats": {
+      "tournament": "البطولات",
+      "questionsAvailable": "الأسئلة المتاحة",
+      "averageRating": "متوسط التقييم",
+      "winRate": "معدل الفوز"
+    },
+    "menuItems": {
+      "personalInformation": {
+        "title": "المعلومات الشخصية",
+        "description": "تحديث معلوماتك الشخصية"
+      },
+      "wallet": {
+        "title": "المحفظة",
+        "description": "إدارة محفظتك"
+      },
+      "changePassword": {
+        "title": "تغيير كلمة المرور",
+        "description": "تحديث كلمة المرور الخاصة بك"
+      },
+      "aboutFalta": {
+        "title": "حول فالطا",
+        "description": "تعرف على فالطا"
+      },
+      "notification": {
+        "title": "الإشعارات",
+        "description": "التحقق من الإشعارات"
+      },
+      "contactUs": {
+        "title": "اتصل بنا",
+        "description": "اتصل بنا إذا كان لديك أي سؤال"
+      },
+      "language": {
+        "title": "اللغة",
+        "description": "تغيير اللغة إذا أردت"
+      },
+      "privacyPolicy": {
+        "title": "سياسة الخصوصية",
+        "description": "قراءة سياسة الخصوصية"
+      }
+    }
+  },
+  "edit-info-form": {
+    "full-name": "الاسم الكامل",
+    "please-enter": "الرجاء إدخال",
+    "email-address": "البريد الإلكتروني",
+    "phone-number": "رقم الهاتف",
+    "date-of-birth": "تاريخ الميلاد",
+    "submit": "حفظ التغييرات",
+    "editProfile-success": "تم تحديث الملف الشخصي بنجاح!",
+    "faild-to-editProfile": "فشل تحديث الملف الشخصي. الرجاء المحاولة مرة أخرى.",
+    "required": "هذا الحقل مطلوب",
+    "invalid-email": "الرجاء إدخال بريد إلكتروني صالح",
+    "invalid-phone": "الرجاء إدخال رقم هاتف كويتي صالح (مثال: 50000000 أو +96550000000)"
+  },
+  "profileInfo": {
+    "delete-account": "حذف الحساب",
+    "delete-account-desc": "بحذف الحساب، سيتم إزالة تفاصيلك الشخصية، النقاط والألعاب من التطبيق.",
+    "logout": "تسجيل الخروج",
+    "logout-desc": "هل أنت متأكد من رغبتك في تسجيل الخروج؟",
+    "yes": "نعم",
+    "no": "لا"
+  },
+  "change-password-form": {
+    "password": "كلمة المرور الحالية",
+    "new-password": "كلمة المرور الجديدة",
+    "confirm-new-password": "تأكيد كلمة المرور الجديدة",
+    "please-enter": "الرجاء الإدخال",
+    "submit": "إرسال",
+    "password-update-successfully-message": "تم تحديث كلمة المرور بنجاح.",
+    "password-update-failed-message": "فشل في تحديث كلمة المرور. الرجاء المحاولة مرة أخرى.",
+    "required": "هذا الحقل مطلوب.",
+    "password-length": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل.",
+    "passwords-must-match": "يجب أن تتطابق كلمتا المرور."
+  },
+  "GamesPage": {
+    "myGames": "ألعابي",
+    "bannerTitle": "ألعابي",
+    "bannerDescription": "استعد لعبة فريق ممتعة وتفاعلية تختبر معرفتك وثقافتك!",
+    "buyGames": "شراء ألعاب",
+    "createGames": "إنشاء ألعاب",
+    "playGame": "لعب اللعبة",
+    "loading": "جاري التحميل...",
+    "failedToLoad": "فشل تحميل الألعاب",
+    "tryAgain": "حاول مرة أخرى",
+    "noGamesFound": "لم يتم العثور على ألعاب",
+    "createFirstGame": "أنشئ أول لعبة لك للبدء!",
+    "category": "فئة",
+    "gameNotFound": "اللعبة غير موجودة",
+    "info": "معلومات",
+    "followup-from-where-you-left": "تابع من حيث توقفت",
+    "restart-browsed-game-message": "هل ترغب في البدء من جديد أو الاستمرار من حيث توقفت؟",
+    "start-again-browsed-game": "ابدأ من جديد",
+    "keep-going-browsed-game": "استمر"
+  },
+  "GamePage": {
+    "gameboard": {
+      "teamRole": "دور الفريق:",
+      "changingTurn": "جاري تغيير الدور...",
+      "sponsorsAds": "إعلانات الرعاة هنا",
+      "assistance": "المساعدة",
+      "selectQuestionAssistant": "يرجى اختيار سؤال لتطبيق المساعدة",
+      "navigation": {
+        "page": "صفحة",
+        "of": "من"
+      },
+      "emptyCategory": "فئة فارغة"
+    },
+    "assistants": {
+      "questionChanged": "تم تغيير السؤال!",
+      "questionSkipped": "تم تخطي السؤال!",
+      "silenceApplied": "يجب أن يبقى الفريق المنافس صامتاً.",
+      "fiftyFiftyUsed": "تم استخدام 50/50!",
+      "changeQuestion": "تغيير السؤال",
+      "skipQuestion": "تخطي السؤال",
+      "fiftyFifty": "50/50",
+      "silence": "الصمت",
+      "doublePoints": "نقاط مزدوجة",
+      "takePoints": "أخذ النقاط"
+    },
+    "modals": {
+      "exitGame": "خروج من اللعبة",
+      "confirmExit": "هل أنت متأكد أنك تريد الخروج من اللعبة؟",
+      "cancel": "إلغاء",
+      "exit": "خروج",
+      "restartGame": "إعادة تشغيل اللعبة",
+      "followupFromWhereYouLeft": "تابع من حيث توقفت",
+      "restartBrowsedGameMessage": "هل ترغب في البدء من جديد أو الاستمرار من حيث توقفت؟",
+      "startAgain": "ابدأ من جديد",
+      "keepGoing": "استمر"
+    }
+  },
   "index": {
     "searchCategories": "فئات البحث...",
     "download-app": "حمل تطبيق فلته واحصل على لعبتين مجانيه وتمتع بأقسام جديدة ",

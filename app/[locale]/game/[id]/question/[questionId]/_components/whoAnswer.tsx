@@ -99,7 +99,7 @@ export default function WhoAnsweredComponent() {
             disabled={whoAnsweredMutation.isPending}
             variant="secondary"
             size="large"
-            className="!font-[700] w-1/2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="!font-[700] w-1/2 disabled:opacity-50 disabled:cursor-not-allowed md:!text-lg lg:!text-2xl xl:!text-3xl"
           >
             {teamOneName}
           </Button>
@@ -108,7 +108,7 @@ export default function WhoAnsweredComponent() {
             disabled={whoAnsweredMutation.isPending}
             variant="secondary"
             size="large"
-            className="!font-[700] w-1/2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="!font-[700] w-1/2 disabled:opacity-50 disabled:cursor-not-allowed md:!text-lg lg:!text-2xl xl:!text-3xl"
           >
             {teamTwoName}
           </Button>
@@ -120,22 +120,22 @@ export default function WhoAnsweredComponent() {
           size="large"
           shape="full"
           isOutline
-          className="!font-[700] disabled:opacity-50 disabled:cursor-not-allowed"
+          className="!font-[700] disabled:opacity-50 disabled:cursor-not-allowed md:!text-lg lg:!text-2xl xl:!text-3xl"
         >
           No One
         </Button>
 
         {/* Loading indicator */}
-        {whoAnsweredMutation.isPending && (
+        {/* {whoAnsweredMutation.isPending && (
           <p className="text-secondary text-sm mt-2">Recording answer...</p>
-        )}
+        )} */}
 
         {/* Error message */}
-        {whoAnsweredMutation.isError && (
+        {/* {whoAnsweredMutation.isError && (
           <p className="text-red-500 text-sm mt-2">
             Failed to record answer. Please try again.
           </p>
-        )}
+        )} */}
       </div>
 
       {/* Bottom button */}
@@ -145,7 +145,7 @@ export default function WhoAnsweredComponent() {
           disabled={whoAnsweredMutation.isPending}
           variant="secondary"
           isOutline
-          className="!font-[700] !py-0.5 lg:!py-1 !rounded-[6px] !text-xs sm:!text-base !xs:px-1 !sm:px-4 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="!font-[700] !py-0.5 lg:!py-1 !rounded-[6px] !text-xs sm:!text-base !xs:px-1 !sm:px-4 disabled:opacity-50 disabled:cursor-not-allowed md:!text-lg lg:!text-2xl xl:!text-3xl"
         >
           Return to Answer
         </Button>

@@ -19,6 +19,7 @@ const config: Config = {
         "main-bg": "#18023A",
         "light-blue": "#B9C6F3",
         "light-purple": "#EEE5FD",
+        yellow: "#F8C000",
       },
       screens: {
         xs: "320px",

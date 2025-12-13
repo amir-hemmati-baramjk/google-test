@@ -30,7 +30,6 @@ export default function Modal({
     };
   }, []);
 
-  // مدیریت باز و بسته شدن مودال
   useEffect(() => {
     if (!mounted) return;
 

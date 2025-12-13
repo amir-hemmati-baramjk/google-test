@@ -1,9 +1,9 @@
 import { Game } from "@/type/api/game/game.type";
 import { httpService } from "../httpService";
 
-export const getGameComplete = async ({ id }: { id: string }) => {
+export const restartGame = async ({ id }: { id: string }) => {
   try {
-    const response = await httpService.get<Game>(`/game/${id}/complete`);
+    const response = await httpService.get(`/game/restart/${id}`);
     return response;
   } catch (error: any) {
     return {

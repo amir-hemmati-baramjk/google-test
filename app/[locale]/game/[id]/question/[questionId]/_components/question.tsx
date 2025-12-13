@@ -43,7 +43,7 @@ export default function QuestionComponent() {
     <>
       <p
         ref={textRef}
-        className="text-sm md:text-lg lg:text-xl xl:text-2xl font-[900] text-primary text-center my-3 lg:mt-5"
+        className="text-sm md:text-lg lg:text-2xl xl:text-3xl 2xl:text-4xl font-[900] text-primary text-center my-3 lg:mt-5"
       >
         {question.text}
       </p>
@@ -61,7 +61,7 @@ export default function QuestionComponent() {
         <Button
           onClick={handleShowAnswer}
           variant="secondary"
-          className="!font-[700] !py-0.5 lg:!py-1 !rounded-[6px] !text-xs sm:!text-base !xs:px-1 !sm:px-4"
+          className="!font-[700] !py-0.5 lg:!py-1 !rounded-[6px] !text-xs sm:!text-base !xs:px-1 !sm:px-4 md:!text-lg lg:!text-2xl xl:!text-3xl"
         >
           Answer
         </Button>

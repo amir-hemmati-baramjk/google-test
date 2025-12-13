@@ -95,3 +95,8 @@ export type whoAnswerPayload = {
   QuestionId: string;
   Team: number;
 };
+export type GameListResponse = {
+  success: boolean;
+  data: Game[];
+  errors?: string;
+};

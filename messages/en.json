@@ -89,6 +89,141 @@
     "have-account": "Do You Have Account ?",
     "login-now": "Login Now"
   },
+
+  "profile": {
+    "title": "MY Profile",
+    "subtitle": "Accounting And Personal Information",
+    "stats": {
+      "tournament": "Tournament",
+      "questionsAvailable": "Questions Available",
+      "averageRating": "Average Rating",
+      "winRate": "Win Rate"
+    },
+    "menuItems": {
+      "personalInformation": {
+        "title": "Personal Information",
+        "description": "Update Your Personal Information"
+      },
+      "wallet": {
+        "title": "Wallet",
+        "description": "Manage Your Wallet"
+      },
+      "changePassword": {
+        "title": "Change Password",
+        "description": "Update Your Password"
+      },
+      "aboutFalta": {
+        "title": "About Falta",
+        "description": "Checkout Falta"
+      },
+      "notification": {
+        "title": "Notification",
+        "description": "Check Notification"
+      },
+      "contactUs": {
+        "title": "Contact Us",
+        "description": "Contact Us If Have Any Question"
+      },
+      "language": {
+        "title": "Language",
+        "description": "Change Language If You Like"
+      },
+      "privacyPolicy": {
+        "title": "Privacy Policy",
+        "description": "Read Privacy Policy"
+      }
+    }
+  },
+  "edit-info-form": {
+    "full-name": "Full Name",
+    "please-enter": "Please enter",
+    "email-address": "Email Address",
+    "phone-number": "Phone Number",
+    "date-of-birth": "Date of Birth",
+    "submit": "Save Changes",
+    "editProfile-success": "Profile updated successfully!",
+    "faild-to-editProfile": "Failed to update profile. Please try again.",
+    "required": "This field is required",
+    "invalid-email": "Please enter a valid email address",
+    "invalid-phone": "Please enter a valid Kuwaiti phone number (e.g., 50000000 or +96550000000)"
+  },
+  "profileInfo": {
+    "delete-account": "Delete Account",
+    "delete-account-desc": "By deleting the account, your personal details, points and games will be removed from the application.",
+    "logout": "Logout",
+    "logout-desc": "Are you sure want to logout?",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "change-password-form": {
+    "password": "Old Password",
+    "new-password": "New Password",
+    "confirm-new-password": "Confirm New Password",
+    "please-enter": "Please enter",
+    "submit": "Submit",
+    "password-update-successfully-message": "Password updated successfully.",
+    "password-update-failed-message": "Failed to update password. Please try again.",
+    "required": "This field is required.",
+    "password-length": "Password must be at least 6 characters.",
+    "passwords-must-match": "Passwords must match."
+  },
+  "GamesPage": {
+    "myGames": "My Games",
+    "bannerTitle": "My Games",
+    "bannerDescription": "Get Ready For A Fun And Interactive Team Game That Puts Your Knowledge And Culture To The Test!",
+    "buyGames": "Buy Games",
+    "createGames": "Create Games",
+    "playGame": "Play Game",
+    "loading": "Loading...",
+    "failedToLoad": "Failed to load games",
+    "tryAgain": "Try Again",
+    "noGamesFound": "No games found",
+    "createFirstGame": "Create your first game to get started!",
+    "category": "Category",
+    "gameNotFound": "Game not found",
+    "info": "Info",
+    "followup-from-where-you-left": "Follow up from where you left",
+    "restart-browsed-game-message": "Would you like to start over or continue from where you left off?",
+    "start-again-browsed-game": "Start Again",
+    "keep-going-browsed-game": "Keep Going"
+  },
+  "GamePage": {
+    "gameboard": {
+      "teamRole": "Team role:",
+      "changingTurn": "Changing turn...",
+      "sponsorsAds": "Here Sponsors Ads",
+      "assistance": "Assistance",
+      "selectQuestionAssistant": "Please select a question to apply the assistant",
+      "navigation": {
+        "page": "Page",
+        "of": "of"
+      },
+      "emptyCategory": "Empty Category"
+    },
+    "assistants": {
+      "questionChanged": "Question changed!",
+      "questionSkipped": "Question skipped!",
+      "silenceApplied": "The opposing team must remain silent.",
+      "fiftyFiftyUsed": "50/50 used!",
+      "changeQuestion": "Change Question",
+      "skipQuestion": "Skip Question",
+      "fiftyFifty": "50/50",
+      "silence": "Silence",
+      "doublePoints": "Double Points",
+      "takePoints": "Take Points"
+    },
+    "modals": {
+      "exitGame": "Exit Game",
+      "confirmExit": "Are you sure you want to exit the game?",
+      "cancel": "Cancel",
+      "exit": "Exit",
+      "restartGame": "Restart Game",
+      "followupFromWhereYouLeft": "Follow up from where you left",
+      "restartBrowsedGameMessage": "Would you like to start over or continue from where you left off?",
+      "startAgain": "Start Again",
+      "keepGoing": "Keep Going"
+    }
+  },
   "index": {
     "searchCategories": "Search categories...",
     "download-app": "Download Falta Game",

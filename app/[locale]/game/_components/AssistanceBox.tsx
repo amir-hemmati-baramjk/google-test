@@ -1,21 +1,23 @@
+// components/AssistanceBox.tsx
 "use client";
 import React from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useGameStore } from "@/stores/gameStore";
-
 import { putChangeQuestion } from "@/core/game/change-question-service";
 import { putSkipQuestion } from "@/core/game/skip-question-service";
 import { putFiftyFifty } from "@/core/game/fifty-fifty-service";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+
+import { putSilence } from "@/core/game/silence-team-service";
+import { useTranslations } from "next-intl";
 import { ChangeQuestionIcon } from "../../_components/icons/ChangeQuestionIcon";
-import { Button } from "../../_components/button/button";
 import { SkipQuestionIcon } from "../../_components/icons/SkipQuestionIcon";
 import { FiftyByFiftyIcon } from "../../_components/icons/FiftyByFiftyIcon";
 import { DoublePointsIcon } from "../../_components/icons/DoublePointsIcon";
 import { TakePointsIcon } from "../../_components/icons/TakePointsIcon";
-import { putSilence } from "@/core/game/silence-team-service";
+import { Button } from "../../_components/button/button";
 
 interface AssistanceBoxProps {
   context: "gameboard" | "question";
@@ -28,6 +30,7 @@ export default function AssistanceBox({
   questionId,
   team,
 }: AssistanceBoxProps) {
+  const t = useTranslations("GamePage");
   const router = useRouter();
   const queryClient = useQueryClient();
   const turn = useGameStore((state) => state.turn);
@@ -35,7 +38,7 @@ export default function AssistanceBox({
 
   const gameStore = useGameStore.getState();
 
-  // --- Mutations for Question Assistants
+  // --- Mutations for Question Assistants ---
   const changeQuestionMutation = useMutation({
     mutationFn: () => {
       if (!questionId) throw new Error("Question ID missing");
@@ -46,7 +49,7 @@ export default function AssistanceBox({
         gameStore.changeQuestion(gameId, questionId!, data.data, turn);
         queryClient.invalidateQueries({ queryKey: ["game", gameId] });
         router.replace(`/game/${gameId}/question/${data?.data?.id}`);
-        toast.success("Question changed!");
+        toast.success(t("assistants.questionChanged"));
       }
     },
   });
@@ -58,29 +61,29 @@ export default function AssistanceBox({
       return putSkipQuestion(gameId, questionId);
     },
     onSuccess: () => {
-      toast.success("Question skipped!");
+      toast.success(t("assistants.questionSkipped"));
     },
   });
+  const isSkipQuestionLoading = skipQuestionMutation.isPending;
 
   const silenceMutation = useMutation({
     mutationFn: () => {
       return putSilence(gameId);
     },
-    onSuccess: () => toast.success("The opposing team must remain silent."),
+    onSuccess: () => toast.success(t("assistants.silenceApplied")),
   });
   const isSilenceLoading = silenceMutation.isPending;
-  const isSkipQuestionLoading = skipQuestionMutation.isPending;
 
   const fiftyFiftyMutation = useMutation({
     mutationFn: () => {
       if (!questionId) throw new Error("Question ID missing");
       return putFiftyFifty(gameId, questionId);
     },
-    onSuccess: () => toast.success("50/50 used!"),
+    onSuccess: () => toast.success(t("assistants.fiftyFiftyUsed")),
   });
   const isFiftyFiftyLoading = fiftyFiftyMutation.isPending;
 
-  // --- Handler functions
+  // --- Handler functions ---
   const handleChangeQuestion = () => changeQuestionMutation.mutate();
   const handleSkipQuestion = () => skipQuestionMutation.mutate();
   const handleFiftyFifty = () => fiftyFiftyMutation.mutate();
@@ -99,177 +102,217 @@ export default function AssistanceBox({
       } else if (assistantType === "silence") {
         gameStore.setPendingSilence(true);
       }
-
-      toast.info("Please select a question to apply the assistant");
+      toast.info(t("gameboard.selectQuestionAssistant"));
       router.push(`/game/${gameId}`);
     }
   };
 
+  // --- Helper function to check if assistant is disabled ---
+  const isAssistantDisabled = (
+    canUse: boolean,
+    usedTeamOne: boolean,
+    usedTeamTwo: boolean,
+    assistantName: string
+  ): boolean => {
+    if (!canUse) return true;
+    if (turn !== team) return true;
+    if (team === 1 && usedTeamOne) return true;
+    if (team === 2 && usedTeamTwo) return true;
+    return false;
+  };
+
+  // --- Assistant Button Component ---
+  interface AssistantButtonProps {
+    onClick: () => void;
+    isLoading: boolean;
+    isDisabled: boolean;
+    variant: string;
+    icon: React.ReactNode;
+    label: string;
+    className?: string;
+  }
+
+  const AssistantButton: React.FC<AssistantButtonProps> = ({
+    onClick,
+    isLoading,
+    isDisabled,
+    variant,
+    icon,
+    label,
+    className = "",
+  }) => (
+    <Button
+      onClick={onClick}
+      isLoading={isLoading}
+      disabled={isDisabled}
+      className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7  lg:w-10 lg:h-10 xl:w-14 xl:h-14 ${className}`}
+      variant={variant as any}
+      shape="square"
+      title={label}
+    >
+      {icon}
+    </Button>
+  );
+
   return (
     <div className="flex flex-col items-center gap-2">
-      <p className="font-bold text-secondary">Assistance</p>
-      <div className="grid grid-cols-3 gap-2">
-        {context === "question" && (
+      <p className={`font-bold  ${questionId ? "hidden" : "text-secondary"}`}>
+        {t("gameboard.assistance")}
+      </p>
+      <div
+        className={` ${
+          questionId
+            ? "grid grid-cols-3 md:grid-cols-6 gap-2"
+            : "grid grid-cols-3 gap-2"
+        }`}
+      >
+        {context === "question" ? (
+          // Question Context Assistants
           <>
-            <Button
+            <AssistantButton
               onClick={handleChangeQuestion}
               isLoading={isChangeQuestionLoading}
-              className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14`}
+              isDisabled={isAssistantDisabled(
+                gameStore?.canUseChangeQuestion || false,
+                gameStore?.usedChangeQuestionTeamOne || false,
+                gameStore?.usedChangeQuestionTeamTwo || false,
+                "changeQuestion"
+              )}
               variant="light-blue-gradient"
-              shape="square"
-              isDisabled={
-                !gameStore?.canUseChangeQuestion ||
-                gameStore?.turn !== team ||
-                (team == 1 && gameStore?.usedChangeQuestionTeamOne) ||
-                (team == 2 && gameStore?.usedChangeQuestionTeamTwo)
-              }
-            >
-              <ChangeQuestionIcon size={48} />
-            </Button>
-            <Button
-              className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 `}
+              icon={<ChangeQuestionIcon size={48} />}
+              label={t("assistants.changeQuestion")}
+            />
+            <AssistantButton
               onClick={handleSkipQuestion}
               isLoading={isSkipQuestionLoading}
+              isDisabled={isAssistantDisabled(
+                gameStore?.canUseSkipQuestion || false,
+                gameStore?.usedSkipQuestionTeamOne || false,
+                gameStore?.usedSkipQuestionTeamTwo || false,
+                "skipQuestion"
+              )}
               variant="light-orange-gradient"
-              shape="square"
-              isDisabled={
-                !gameStore?.canUseSkipQuestion ||
-                gameStore?.turn !== team ||
-                (team == 1 && gameStore?.usedSkipQuestionTeamOne) ||
-                (team == 2 && gameStore?.usedSkipQuestionTeamTwo)
-              }
-            >
-              <SkipQuestionIcon size={48} />
-            </Button>
-            <Button
-              className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 `}
+              icon={<SkipQuestionIcon size={48} />}
+              label={t("assistants.skipQuestion")}
+            />
+            <AssistantButton
               onClick={handleSilence}
               isLoading={isSilenceLoading}
+              isDisabled={true} // Silence disabled in question context
               variant="primary"
-              shape="square"
-              isDisabled={true}
-            >
-              <Image
-                alt="red card icons"
-                width={48}
-                height={48}
-                src={"/icons/redCard.svg"}
-              />
-            </Button>
-            <Button
-              className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 `}
+              icon={
+                <Image
+                  alt="red card icons"
+                  width={48}
+                  height={48}
+                  src={"/icons/redCard.svg"}
+                />
+              }
+              label={t("assistants.silence")}
+            />
+            <AssistantButton
               onClick={handleFiftyFifty}
               isLoading={isFiftyFiftyLoading}
+              isDisabled={isAssistantDisabled(
+                gameStore?.canUseRemoveTwoOption || false,
+                gameStore?.usedRemoveOptionTeamOne || false,
+                gameStore?.usedRemoveOptionTeamTwo || false,
+                "fiftyFifty"
+              )}
               variant="light-purple-gradient"
-              shape="square"
-              isDisabled={
-                !gameStore?.canUseRemoveTwoOption ||
-                gameStore?.turn !== team ||
-                (team == 1 && gameStore?.usedRemoveOptionTeamOne) ||
-                (team == 2 && gameStore?.usedRemoveOptionTeamTwo)
-              }
-            >
-              <FiftyByFiftyIcon size={48} />
-            </Button>
-            <Button
+              icon={<FiftyByFiftyIcon size={48} />}
+              label={t("assistants.fiftyFifty")}
+            />
+            <AssistantButton
+              onClick={() => {}} // No action in question context
+              isLoading={false}
+              isDisabled={true}
               variant="magenta-gradient"
-              shape="square"
-              className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 `}
+              icon={<DoublePointsIcon size={48} />}
+              label={t("assistants.doublePoints")}
+            />
+            <AssistantButton
+              onClick={() => {}} // No action in question context
+              isLoading={false}
               isDisabled={true}
-            >
-              <DoublePointsIcon size={48} />
-            </Button>
-            <Button
               variant="orange-gradient"
-              shape="square"
-              className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 `}
-              isDisabled={true}
-            >
-              <TakePointsIcon size={48} />
-            </Button>
+              icon={<TakePointsIcon size={48} />}
+              label={t("assistants.takePoints")}
+            />
           </>
-        )}
-
-        {context === "gameboard" && (
+        ) : (
+          // Gameboard Context Assistants
           <>
-            <Button
+            <AssistantButton
               onClick={handleChangeQuestion}
               isLoading={isChangeQuestionLoading}
-              className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14`}
+              isDisabled={true} // Change question disabled in gameboard
               variant="light-blue-gradient"
-              shape="square"
-              isDisabled={true}
-            >
-              <ChangeQuestionIcon size={48} />
-            </Button>
-            <Button
-              className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 `}
+              icon={<ChangeQuestionIcon size={48} />}
+              label={t("assistants.changeQuestion")}
+            />
+            <AssistantButton
               onClick={handleSkipQuestion}
               isLoading={isSkipQuestionLoading}
+              isDisabled={true} // Skip question disabled in gameboard
               variant="light-orange-gradient"
-              shape="square"
-              isDisabled={true}
-            >
-              <SkipQuestionIcon size={48} />
-            </Button>
-            <Button
-              className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 `}
+              icon={<SkipQuestionIcon size={48} />}
+              label={t("assistants.skipQuestion")}
+            />
+            <AssistantButton
               onClick={() => handleAssistantClick("silence")}
               isLoading={isSilenceLoading}
+              isDisabled={isAssistantDisabled(
+                gameStore?.canUseSilence || false,
+                gameStore?.usedSilenceTeamOne || false,
+                gameStore?.usedSilenceTeamTwo || false,
+                "silence"
+              )}
               variant="primary"
-              shape="square"
-              isDisabled={
-                !gameStore?.canUseSilence ||
-                gameStore?.turn !== team ||
-                (team == 1 && gameStore?.usedSilenceTeamOne) ||
-                (team == 2 && gameStore?.usedSilenceTeamTwo)
+              icon={
+                <Image
+                  alt="red card icons"
+                  width={48}
+                  height={48}
+                  src={"/icons/redCard.svg"}
+                />
               }
-            >
-              <Image
-                alt="red card icons"
-                width={48}
-                height={48}
-                src={"/icons/redCard.svg"}
-              />
-            </Button>
-            <Button
-              className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 `}
+              label={t("assistants.silence")}
+            />
+            <AssistantButton
               onClick={handleFiftyFifty}
               isLoading={isFiftyFiftyLoading}
+              isDisabled={true} // 50/50 disabled in gameboard
               variant="light-purple-gradient"
-              shape="square"
-              isDisabled={true}
-            >
-              <FiftyByFiftyIcon size={48} />
-            </Button>
-            <Button
-              variant="magenta-gradient"
-              shape="square"
-              className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 `}
+              icon={<FiftyByFiftyIcon size={48} />}
+              label={t("assistants.fiftyFifty")}
+            />
+            <AssistantButton
               onClick={() => handleAssistantClick("doublePoint")}
-              isDisabled={
-                !gameStore?.canUseDoublePoint ||
-                gameStore?.turn !== team ||
-                (team == 1 && gameStore?.usedDoublePointTeamOne) ||
-                (team == 2 && gameStore?.usedDoublePointTeamTwo)
-              }
-            >
-              <DoublePointsIcon size={48} />
-            </Button>
-            <Button
-              variant="orange-gradient"
-              shape="square"
-              className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 md:w-9 md:h-9 lg:w-10 lg:h-10 xl:w-14 xl:h-14 `}
+              isLoading={false}
+              isDisabled={isAssistantDisabled(
+                gameStore?.canUseDoublePoint || false,
+                gameStore?.usedDoublePointTeamOne || false,
+                gameStore?.usedDoublePointTeamTwo || false,
+                "doublePoint"
+              )}
+              variant="magenta-gradient"
+              icon={<DoublePointsIcon size={48} />}
+              label={t("assistants.doublePoints")}
+            />
+            <AssistantButton
               onClick={() => handleAssistantClick("takePoint")}
-              isDisabled={
-                !gameStore?.canUseTakePoints ||
-                gameStore?.turn !== team ||
-                (team == 1 && gameStore?.usedTakePointsTeamOne) ||
-                (team == 2 && gameStore?.usedTakePointsTeamTwo)
-              }
-            >
-              <TakePointsIcon size={48} />
-            </Button>
+              isLoading={false}
+              isDisabled={isAssistantDisabled(
+                gameStore?.canUseTakePoints || false,
+                gameStore?.usedTakePointsTeamOne || false,
+                gameStore?.usedTakePointsTeamTwo || false,
+                "takePoint"
+              )}
+              variant="orange-gradient"
+              icon={<TakePointsIcon size={48} />}
+              label={t("assistants.takePoints")}
+            />
           </>
         )}
       </div>

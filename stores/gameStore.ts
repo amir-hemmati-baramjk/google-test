@@ -17,6 +17,8 @@ interface GameState extends Game {
     newQuestionData: Question,
     team: number
   ) => void;
+  updateTeamPoints: (gameId: string, team: number, points: number) => void;
+
   removeTwoAnswerForMultipleChoiceQuestioon: (
     gameId: string,
     questionId: string,
@@ -288,7 +290,25 @@ export const useGameStore = create<GameState>((set, get) => ({
       };
     });
   },
+  updateTeamPoints: (gameId: string, team: number, points: number) => {
+    set((state) => {
+      if (state.id !== gameId) return state;
 
+      if (team === 1) {
+        return {
+          ...state,
+          teamOnePoints: points,
+        };
+      } else if (team === 2) {
+        return {
+          ...state,
+          teamTwoPoints: points,
+        };
+      }
+
+      return state;
+    });
+  },
   changeQuestion: (gameId, questionId, newQuestionData, team) => {
     set((state) => {
       if (state.id !== gameId) return state;
