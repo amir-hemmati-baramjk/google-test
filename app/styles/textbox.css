@@ -1,6 +1,12 @@
 .textbox {
   @apply h-12 w-full rounded-[10px] px-3  outline-none bg-white border-[#C8C8C8] placeholder:text-[#C8C8C8] text-primary font-[700] text-[16px] border-[1px];
 }
+.textbox-primary {
+  @apply bg-light-purple border-primary/30 placeholder:text-secondary/60;
+}
+.label-primary {
+  @apply text-secondary;
+}
 &[disabled],
 &:disabled {
   @apply pointer-events-none bg-white/40;

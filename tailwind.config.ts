@@ -25,7 +25,7 @@ const config: Config = {
         xs: "320px",
         sm: "640px",
         md: "768px",
-        lg: "1028px",
+        lg: "1024px",
         xl: "1280px",
         "2xl": "1536px",
       },
@@ -53,7 +53,9 @@ const config: Config = {
         "green-gradient":
           "linear-gradient(90deg,rgba(79, 232, 154, 1) 0%, rgba(4, 156, 60, 1) 100%)",
       },
-      borderRadius: {},
+      gridRow: {
+        "span-7": "span 7 / span 7",
+      },
     },
   },
 

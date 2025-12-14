@@ -224,6 +224,78 @@
       "keepGoing": "Keep Going"
     }
   },
+  "CategoriesPage": {
+    "loadingCategories": "Loading categories...",
+    "errorLoadingCategories": "Error loading categories",
+    "noCategoriesFound": "No categories found",
+    "allCategories": "All Categories",
+    "createGame": "Create Game",
+    "unnamedCategory": "Unnamed Category",
+    "loading": "Loading...",
+    "noDescription": "—",
+    "categoryInfo": "Category information",
+    "altImage": "Category image",
+    "noCategoriesInTag": "{tagName} has no categories",
+    "error": "An error occurred",
+    "success": "Success!",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search"
+  },
+  "loginModal": {
+    "you-not-registered": "Already have an account?",
+    "registered-required-modal-desc": "This Action need login",
+    "login-now": "Login Now",
+    "sign-up-now": "Sign Up Now"
+  },
+  "PaymentModal": {
+    "purchase-required": "No Game Points Available",
+    "purchase-required-desc": "Looks like you're out of game points. No worries, you can check out our packages available and continue experiencing our fun games.",
+    "purchase": "Purchase",
+    "cancel": "Cancel"
+  },
+  "CreateGameForm": {
+    "loading": "Loading...",
+    "gameName": "Game Name",
+    "please-enter": "Please enter",
+    "select-assistants": "Select Assistants",
+    "team-a": "Team A",
+    "team-b": "Team B",
+    "time-200": "200 Points Time",
+    "time-400": "400 Points Time",
+    "time-600": "600 Points Time",
+    "please-select-three-assistants": "Please select exactly 3 assistants",
+    "ready-to-play": "Ready to Play",
+    "unknown-error": "An unknown error occurred",
+
+    "nameRequired": "Game name is required",
+    "teamOneNameRequired": "Team A name is required",
+    "teamOneShouldHave1Player": "Team A should have at least 1 player",
+    "teamOneMaxPlayers": "Team A cannot have more than 500 players",
+    "teamTwoNameRequired": "Team B name is required",
+    "teamTwoShouldHave1Player": "Team B should have at least 1 player",
+    "teamTwoMaxPlayers": "Team B cannot have more than 500 players",
+    "selectExactlyThreeOption": "Please select exactly 3 assistants",
+    "timeRequired": "Time is required",
+    "timeMax": "Time cannot exceed maximum limit",
+
+    "assistantOptions": {
+      "DoublePoints": "Double Points",
+      "TakePoints": "Take Points",
+      "ChangeQuestion": "Change Question",
+      "SkipQuestion": "Skip Question",
+      "UseSilence": "Red Card",
+      "Remove2Options": "Remove 2 Options"
+    },
+    "maxAssistantsSelected": "You have selected the maximum number of assistants. Please remove one to select another.",
+    "selectAssistantPlaceholder": "Select up to 3 assistants...",
+    "loadingAssistants": "Loading assistants...",
+    "failedToLoadAssistants": "Failed to load assistants",
+    "retry": "Retry"
+  },
+
   "index": {
     "searchCategories": "Search categories...",
     "download-app": "Download Falta Game",

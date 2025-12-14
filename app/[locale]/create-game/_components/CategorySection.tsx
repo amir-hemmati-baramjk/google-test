@@ -1,24 +1,32 @@
-import React, { useMemo } from "react";
-import CategoryCard from "./CategoryCard";
-import { useResponsiveConfig } from "@/hooks/useResponsiveConfigForCategoryPage";
+// categories/_components/CategorySection.tsx
 
-interface Tag {
-  id: string;
-  name: string;
-  categories: any[];
-}
+import { Tag } from "@/type/api/categories/categories.type";
+import { Category } from "@/type/api/game/game.type";
+import { CategoryCard } from "./CategoryCard";
+import { useTranslations } from "next-intl";
 
-interface Props {
+interface CategorySectionProps {
   tag: Tag;
+  gridClass: string;
+  selectedMap: Set<string>;
+  MAX_SELECTION: number;
+  handleSelectCategory: (id: string) => () => void;
 }
 
-export default function CategorySection({ tag }: Props) {
-  const { gridClass } = useResponsiveConfig();
+export default function CategorySection({
+  tag,
+  gridClass,
+
+  selectedMap,
+  MAX_SELECTION,
+  handleSelectCategory,
+}: CategorySectionProps) {
+  const t = useTranslations("CategoriesPage");
 
   if (!tag.categories || tag.categories.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500">
-        {tag.name} دسته‌ای ندارد
+      <div className="text-center py-8 text-gray-500 h-[180px] flex items-center justify-center">
+        {t("noCategoriesInTag", { tagName: tag.name })}{" "}
       </div>
     );
   }
@@ -32,16 +40,25 @@ export default function CategorySection({ tag }: Props) {
         {tag.name}
       </div>
       <div className={`grid ${gridClass} gap-4 my-5 px-5`}>
-        {tag.categories.map((category) => (
-          <CategoryCard
-            key={category.id}
-            data={category}
-            isDisabled={false}
-            isSelected={false}
-            isSelectionLimitReached={false}
-            onSelect={() => console.log("Selected:", category.name)}
-          />
-        ))}
+        {tag.categories.map((category) => {
+          const isSelected = selectedMap.has(category.id);
+
+          const isDisabled = category.allQuestionUsed || false;
+
+          const isSelectionLimitReached =
+            !isSelected && selectedMap.size >= MAX_SELECTION;
+
+          return (
+            <CategoryCard
+              key={category.id}
+              data={category as Category}
+              isSelected={isSelected}
+              isDisabled={isDisabled}
+              isSelectionLimitReached={isSelectionLimitReached}
+              onSelect={handleSelectCategory(category.id)}
+            />
+          );
+        })}
       </div>
     </div>
   );

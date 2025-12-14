@@ -1,7 +1,22 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 export function useResponsiveConfig() {
-  const [columnsCount, setColumnsCount] = useState(3);
+  // FIX: Initialize state based on the initial window width (if available)
+  const [columnsCount, setColumnsCount] = useState(() => {
+    if (typeof window === "undefined") return 3;
+
+    const width = window.innerWidth;
+    const initialBreakpoints = [
+      { minWidth: 1536, columns: 7 },
+      { minWidth: 1280, columns: 6 },
+      { minWidth: 1024, columns: 5 },
+      { minWidth: 768, columns: 4 },
+      { minWidth: 640, columns: 3 },
+      { minWidth: 0, columns: 2 },
+    ];
+    const bp = initialBreakpoints.find((bp) => width >= bp.minWidth);
+    return bp ? bp.columns : 3;
+  });
 
   const breakpoints = useMemo(
     () => [
@@ -15,30 +30,29 @@ export function useResponsiveConfig() {
     []
   );
 
-  const updateColumns = useCallback(
-    (width: number) => {
-      const bp =
-        breakpoints.find((bp) => width >= bp.minWidth) ||
-        breakpoints[breakpoints.length - 1];
+  const updateColumns = useCallback(() => {
+    if (typeof window === "undefined") return;
+
+    const width = window.innerWidth;
+    console.log(width);
+    const bp = breakpoints.find((bp) => width >= bp.minWidth);
+    if (bp && bp.columns !== columnsCount) {
       setColumnsCount(bp.columns);
-    },
-    [breakpoints]
-  );
+    }
+  }, [breakpoints, columnsCount]);
 
   useEffect(() => {
-    const handleResize = () => updateColumns(window.innerWidth);
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener("resize", updateColumns);
+    return () => window.removeEventListener("resize", updateColumns);
   }, [updateColumns]);
 
   const getCardHeight = useCallback(() => {
     const width = typeof window !== "undefined" ? window.innerWidth : 1200;
-    if (width >= 1536) return 360;
-    if (width >= 1280) return 320;
+    if (width >= 1536) return 330;
+    if (width >= 1280) return 305;
     if (width >= 1024) return 300;
     if (width >= 768) return 280;
-    if (width >= 640) return 270;
+    if (width >= 640) return 260;
     return 240;
   }, []);
 

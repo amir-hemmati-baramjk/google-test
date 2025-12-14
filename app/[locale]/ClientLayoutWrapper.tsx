@@ -17,7 +17,7 @@ export default function ClientLayoutWrapper({
   locale,
 }: ClientLayoutWrapperProps) {
   const pathname = usePathname();
-  const visibleRoutes = ["/", "/profile", "/packages", "/tournaments"];
+  const visibleRoutes = ["/", "/profile", "/plans", "/tournaments"];
   const pathWithoutLocale = pathname.startsWith(`/${locale}`)
     ? pathname.slice(`/${locale}`.length) || "/"
     : pathname;

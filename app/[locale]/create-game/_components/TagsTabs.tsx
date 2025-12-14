@@ -1,12 +1,10 @@
-import React from "react";
-
-interface Props {
+interface TagTabsProps {
   tags: { id: string; name: string }[];
   activeTag: string;
   onClick: (id: string) => void;
 }
 
-export default function TagTabs({ tags, activeTag, onClick }: Props) {
+export default function TagTabs({ tags, activeTag, onClick }: TagTabsProps) {
   return (
     <div className="sticky top-0 z-50 shadow-sm ">
       <div className="flex overflow-x-auto scrollbar-hide py-3 px-4 gap-2">

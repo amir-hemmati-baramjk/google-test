@@ -223,6 +223,88 @@
       "keepGoing": "استمر"
     }
   },
+  "CategoriesPage": {
+    "loadingCategories": "جاري تحميل الفئات...",
+    "errorLoadingCategories": "خطأ في تحميل الفئات",
+    "noCategoriesFound": "لم يتم العثور على فئات",
+    "allCategories": "جميع الفئات",
+    "createGame": "إنشاء لعبة",
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ",
+    "success": "نجاح!",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "search": "بحث",
+    "unnamedCategory": "فئة بدون اسم",
+    "noCategoriesInTag": "{tagName} لا يحتوي على فئات",
+    "noDescription": "—",
+    "categoryInfo": "معلومات الفئة",
+    "altImage": "صورة الفئة"
+  },
+  "loginModal": {
+    "you-not-registered": "هل لديك حساب بالفعل؟",
+    "registered-required-modal-desc": "يجب تسجيل الدخول لهذا الإجراء",
+    "login-now": "سجّل الآن",
+    "sign-up-now": "اشترك الآن"
+  },
+  "PaymentModal": {
+    "purchase-required": "لا توجد نقاط ألعاب متاحة",
+    "purchase-required-desc": "يبدو أنك لا تملك نقاط ألعاب. لا تقلق، يمكنك تصفح الباقات المتاحة ومواصلة الاستمتاع بألعابنا.",
+    "purchase": "شراء",
+    "cancel": "إلغاء"
+  },
+  "CreateGameForm": {
+    "loading": "جاري التحميل...",
+    "gameName": "اسم اللعبة",
+    "please-enter": "الرجاء إدخال",
+    "select-assistants": "اختر المساعدين",
+    "team-a": "الفريق أ",
+    "team-b": "الفريق ب",
+    "time-200": "وقت ٢٠٠ نقطة",
+    "time-400": "وقت ٤٠٠ نقطة",
+    "time-600": "وقت ٦٠٠ نقطة",
+    "please-select-three-assistants": "الرجاء اختيار ٣ مساعدين بالضبط",
+    "ready-to-play": "جاهز للعب",
+    "unknown-error": "حدث خطأ غير معروف",
+
+    "nameRequired": "اسم اللعبة مطلوب",
+    "teamOneNameRequired": "اسم الفريق أ مطلوب",
+    "teamOneShouldHave1Player": "يجب أن يحتوي الفريق أ على لاعب واحد على الأقل",
+    "teamOneMaxPlayers": "لا يمكن أن يحتوي الفريق أ على أكثر من ٥٠٠ لاعب",
+    "teamTwoNameRequired": "اسم الفريق ب مطلوب",
+    "teamTwoShouldHave1Player": "يجب أن يحتوي الفريق ب على لاعب واحد على الأقل",
+    "teamTwoMaxPlayers": "لا يمكن أن يحتوي الفريق ب على أكثر من ٥٠٠ لاعب",
+    "selectExactlyThreeOption": "الرجاء اختيار ٣ مساعدين بالضبط",
+    "timeRequired": "الوقت مطلوب",
+    "timeMax": "لا يمكن أن يتجاوز الوقت الحد الأقصى",
+    "assistantOptions": {
+      "DoublePoints": "مضاعفة النقاط",
+      "TakePoints": "سرقة نقاط الخصم في حال تم الاجابه على السؤال",
+      "ChangeQuestion": "تغيير السؤال",
+      "SkipQuestion": "اخذ نقاط السؤال في حال عدم معرفته",
+      "UseSilence": "البطاقة الحمراء",
+      "Remove2Options": "Remove 2 Options"
+    },
+
+    "loadingAssistants": "جاري تحميل المساعدين...",
+    "failedToLoadAssistants": "فشل في تحميل المساعدين",
+    "retry": "إعادة المحاولة",
+
+    "assistants": "المساعدون",
+    "players": "اللاعبون",
+    "seconds": "ثواني",
+    "createGame": "إنشاء لعبة",
+    "maxPlayersWarning": "الحد الأقصى ٥٠٠ لاعب لكل فريق",
+    "selectCategoriesFirst": "الرجاء اختيار الفئات أولاً",
+    "creatingGame": "جاري إنشاء اللعبة...",
+    "gameCreated": "تم إنشاء اللعبة بنجاح",
+    "timeInSeconds": "الوقت (بالثواني)",
+    "maxTimeWarning": "تم تجاوز الحد الأقصى للوقت",
+    "maxAssistantsSelected": "لقد قمت باختيار الحد الأقصى للمساعدين. الرجاء إزالة واحد لاختيار آخر.",
+    "selectAssistantPlaceholder": "اختر المساعدين"
+  },
   "index": {
     "searchCategories": "فئات البحث...",
     "download-app": "حمل تطبيق فلته واحصل على لعبتين مجانيه وتمتع بأقسام جديدة ",

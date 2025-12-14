@@ -25,7 +25,7 @@ export default function BackHeaderForRootPages() {
     return navigator.userAgent || navigator.vendor || "";
   }, []);
 
-  /** Device detection */
+  /* Device detection */
   function isIOSDevice() {
     if (typeof navigator === "undefined") return false;
     const iOSUA = /iPhone|iPad|iPod/i.test(ua);
@@ -45,7 +45,7 @@ export default function BackHeaderForRootPages() {
     return /FBAN|FBAV|Instagram|Line|TikTok|Twitter|OKApp|Pinterest/i.test(ua);
   }
 
-  /** iOS WebView detection (heuristic only, no marker) */
+  /* iOS WebView detection (heuristic only, no marker) */
   function isIOSWebView() {
     if (typeof window === "undefined" || typeof navigator === "undefined")
       return false;
@@ -66,7 +66,7 @@ export default function BackHeaderForRootPages() {
     return explicitMarkers || isInAppBrowser() || isWKHeuristic;
   }
 
-  /** Android WebView detection (marker-based) */
+  /* Android WebView detection (marker-based) */
   function isAndroidWebView() {
     if (typeof navigator === "undefined") return false;
     const isFlutterWV = /MY_FLUTTER_WEBVIEW/i.test(ua); // marker for Android
@@ -89,7 +89,7 @@ export default function BackHeaderForRootPages() {
     );
   }
 
-  /** Unified real browser check */
+  /* Unified real browser check */
   function isRealBrowser() {
     if (typeof navigator === "undefined") return false;
     // If Android marker exists → WebView, not real browser
@@ -98,7 +98,7 @@ export default function BackHeaderForRootPages() {
     return !/wv|webview/i.test(ua);
   }
 
-  /** Decide when to show banner */
+  /* Decide when to show banner */
   useEffect(() => {
     if (typeof window === "undefined") return;
 
