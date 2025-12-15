@@ -1,5 +1,3 @@
-// categories/_components/CategorySection.tsx
-
 import { Tag } from "@/type/api/categories/categories.type";
 import { Category } from "@/type/api/game/game.type";
 import { CategoryCard } from "./CategoryCard";

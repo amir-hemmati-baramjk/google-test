@@ -23,7 +23,7 @@ export default function GameQuestionLayout({
       {children}
       <div className="flex flex-row sm:flex-col xl:justify-around gap-3 md:gap-10 lg:gap-20 w-full sm:w-1/3 sm:py-3">
         <div className="w-1/2 sm:w-full flex flex-col gap-2 h-full ">
-          <TeamScoreCard teamName={teamOneName || "Team 2"} teamNumber={2} />
+          <TeamScoreCard teamName={teamOneName || "Team 1"} teamNumber={1} />
           <AssistanceBox
             team={1}
             context="question"

@@ -44,15 +44,15 @@ export default function GamePageHeader() {
 
   return (
     <>
-      <div className="bg-primary-bg-gradient text-white flex justify-between items-center px-2 md:px-5 py-2">
-        <div className="min-w-[150px] flex items-center gap-3">
+      <div className="bg-primary-bg-gradient text-white flex justify-between items-center px-2 sm:px-10  py-2">
+        <div className="sm:min-w-[150px] flex items-center gap-3">
           <button
             onClick={() => setShowExitModal(true)}
-            className="bg-white text-red flex justify-center items-center rounded-[10px] w-7 h-7 lg:w-10 lg:h-10"
+            className="bg-white text-red flex justify-center items-center rounded-[10px] w-9 h-9 lg:w-10 lg:h-10"
           >
             <ExitIcon size={48} />
           </button>
-          <button className="bg-white text-secondary flex justify-center items-center rounded-[10px] w-7 h-7 lg:w-10 lg:h-10">
+          <button className="bg-white text-secondary flex justify-center items-center rounded-[10px] w-9 h-9 lg:w-10 lg:h-10">
             <ReturnToGameBoardIcon size={48} />
           </button>
         </div>
@@ -63,7 +63,7 @@ export default function GamePageHeader() {
           height={40}
           className="w-[45px] h-[45px] lg:w-[60px] lg:h-[60px]"
         />
-        <div className="min-w-[150px]">
+        <div className="sm:min-w-[150px]">
           <button
             onClick={handleTeamRoleClick}
             disabled={changeTurnMutation.isPending}

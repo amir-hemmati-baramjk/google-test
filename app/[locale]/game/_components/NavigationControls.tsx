@@ -2,7 +2,7 @@
 "use client";
 import React from "react";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Button } from "../../_components/button/button";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
 
@@ -22,9 +22,13 @@ export default function NavigationControls({
   className = "",
 }: NavigationControlsProps) {
   const t = useTranslations("GamePage.gameboard.navigation");
-
+  const locale = useLocale();
   return (
-    <div className={`flex justify-center items-center gap-4 mt-2 ${className}`}>
+    <div
+      className={`flex justify-center items-center gap-4 mt-2 ${
+        currentPage >= totalPages - 1 && currentPage === 0 ? "hidden" : ""
+      } ${className}`}
+    >
       <Button
         className="!p-1.5 w-8 h-8 sm:w-7 sm:h-7 lg:w-8 lg:h-8 !rounded-[5px]"
         size="small"
@@ -33,10 +37,10 @@ export default function NavigationControls({
         onClick={onPrev}
         disabled={currentPage === 0}
       >
-        <ArrowLeftIcon />
+        {locale == "ar" ? <ArrowRightIcon /> : <ArrowLeftIcon />}
       </Button>
 
-      <p className="text-gray-700">
+      <p className="text-white text-xs lg:text-md">
         {t("page")} {currentPage + 1} {t("of")} {totalPages}
       </p>
 
@@ -48,7 +52,8 @@ export default function NavigationControls({
         onClick={onNext}
         disabled={currentPage >= totalPages - 1}
       >
-        <ArrowRightIcon />
+        {" "}
+        {locale == "ar" ? <ArrowLeftIcon /> : <ArrowRightIcon />}
       </Button>
     </div>
   );

@@ -193,9 +193,15 @@
       "sponsorsAds": "إعلانات الرعاة هنا",
       "assistance": "المساعدة",
       "selectQuestionAssistant": "يرجى اختيار سؤال لتطبيق المساعدة",
+
       "navigation": {
         "page": "صفحة",
         "of": "من"
+      },
+      "exitGameModal": {
+        "exit-game-desc": "هل أنت متأكد أنك تريد مغادرة اللعبة؟",
+        "yes": "نعم",
+        "cancel": "إلغاء"
       },
       "emptyCategory": "فئة فارغة"
     },
@@ -215,13 +221,33 @@
       "exitGame": "خروج من اللعبة",
       "confirmExit": "هل أنت متأكد أنك تريد الخروج من اللعبة؟",
       "cancel": "إلغاء",
-      "exit": "خروج",
-      "restartGame": "إعادة تشغيل اللعبة",
-      "followupFromWhereYouLeft": "تابع من حيث توقفت",
-      "restartBrowsedGameMessage": "هل ترغب في البدء من جديد أو الاستمرار من حيث توقفت؟",
-      "startAgain": "ابدأ من جديد",
-      "keepGoing": "استمر"
+      "exit": "خروج"
+    },
+    "gameOverModal": {
+      "gameOver": "انتهت اللعبة",
+      "show-winner": "اظهر الفائز!"
     }
+  },
+  "questionPage": {
+    "points": " نقاط",
+    "no-one": "لا أحد",
+    "answer": "إجابة",
+    "question-again": "عودة للسؤال",
+    "who-answer": "من أجاب",
+    "back-to-answer": "العودة للإجابة"
+  },
+  "WinnerPage": {
+    "congratulations": "تهانينا",
+    "onYourVictory": "على فوزك!",
+    "winner": "الفائز",
+    "tieGame": "تعادل!",
+    "bothTeamsScored": "سجل كلا الفريقين {points} نقطة!",
+    "finalScore": "النتيجة النهائية",
+    "points": "نقطة",
+    "winningTeam": "الفريق الفائز",
+    "losingTeam": "الفريق الخاسر",
+    "tieTeam": "فريق التعادل",
+    "backToHomePage": "العودة للصفحة الرئيسية"
   },
   "CategoriesPage": {
     "loadingCategories": "جاري تحميل الفئات...",
@@ -241,7 +267,9 @@
     "noCategoriesInTag": "{tagName} لا يحتوي على فئات",
     "noDescription": "—",
     "categoryInfo": "معلومات الفئة",
-    "altImage": "صورة الفئة"
+    "altImage": "صورة الفئة",
+    "play": "لعب",
+    "remaining": "متبقي"
   },
   "loginModal": {
     "you-not-registered": "هل لديك حساب بالفعل؟",
@@ -262,23 +290,25 @@
     "select-assistants": "اختر المساعدين",
     "team-a": "الفريق أ",
     "team-b": "الفريق ب",
-    "time-200": "وقت ٢٠٠ نقطة",
-    "time-400": "وقت ٤٠٠ نقطة",
-    "time-600": "وقت ٦٠٠ نقطة",
+    "time-200": "وقت 200 نقطة",
+    "time-400": "وقت 400 نقطة",
+    "time-600": "وقت 600 نقطة",
     "please-select-three-assistants": "الرجاء اختيار ٣ مساعدين بالضبط",
     "ready-to-play": "جاهز للعب",
     "unknown-error": "حدث خطأ غير معروف",
-
+    "playerCountTeamA": "لاعبو الفريق أ",
+    "playerCountTeamB": "لاعبو الفريق ب",
     "nameRequired": "اسم اللعبة مطلوب",
     "teamOneNameRequired": "اسم الفريق أ مطلوب",
     "teamOneShouldHave1Player": "يجب أن يحتوي الفريق أ على لاعب واحد على الأقل",
-    "teamOneMaxPlayers": "لا يمكن أن يحتوي الفريق أ على أكثر من ٥٠٠ لاعب",
+    "teamOneMaxPlayers": "لا يمكن أن يحتوي الفريق أ على أكثر من 500 لاعب",
     "teamTwoNameRequired": "اسم الفريق ب مطلوب",
     "teamTwoShouldHave1Player": "يجب أن يحتوي الفريق ب على لاعب واحد على الأقل",
-    "teamTwoMaxPlayers": "لا يمكن أن يحتوي الفريق ب على أكثر من ٥٠٠ لاعب",
+    "teamTwoMaxPlayers": "لا يمكن أن يحتوي الفريق ب على أكثر من 500 لاعب",
     "selectExactlyThreeOption": "الرجاء اختيار ٣ مساعدين بالضبط",
     "timeRequired": "الوقت مطلوب",
     "timeMax": "لا يمكن أن يتجاوز الوقت الحد الأقصى",
+
     "assistantOptions": {
       "DoublePoints": "مضاعفة النقاط",
       "TakePoints": "سرقة نقاط الخصم في حال تم الاجابه على السؤال",

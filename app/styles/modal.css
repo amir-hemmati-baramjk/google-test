@@ -27,8 +27,7 @@
   background: white;
   border-radius: 16px;
   padding: 16px;
-  max-width: 400px;
-  width: 90%;
+  width: fit-content;
   transform: translateY(20px) scale(0.96);
   opacity: 0;
   transition: transform 0.35s ease, opacity 0.35s ease;
@@ -48,7 +47,7 @@
 @media (min-width: 640px) {
   /* sm */
   .modal-content {
-    max-width: 400px;
+    /* max-width: 400px; */
     padding: 12px;
   }
 }
@@ -56,7 +55,7 @@
 @media (min-width: 768px) {
   /* md */
   .modal-content {
-    max-width: 400px;
+    /* max-width: 400px; */
     padding: 16px;
   }
 }
@@ -64,7 +63,7 @@
 @media (min-width: 1024px) {
   /* lg */
   .modal-content {
-    max-width: 500px;
+    /* max-width: 500px; */
     padding: 16px;
   }
 }

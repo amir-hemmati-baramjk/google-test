@@ -34,7 +34,7 @@ export type CategoryItem = {
 };
 
 export type CreateGameFormProps = {
-  selectedCatItems: CategoryItem[]; // or use `string[]` if it's just an array of names
+  selectedCatItems: string[];
 };
 
 export type ModalType = "login" | "payment" | "create" | null;

@@ -6,17 +6,20 @@ import { TimeResetIcon } from "@/app/[locale]/_components/icons/TimeResetIcon";
 
 import { useGameStore } from "@/stores/gameStore";
 import { PlayIcon } from "lucide-react";
-import { useEffect, useState, useCallback } from "react";
+import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
+import { useEffect, useState, useCallback, useMemo } from "react";
 
 interface TopBarProps {
   questionPoints: number;
 }
 
 export default function TopBar({ questionPoints }: TopBarProps) {
+  const t = useTranslations("questionPage");
   const [timeLeft, setTimeLeft] = useState<number>(0);
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const [initialTime, setInitialTime] = useState<number>(0);
-
+  const params = useParams();
   // Get time configurations from store
   const time200 = useGameStore((s) => s.time200);
   const time400 = useGameStore((s) => s.time400);
@@ -93,11 +96,28 @@ export default function TopBar({ questionPoints }: TopBarProps) {
     }
     return <TimePauseIcon size={48} />;
   };
-
+  const questionIdParam = params?.questionId;
+  const validQuestionId = useMemo(() => {
+    if (!questionIdParam) return null;
+    return Array.isArray(questionIdParam)
+      ? questionIdParam[0]
+      : questionIdParam;
+  }, [questionIdParam]);
+  const category = useGameStore(
+    useCallback(
+      (s) => {
+        if (!validQuestionId) return undefined;
+        return s.categories.find((cat) =>
+          cat.questions.some((q) => q.id === validQuestionId)
+        );
+      },
+      [validQuestionId]
+    )
+  );
   return (
     <div className="w-full m-auto flex justify-around items-center gap-3 absolute -top-5 lg:-top-7 left-0">
       <div className="bg-light-purple px-5 text-secondary border-[2px] border-secondary font-bold rounded-[6px] text-sm md:text-lg lg:text-xl xl:text-2xl">
-        points : {questionPoints}
+        {t("points")} : {questionPoints}
       </div>
       <div className="flex justify-center items-center gap-1">
         <Button
@@ -127,7 +147,7 @@ export default function TopBar({ questionPoints }: TopBarProps) {
         </Button>
       </div>
       <div className="hidden sm:block bg-light-purple px-5 text-secondary border-[2px] border-secondary font-bold rounded-[6px] text-sm md:text-lg lg:text-xl xl:text-2xl">
-        points : {questionPoints}
+        {category?.name}
       </div>
     </div>
   );

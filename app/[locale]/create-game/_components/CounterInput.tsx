@@ -12,7 +12,7 @@ const CounterInput = <TFieldValues extends FieldValues = FieldValues>({
   step = 1,
   maxLimit = Infinity,
   minLimit = 1,
-  allowInput = true, //  prop to enable direct input
+  allowInput = true,
   className = "",
   showButtons = true,
 }: CounterInputProps<TFieldValues> & { allowInput?: boolean }) => {
@@ -38,16 +38,13 @@ const CounterInput = <TFieldValues extends FieldValues = FieldValues>({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
 
-    // Allow empty input for better UX
     if (inputValue === "") {
       onChange("");
       return;
     }
 
-    // Only allow numbers
     const numericValue = Number(inputValue);
     if (!isNaN(numericValue)) {
-      // Validate against min and max limits
       if (numericValue >= minLimit && numericValue <= maxLimit) {
         onChange(numericValue);
       }
@@ -57,7 +54,6 @@ const CounterInput = <TFieldValues extends FieldValues = FieldValues>({
   const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
 
-    // If empty, set to minLimit
     if (inputValue === "") {
       onChange(minLimit);
       return;
@@ -65,7 +61,6 @@ const CounterInput = <TFieldValues extends FieldValues = FieldValues>({
 
     const numericValue = Number(inputValue);
 
-    // Clamp value to min/max limits on blur
     if (numericValue < minLimit) {
       onChange(minLimit);
     } else if (numericValue > maxLimit) {
@@ -74,9 +69,9 @@ const CounterInput = <TFieldValues extends FieldValues = FieldValues>({
   };
 
   return (
-    <div className={`w-full flex flex-col gap-2 ${className}`}>
+    <div className={`w-full flex flex-col gap-1 ${className}`}>
       {label && (
-        <label className="text-sm font-medium text-secondary">{label}</label>
+        <label className="text-sm  text-secondary font-bold">{label}</label>
       )}
       <div className="w-full flex items-center  justify-between ">
         {allowInput ? (
@@ -87,7 +82,7 @@ const CounterInput = <TFieldValues extends FieldValues = FieldValues>({
             value={value}
             onChange={handleInputChange}
             onBlur={handleInputBlur}
-            className={`text-center outline-none  border border-secondary/30 p-2.5 rounded-xl text-secondary font-bold bg-light-purple ${
+            className={`text-center outline-none  border border-secondary/30 p-3 rounded-xl text-secondary font-bold bg-light-purple ${
               showButtons ? " w-2/3" : "w-full"
             }`}
             aria-label={label}

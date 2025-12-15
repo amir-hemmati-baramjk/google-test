@@ -35,7 +35,8 @@ export default function AssistanceBox({
   const queryClient = useQueryClient();
   const turn = useGameStore((state) => state.turn);
   const gameId = useGameStore((state) => state.id);
-
+  const answer = useGameStore((s) => s.answer);
+  const whoAnswer = useGameStore((s) => s.whoAnswer);
   const gameStore = useGameStore.getState();
 
   // --- Mutations for Question Assistants ---
@@ -118,6 +119,7 @@ export default function AssistanceBox({
     if (turn !== team) return true;
     if (team === 1 && usedTeamOne) return true;
     if (team === 2 && usedTeamTwo) return true;
+    if (answer || whoAnswer) return true;
     return false;
   };
 

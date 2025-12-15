@@ -21,7 +21,6 @@ import LoginModal from "./_components/LoginModal";
 import PaymentModal from "./_components/PaymentModal";
 
 const toast = { error: (msg: string) => console.error("Toast Error:", msg) };
-// type ModalType = "login" | "payment" | "create" | null;
 
 const MAX_CATEGORY_SELECTION = 6;
 
@@ -29,14 +28,11 @@ export default function CategoriesPage() {
   const { isInitialized, isLogin, user } = useUser();
   const t = useTranslations("CategoriesPage");
 
-  // --- State & Memoized Values ---
   const parentRef = useRef<HTMLDivElement>(null);
   const [activeTag, setActiveTag] = useState<string>("");
-  // const [activeModal, setActiveModal] = useState<ModalType>(null);
   const [showCreateGameModal, setShowCreateGameModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
-  // 1. Category Selection State (from local storage)
   const [selectedCatItems, setSelectedCatItems] = useState<string[]>(() => {
     try {
       const stored = SelectedCategoryForCreateGameLs.get();
@@ -196,7 +192,7 @@ export default function CategoriesPage() {
   const getTagSectionHeight = useCallback(
     (tag: Tag) => {
       if (!tag.categories || tag.categories.length === 0) return 180;
-      const headerHeight = 60;
+      const headerHeight = 40;
       const gridGap = 16;
       const internalGridPadding = 40;
       const separationBuffer = 20;
@@ -326,17 +322,26 @@ export default function CategoriesPage() {
       </div>
 
       {/* Example of a Next Action Button (You need to implement this button) */}
-      <div className="p-4 border-t border-gray-200 ">
+      <div className=" fixed left-1/2 -translate-x-1/2 bottom-10 w-[260px] flex justify-center items-center">
         <button
           onClick={handleNextAction}
           disabled={selectedCatItems.length === 0}
-          className={`w-full py-3 font-bold rounded-lg transition-all ${
+          className={`w-full py-2 font-bold text-xl rounded-lg transition-all px-3 flex justify-center items-center gap-3 ${
             selectedCatItems.length > 0
               ? "bg-secondary text-white hover:bg-accent"
               : "bg-gray-300 text-gray-500 cursor-not-allowed"
           }`}
         >
-          {t("nextStep")} ({selectedCatItems.length} / {MAX_SELECTION})
+          {t("remaining")} ({MAX_SELECTION - selectedCatItems.length}){" "}
+          <div
+            className={` py-1.5 px-5 rounded-lg  ${
+              selectedCatItems.length > 0
+                ? "bg-light-purple text-primary"
+                : "bg-light-purple text-gray-500 cursor-not-allowed"
+            }`}
+          >
+            {t("play")}
+          </div>
         </button>
       </div>
 

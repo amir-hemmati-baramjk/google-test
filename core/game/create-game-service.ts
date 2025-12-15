@@ -4,7 +4,7 @@ import { CategoryItem, createGame } from "@/type/api/game/createGame.types";
 
 export const createGameService = async (
   credentials: createGame & {
-    categoryIds: CategoryItem[];
+    categoryIds: string[];
     assistants: string[];
   }
 ): Promise<ApiResponse> => {

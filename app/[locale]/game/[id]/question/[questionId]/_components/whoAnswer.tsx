@@ -9,11 +9,13 @@ import { whoAnswerPayload } from "@/type/api/game/game.type";
 import { postWhoAnswer } from "@/core/game/who-answer-service";
 import { toast } from "react-toastify";
 import { useRouter } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export default function WhoAnsweredComponent() {
   const { questionId } = useParams();
   const queryClient = useQueryClient();
   const router = useRouter();
+  const t = useTranslations("questionPage");
   // Get data directly from Zustand
   const {
     clearWhoAnswer,
@@ -21,10 +23,9 @@ export default function WhoAnsweredComponent() {
     teamTwoName,
     id: gameId,
     clearAnswer,
-    whoAnswered, // Get the whoAnswered function from store
+    whoAnswered,
   } = useGameStore();
 
-  // Get question to access points and other data
   const question = useGameStore((state) => {
     const validQuestionId = questionId
       ? Array.isArray(questionId)
@@ -36,7 +37,6 @@ export default function WhoAnsweredComponent() {
       : undefined;
   });
 
-  // React Query mutation for who answered
   const whoAnsweredMutation = useMutation({
     mutationFn: (team: number) => {
       const payload: whoAnswerPayload = {
@@ -50,7 +50,6 @@ export default function WhoAnsweredComponent() {
     },
     onSuccess: (data, team) => {
       if (data.success && data.data) {
-        // Call the whoAnswered function from Zustand store
         if (question) {
           whoAnswered(
             gameId,
@@ -58,9 +57,9 @@ export default function WhoAnsweredComponent() {
             data.data
           );
         }
-        // Invalidate and refetch any related queries
+
         queryClient.invalidateQueries({ queryKey: ["game", gameId] });
-        // Clear who answer state
+
         clearWhoAnswer();
         clearAnswer();
         router.replace(`/game/${gameId}`);
@@ -69,21 +68,20 @@ export default function WhoAnsweredComponent() {
       }
     },
     onError: (error) => {
-      // Handle mutation error
       console.error("Mutation error:", error);
     },
   });
 
   const handleTeamOneAnswer = () => {
-    whoAnsweredMutation.mutate(1); // Team 1
+    whoAnsweredMutation.mutate(1);
   };
 
   const handleTeamTwoAnswer = () => {
-    whoAnsweredMutation.mutate(2); // Team 2
+    whoAnsweredMutation.mutate(2);
   };
 
   const handleNoOneAnswer = () => {
-    whoAnsweredMutation.mutate(0); // No one (adjust based on your API requirements)
+    whoAnsweredMutation.mutate(0);
   };
 
   const handleReturnToAnswer = () => {
@@ -122,20 +120,8 @@ export default function WhoAnsweredComponent() {
           isOutline
           className="!font-[700] disabled:opacity-50 disabled:cursor-not-allowed md:!text-lg lg:!text-2xl xl:!text-3xl"
         >
-          No One
+          {t("no-one")}
         </Button>
-
-        {/* Loading indicator */}
-        {/* {whoAnsweredMutation.isPending && (
-          <p className="text-secondary text-sm mt-2">Recording answer...</p>
-        )} */}
-
-        {/* Error message */}
-        {/* {whoAnsweredMutation.isError && (
-          <p className="text-red-500 text-sm mt-2">
-            Failed to record answer. Please try again.
-          </p>
-        )} */}
       </div>
 
       {/* Bottom button */}
@@ -145,9 +131,9 @@ export default function WhoAnsweredComponent() {
           disabled={whoAnsweredMutation.isPending}
           variant="secondary"
           isOutline
-          className="!font-[700] !py-0.5 lg:!py-1 !rounded-[6px] !text-xs sm:!text-base !xs:px-1 !sm:px-4 disabled:opacity-50 disabled:cursor-not-allowed md:!text-lg lg:!text-2xl xl:!text-3xl"
+          className="!font-[700] !py-1.5 lg:!py-1 !rounded-[6px] !text-md sm:!text-base xs:!px-6 sm:!px-4 md:!text-lg lg:!text-2xl xl:!text-3xl"
         >
-          Return to Answer
+          {t("back-to-answer")}
         </Button>
       </div>
     </>

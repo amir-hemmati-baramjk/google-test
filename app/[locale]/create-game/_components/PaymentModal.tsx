@@ -1,8 +1,6 @@
 "use client";
-
 import dynamic from "next/dynamic";
 import { ChildModalProps } from "@/app/[locale]/_components/modal/modal.types";
-import { DeleteAccountIcon } from "@/app/[locale]/_components/icons/DeleteAccountIcon";
 import { Button } from "@/app/[locale]/_components/button/button";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";

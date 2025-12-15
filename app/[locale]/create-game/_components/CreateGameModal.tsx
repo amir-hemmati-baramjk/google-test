@@ -1,16 +1,9 @@
-// components/modals/CreateGameModal.tsx
-
 import React from "react";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
-
-import {
-  ChildModalProps,
-  ModalProps,
-} from "../../_components/modal/modal.types";
+import { ChildModalProps } from "../../_components/modal/modal.types";
 import Modal from "../../_components/modal/Modal";
 import CreateGameForm from "./CreateGameForm";
-import { ClosedCaptionIcon, X } from "lucide-react";
+import { X } from "lucide-react";
 
 interface CreateGameModalProps
   extends Omit<ChildModalProps, "isOpen" | "onClose"> {
@@ -24,13 +17,12 @@ export const CreateGameModal: React.FC<CreateGameModalProps> = ({
   setShow,
   selectedCatItems,
 }: CreateGameModalProps) => {
-  // NOTE: This translation key remains "index" as it's general UI text.
   const t = useTranslations("index");
   const handleClose = () => setShow(false);
 
   return (
     <Modal isOpen={show} onClose={handleClose}>
-      <div className=" w-full  bg-white">
+      <div className=" w-full lg:w-[600px] bg-white">
         <div className=" w-full m-auto">
           <div className=" w-full bg-white  overflow-y-scroll no-scrollbar mx-auto">
             <div

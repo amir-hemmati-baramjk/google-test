@@ -4,6 +4,8 @@ import { ChildModalProps } from "../../_components/modal/modal.types";
 import dynamic from "next/dynamic";
 import { ExitIcon } from "../../_components/icons/ExitIcon";
 import { Button } from "../../_components/button/button";
+import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 
 // Dynamically import Modal with SSR disabled
 const Modal = dynamic(() => import("../../_components/modal/Modal"), {
@@ -11,14 +13,16 @@ const Modal = dynamic(() => import("../../_components/modal/Modal"), {
 });
 
 export default function GameExitModal({ isOpen, onClose }: ChildModalProps) {
+  const t = useTranslations("GamePage.gameboard.exitGameModal");
+  const router = useRouter();
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="flex flex-col justify-center items-center gap-5">
+      <div className="flex flex-col justify-center items-center gap-5 w-[360px] lg:max-w-[400px]">
         <div className="w-full flex justify-center items-center bg-secondary text-white rounded-[20px] py-4">
           <ExitIcon size={80} />
         </div>
-        <p className="text-secondary text-lg">
-          Are you sure you want leave game?
+        <p className="text-secondary text-lg font-bold">
+          {t("exit-game-desc")}
         </p>
         <div className="w-full flex justify-center items-center gap-5">
           <div className="w-1/2">
@@ -28,7 +32,7 @@ export default function GameExitModal({ isOpen, onClose }: ChildModalProps) {
               isOutline
               onClick={onClose}
             >
-              Stay
+              {t("cancel")}
             </Button>
           </div>
           <div className="w-1/2 ">
@@ -36,12 +40,11 @@ export default function GameExitModal({ isOpen, onClose }: ChildModalProps) {
               variant="secondary"
               className="!w-full"
               onClick={() => {
-                // Add your leave game logic here
-                console.log("Leaving game...");
+                router.replace("/");
                 onClose();
               }}
             >
-              Leave
+              {t("yes")}
             </Button>
           </div>
         </div>

@@ -1,5 +1,3 @@
-// (mainLayout)/createGame/_components/CreateGameForm.tsx
-
 "use client";
 import React, { useTransition, useEffect } from "react";
 import { useTranslations } from "next-intl";
@@ -8,30 +6,23 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "@/i18n/navigation";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
-
 import { SelectedCategoryForCreateGameLs } from "@/localeStorage/storage";
-
-// --- Assuming these component paths are correct ---
 import { Button } from "../../_components/button/button";
 import CounterInput from "./CounterInput";
 import Textbox from "../../_components/inputs/textBox";
 import AssistantSelect from "./AssistantSelect";
 import { useUser } from "@/stores/userContext";
-
-// --- Type and Schema Imports ---
 import { createGameSchema } from "@/type/api/game/createGame.schema";
 import {
   createGame,
   CreateGameFormProps,
 } from "@/type/api/game/createGame.types";
 import { LastCreatedGame } from "@/type/api/game/game.type";
-import { ApiResponse } from "@/core/httpSercive.types"; // Required for type checking service response
+import { ApiResponse } from "@/core/httpSercive.types";
 
-// --- API Service Imports ---
 import { getLatestUserGame } from "@/core/game/get-latest-user-game";
 import { getAssistance } from "@/core/game/get-available-assistance";
 import { createGameService } from "@/core/game/create-game-service";
-// --- FIX: Import the actual create service function ---
 
 const CreateGameForm: React.FC<CreateGameFormProps> = ({
   selectedCatItems,
@@ -42,15 +33,13 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
   const router = useRouter();
   const [isFormInitialized, setIsFormInitialized] = React.useState(false);
 
-  // OR if you want initialData, make it undefined to trigger fetch:
   const { data: assistance = [] } = useQuery<string[]>({
     queryKey: ["assistance"],
     queryFn: getAssistance,
     staleTime: Infinity,
-    initialData: undefined, // This will trigger fetch
+    initialData: undefined,
   });
 
-  // --- Data Fetching: Last Game ---
   const { data: lastGame, isLoading: isLastGameLoading } =
     useQuery<LastCreatedGame | null>({
       queryKey: ["lastCreatedGame"],
@@ -58,7 +47,6 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
       staleTime: 5 * 60 * 1000,
     });
 
-  // --- Form Setup ---
   const {
     register,
     handleSubmit,
@@ -82,7 +70,6 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
     },
   });
 
-  // Auto-fill form
   useEffect(() => {
     if (lastGame && !isLastGameLoading && !isFormInitialized) {
       reset({
@@ -99,8 +86,6 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
       setIsFormInitialized(true);
     }
   }, [lastGame, isLastGameLoading, reset, isFormInitialized]);
-
-  // --- Handlers ---
 
   const options: { label: string; value: string }[] = (assistance || []).map(
     (a) => ({
@@ -129,7 +114,6 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
       const response: ApiResponse = await createGameService(payload);
 
       if (response?.success) {
-        // Assuming response.data contains the game ID or is the ID itself
         router.push(`/game/${response?.data}`);
 
         if (user?.gPoint) setUser({ ...user, gPoint: user.gPoint - 100 });
@@ -140,8 +124,6 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
       }
     });
   };
-
-  // --- Render ---
 
   if (isLastGameLoading) {
     return (
@@ -183,7 +165,7 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
       {/* Team Details (A & B) */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-3 w-full">
         {/* Team A */}
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col md:flex-row items-center gap-3">
           <Textbox
             variant="primary"
             labelVariant="primary"
@@ -202,11 +184,12 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
             error={errors.teamOnePlayerCount?.message}
             minLimit={1}
             maxLimit={500}
+            label={t("playerCountTeamA")}
           />
         </div>
 
         {/* Team B */}
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col md:flex-row items-center gap-3">
           <Textbox
             variant="primary"
             labelVariant="primary"
@@ -225,47 +208,52 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
             error={errors.teamTwoPlayerCount?.message}
             minLimit={1}
             maxLimit={500}
+            label={t("playerCountTeamB")}
           />
         </div>
       </div>
 
       {/* Time Controls */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full">
-        <CounterInput
-          showButtons={false}
-          allowInput={true}
-          control={control}
-          name="time200"
-          label={t("time-200") || "200 Points Time (seconds)"}
-          error={errors.time200?.message}
-          minLimit={0}
-          maxLimit={12000}
-          step={10}
-        />
-
-        <CounterInput
-          showButtons={false}
-          allowInput={true}
-          control={control}
-          name="time400"
-          label={t("time-400") || "400 Points Time (seconds)"}
-          error={errors.time400?.message}
-          minLimit={0}
-          maxLimit={18000}
-          step={10}
-        />
-
-        <CounterInput
-          showButtons={false}
-          allowInput={true}
-          control={control}
-          name="time600"
-          label={t("time-600") || "600 Points Time (seconds)"}
-          error={errors.time600?.message}
-          minLimit={0}
-          maxLimit={30000}
-          step={10}
-        />
+      <div className="flex flex-col lg:flex-row gap-3 w-full">
+        <div className="w-full lg:w-1/2">
+          <CounterInput
+            showButtons={false}
+            allowInput={true}
+            control={control}
+            name="time200"
+            label={t("time-200") || "200 Points Time (seconds)"}
+            error={errors.time200?.message}
+            minLimit={0}
+            maxLimit={12000}
+            step={10}
+          />
+        </div>
+        <div className="w-full lg:w-1/2">
+          <CounterInput
+            showButtons={false}
+            allowInput={true}
+            control={control}
+            name="time400"
+            label={t("time-400") || "400 Points Time (seconds)"}
+            error={errors.time400?.message}
+            minLimit={0}
+            maxLimit={18000}
+            step={10}
+          />
+        </div>
+        <div className="w-full lg:w-1/2">
+          <CounterInput
+            showButtons={false}
+            allowInput={true}
+            control={control}
+            name="time600"
+            label={t("time-600") || "600 Points Time (seconds)"}
+            error={errors.time600?.message}
+            minLimit={0}
+            maxLimit={30000}
+            step={10}
+          />
+        </div>
       </div>
 
       {/* Submit Button */}
@@ -275,6 +263,7 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
         type="submit"
         shape="full"
         className="mt-2"
+        size="large"
         variant="primary"
       >
         {t("ready-to-play")}

@@ -20,7 +20,7 @@ export default function GamesPage() {
     queryKey: ["games"],
     queryFn: async () => {
       const response = await getGameList({
-        pageIndex: 1,
+        pageIndex: 0,
         pageSize: PAGE_SIZE,
       });
 

@@ -24,7 +24,6 @@ const AssistantSelect: React.FC<AssistantSelectProps> = ({
   const [isInitialized, setIsInitialized] = useState(false);
   const [showMaxMessage, setShowMaxMessage] = useState(false);
 
-  // Effect to set default values ONLY ONCE when component mounts
   useEffect(() => {
     if (
       !isInitialized &&
@@ -66,12 +65,10 @@ const AssistantSelect: React.FC<AssistantSelectProps> = ({
   return (
     <div className="w-full">
       {showMaxMessage && (
-        // <div className="mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded-md">
         <p className="text-warning text-sm ">
           {t("maxAssistantsSelected") ||
             "You have selected the maximum number of assistants. Please remove one to select another."}
         </p>
-        // </div>
       )}
       <label className="font-medium block mx-1 mb-1 text-[14px] text-secondary">
         {label}

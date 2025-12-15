@@ -198,7 +198,12 @@
         "page": "Page",
         "of": "of"
       },
-      "emptyCategory": "Empty Category"
+      "emptyCategory": "Empty Category",
+      "exitGameModal": {
+        "exit-game-desc": "Are you sure you want to leave the game?",
+        "yes": "Yes",
+        "cancel": "Cancel"
+      }
     },
     "assistants": {
       "questionChanged": "Question changed!",
@@ -222,7 +227,32 @@
       "restartBrowsedGameMessage": "Would you like to start over or continue from where you left off?",
       "startAgain": "Start Again",
       "keepGoing": "Keep Going"
+    },
+    "gameOverModal": {
+      "gameOver": "Game Over",
+      "show-winner": "Show The Winner !"
     }
+  },
+  "questionPage": {
+    "points": "Points",
+    "no-one": "No one",
+    "answer": "Answer",
+    "question-again": "Return to Question",
+    "who-answer": "Who answered",
+    "back-to-answer": "Return To Answer"
+  },
+  "WinnerPage": {
+    "congratulations": "Congratulations",
+    "onYourVictory": "on your victory!",
+    "winner": "Winner",
+    "tieGame": "It's a Tie!",
+    "bothTeamsScored": "Both teams scored {points} points!",
+    "finalScore": "Final Score",
+    "points": "Pts",
+    "winningTeam": "Winning Team",
+    "losingTeam": "Losing Team",
+    "tieTeam": "Tie Team",
+    "backToHomePage": "Back To Home Page"
   },
   "CategoriesPage": {
     "loadingCategories": "Loading categories...",
@@ -242,7 +272,9 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "edit": "Edit",
-    "search": "Search"
+    "search": "Search",
+    "play": "Play",
+    "remaining": "Remaining"
   },
   "loginModal": {
     "you-not-registered": "Already have an account?",
@@ -269,7 +301,8 @@
     "please-select-three-assistants": "Please select exactly 3 assistants",
     "ready-to-play": "Ready to Play",
     "unknown-error": "An unknown error occurred",
-
+    "playerCountTeamA": "Team A Players",
+    "playerCountTeamB": "Team B Players",
     "nameRequired": "Game name is required",
     "teamOneNameRequired": "Team A name is required",
     "teamOneShouldHave1Player": "Team A should have at least 1 player",

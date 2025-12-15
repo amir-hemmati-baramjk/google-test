@@ -5,8 +5,10 @@ import { useGameStore } from "@/stores/gameStore";
 import { useParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import Media from "../../_component/mediaComponent/Media";
+import { useTranslations } from "next-intl";
 
 export default function AnswerComponent() {
+  const t = useTranslations("questionPage");
   const textRef = useRef<HTMLDivElement>(null);
   const [textHeight, setTextHeight] = useState(0);
   const { questionId } = useParams();
@@ -47,7 +49,7 @@ export default function AnswerComponent() {
     <>
       <p
         ref={textRef}
-        className="text-sm md:text-lg lg:text-2xl xl:text-3xl 2xl:text-4xl font-[900] text-primary text-center my-3 lg:mt-5"
+        className="text-sm md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-[900] text-primary text-center my-3 lg:mt-5"
       >
         {question.answer}
       </p>
@@ -61,21 +63,21 @@ export default function AnswerComponent() {
       </div>
 
       {/* Bottom buttons */}
-      <div className="w-full px-3 sm:px-10 m-auto absolute -bottom-2 sm:-bottom-5 left-0 flex justify-between items-center">
+      <div className="w-full px-3 sm:px-10 m-auto absolute -bottom-5 sm:-bottom-5 left-0 flex justify-between items-center">
         <Button
           onClick={handleWhoAnswered}
           variant="secondary"
-          className="!font-[700] !py-0.5 lg:!py-1 !rounded-[6px] !text-xs sm:!text-base !xs:px-1 !sm:px-4 md:!text-lg lg:!text-2xl xl:!text-3xl"
+          className="!font-[700] !py-1.5 lg:!py-1 !rounded-[6px] !text-md sm:!text-base xs:!px-6 sm:!px-4 md:!text-lg lg:!text-2xl xl:!text-3xl"
         >
-          Who Answered
+          {t("who-answer")}
         </Button>
         <Button
           onClick={handleReturnToQuestion}
           variant="secondary"
           isOutline
-          className="!font-[700] !py-0.5 lg:!py-1 !rounded-[6px] !text-xs sm:!text-base !xs:px-1 !sm:px-4 md:!text-lg lg:!text-2xl xl:!text-3xl"
+          className="!font-[700] !py-1.5 lg:!py-1 !rounded-[6px] !text-md sm:!text-base xs:!px-6 sm:!px-4 md:!text-lg lg:!text-2xl xl:!text-3xl"
         >
-          Return to question
+          {t("question-again")}
         </Button>
       </div>
     </>

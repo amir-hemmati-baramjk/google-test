@@ -129,10 +129,10 @@ export default function TeamScoreCard({
       <div className="w-full text-center gap-1 flex flex-col justify-between items-center lg:gap-2 2xl:gap-3 text-[10px] md:text-[16px] lg:text-[14px] xl:text-[24px]">
         {/* Team Name - Color changes based on context */}
         <p
-          className={`font-bold bg-light-purple-gradient text-xs lg:text-lg xl:text-xl 3xl:text-2xl w-full rounded-[10px] py-1 lg:py-2 xl:py-3 
+          className={`font-bold bg-light-purple-gradient text-lg  lg:text-lg xl:text-xl 3xl:text-2xl w-full rounded-[10px] py-1 lg:py-2 xl:py-3 
           ${
             isQuestionPage
-              ? "text-white bg-light-purple/20 border border-light-purple"
+              ? "text-white bg-light-purple/20 border border-light-purple md:text-xs"
               : "text-light-purple border border-primary"
           }`}
         >
