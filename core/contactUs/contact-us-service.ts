@@ -1,19 +1,15 @@
 import { httpService } from "../httpService";
 import { ApiResponse } from "../httpSercive.types";
-import { CategoryItem, createGame } from "@/type/api/game/createGame.types";
+import { contactUs } from "@/type/api/contactUs/contactUs.types";
 
-export const createGameService = async (
-  credentials: createGame & {
-    categoryIds: string[];
-    assistants: string[];
-  }
+export const contactUsService = async (
+  credentials: contactUs
 ): Promise<ApiResponse> => {
   try {
     const formattedData = {
       ...credentials,
     };
-
-    const response = await httpService.post("/game", formattedData);
+    const response = await httpService.post("//contactus", formattedData);
 
     return response;
   } catch (error: any) {

@@ -355,6 +355,32 @@
     "order-failed-message1": "Oops! Something Wrong Your Payment",
     "order-failed-message2": "Please Try Again"
   },
+  "wallet": {
+    "title": "Wallet",
+    "wallet-balance": "Wallet balance",
+    "recent-transactions": "Recent Transactions",
+    "no-transactions": "No Transactions Found",
+    "add-balance": "Add Balance In Wallet",
+    "payment-for-package": "Payment for Package"
+  },
+  "contactUs": {
+    "first-name": "First Name",
+    "last-name": "Last Name",
+    "email-address": "Email Address",
+    "subject": "Subject",
+    "description": "Description",
+    "please-enter": "Please enter...",
+    "submit": "Submit",
+    "message-sent-success": "Your message has been sent successfully!",
+    "something-went-wrong": "Something went wrong. Please try again later.",
+    "phone-number": "Phone Number",
+    "required": "This field is required",
+    "invalid-email": "Please enter a valid email address",
+    "min-char-size-for-description": "Description must be at least 10 characters",
+    "max-char-size-for-description": "Description cannot exceed 500 characters",
+    "social-media": "Social Media",
+    "contact-management": "Contact Management"
+  },
   "index": {
     "searchCategories": "Search categories...",
     "download-app": "Download Falta Game",

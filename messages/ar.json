@@ -362,6 +362,32 @@
     "order-failed-message1": "عذراً! هناك خطأ في الدفع",
     "order-failed-message2": "يرجى المحاولة مرة أخرى"
   },
+  "wallet": {
+    "title": "المحفظة",
+    "wallet-balance": "رصيد المحفظة",
+    "recent-transactions": "أحدث العمليات",
+    "no-transactions": "لا توجد عمليات حالياً",
+    "add-balance": "إضافة رصيد للمحفظة",
+    "payment-for-package": "دفع قيمة باقة"
+  },
+  "contactUs": {
+    "first-name": "الاسم الأول",
+    "last-name": "اسم العائلة",
+    "email-address": "البريد الإلكتروني",
+    "subject": "الموضوع",
+    "description": "الوصف",
+    "please-enter": "يرجى الإدخال...",
+    "submit": "إرسال",
+    "message-sent-success": "تم إرسال رسالتك بنجاح!",
+    "something-went-wrong": "حدث خطأ ما. يرجى المحاولة مرة أخرى لاحقاً.",
+    "phone-number": "رقم الهاتف",
+    "required": "هذا الحقل مطلوب",
+    "invalid-email": "يرجى إدخال بريد إلكتروني صحيح",
+    "min-char-size-for-description": "يجب أن يكون الوصف 10 أحرف على الأقل",
+    "max-char-size-for-description": "يجب ألا يتجاوز الوصف 500 حرف",
+    "social-media": "وسائل التواصل الاجتماعي",
+    "contact-management": "إدارة التواصل"
+  },
   "index": {
     "searchCategories": "فئات البحث...",
     "download-app": "حمل تطبيق فلته واحصل على لعبتين مجانيه وتمتع بأقسام جديدة ",
