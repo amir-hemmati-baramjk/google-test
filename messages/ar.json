@@ -335,6 +335,33 @@
     "maxAssistantsSelected": "لقد قمت باختيار الحد الأقصى للمساعدين. الرجاء إزالة واحد لاختيار آخر.",
     "selectAssistantPlaceholder": "اختر المساعدين"
   },
+  "checkout": {
+    "checkout": "الدفع",
+    "loading": "جار التحميل...",
+    "back-to-summary": "العودة إلى الملخص",
+    "select-payment-method": "اختر طريقة الدفع",
+    "confirm-and-pay": "تأكيد ودفع",
+    "please-enter-coupon": "الرجاء إدخال كود القسيمة",
+    "apply": "تطبيق",
+    "select-currency": "اختر العملة",
+    "payment-details": "تفاصيل الدفع",
+    "sub-total": "المجموع الجزئي",
+    "discount": "الخصم",
+    "wallet-used": "المستخدم من المحفظة",
+    "total-to-pay": "الإجمالي المستحق",
+    "use-wallet": "استخدام المحفظة",
+    "available-balance": "الرصيد المتاح",
+    "proceed-to-payment": "المتابعة إلى الدفع"
+  },
+  "payment-result": {
+    "thank-you-title": "شكراً على طلبك!",
+    "have-a-fun": "استمتع بالألعاب",
+    "thank-you-dec": "إذا كانت لديك أي أسئلة أو استفسارات، فلا تتردد في التواصل معنا",
+    "back-to-home": "العودة إلى الصفحة الرئيسية",
+    "order-failed-title": "فشل الطلب",
+    "order-failed-message1": "عذراً! هناك خطأ في الدفع",
+    "order-failed-message2": "يرجى المحاولة مرة أخرى"
+  },
   "index": {
     "searchCategories": "فئات البحث...",
     "download-app": "حمل تطبيق فلته واحصل على لعبتين مجانيه وتمتع بأقسام جديدة ",

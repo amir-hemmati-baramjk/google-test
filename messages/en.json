@@ -328,7 +328,33 @@
     "failedToLoadAssistants": "Failed to load assistants",
     "retry": "Retry"
   },
-
+  "checkout": {
+    "checkout": "Checkout",
+    "loading": "Loading...",
+    "back-to-summary": "Back to Summary",
+    "select-payment-method": "Select Payment Method",
+    "confirm-and-pay": "Confirm & Pay",
+    "please-enter-coupon": "Please enter coupon code",
+    "apply": "Apply",
+    "select-currency": "Select Currency",
+    "payment-details": "Payment Details",
+    "sub-total": "Subtotal",
+    "discount": "Discount",
+    "wallet-used": "Wallet Used",
+    "total-to-pay": "Total to Pay",
+    "use-wallet": "Use Wallet",
+    "available-balance": "Available Balance",
+    "proceed-to-payment": "Proceed to Payment"
+  },
+  "payment-result": {
+    "thank-you-title": "Thank for your order!",
+    "have-a-fun": "Let's Have A Fun With Games",
+    "thank-you-dec": "If You Have Any Questions Or Queries Then Feel Free To Get In Contact Us",
+    "back-to-home": "Back To Home",
+    "order-failed-title": "Order Failed",
+    "order-failed-message1": "Oops! Something Wrong Your Payment",
+    "order-failed-message2": "Please Try Again"
+  },
   "index": {
     "searchCategories": "Search categories...",
     "download-app": "Download Falta Game",

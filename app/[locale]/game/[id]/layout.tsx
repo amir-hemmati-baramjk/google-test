@@ -39,7 +39,7 @@ export default function GameLayout({
       setGame(gameData.data as Game);
 
       if (gameData?.data) {
-        if (!gameData?.data?.isGameFinished && !isWinnerPage) {
+        if (gameData?.data?.isGameFinished && !isWinnerPage) {
           setShowGameOverModal(true);
         }
         const media = new Set<string>();
