@@ -56,7 +56,7 @@ export default function GamePageHeader() {
 
   return (
     <>
-      <div className="bg-primary-bg-gradient text-white flex justify-between items-center px-2 sm:px-10 py-2 gap-2 pt-10 sm:pt-2">
+      <div className="bg-primary-bg-gradient text-white flex justify-between items-center px-2 sm:px-10 py-2 gap-2 pt-12 sm:pt-2">
         <div className="flex items-center gap-2 lg:gap-3">
           <button
             onClick={() => setShowExitModal(true)}

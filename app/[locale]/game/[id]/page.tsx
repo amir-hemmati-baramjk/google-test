@@ -83,7 +83,7 @@ export default function Page() {
   return (
     <div className="h-full w-full">
       {game?.layoutType === "version1" ? (
-        <div className="flex justify-between sm:justify-center items-center gap-5  sm:gap-1 lg:gap-5 flex-col sm:flex-row h-full md:px-10">
+        <div className="flex justify-between sm:justify-center items-center gap-5  sm:gap-1 lg:gap-5 flex-col sm:flex-row h-full md:px-11">
           <div className="flex flex-col justify-center h-full items-center w-full ">
             <NewCategoryGrid
               categories={game?.categories || []}

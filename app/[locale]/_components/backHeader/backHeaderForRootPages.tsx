@@ -50,7 +50,7 @@ export default function BackHeaderForRootPages() {
       {showGetApp && (
         <div
           dir={locale === "ar" ? "rtl" : "ltr"}
-          className="bg-primary-bg-gradient py-2 pt-12 px-3 flex items-center justify-between text-white border-b border-white/10"
+          className="bg-primary-bg-gradient py-2 pt-12 md:pt-2 px-3 flex items-center justify-between text-white border-b border-white/10"
         >
           <div className="flex items-center gap-3">
             <button
