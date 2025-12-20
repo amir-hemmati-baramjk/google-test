@@ -15,11 +15,10 @@ const IOS_APPSTORE_URL =
 export default function BackHeaderForRootPages() {
   const { user } = useUser();
   const [showGetApp, setShowGetApp] = useState(false);
-  const [isMounted, setIsMounted] = useState(false); // To handle hydration
+  const [isMounted, setIsMounted] = useState(false);
   const t = useTranslations("BackHeaderRootPages");
   const locale = useLocale();
 
-  /** Set mounted state */
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -29,57 +28,73 @@ export default function BackHeaderForRootPages() {
     return navigator.userAgent || navigator.vendor || "";
   }, []);
 
-  /** Device detection Helpers */
-  const isIOSDevice = () => {
-    if (typeof navigator === "undefined") return false;
-    const iOSUA = /iPhone|iPad|iPod/i.test(ua);
-    const iPadOnMac =
-      navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
-    return iOSUA || iPadOnMac;
+  const isWebView = () => {
+    if (typeof window === "undefined") return false;
+    const w = window as any;
+
+    // 1. Explicit App Markers (Always hide in your app)
+    if (
+      !!w.flutter_inappwebview ||
+      !!w.FaltaApp ||
+      /MY_FLUTTER_WEBVIEW/i.test(ua)
+    )
+      return true;
+
+    // 2. iOS Detection
+    if (/iPhone|iPad|iPod/i.test(ua)) {
+      // Chrome on iOS uses "CriOS"
+      const isIOSChrome = /CriOS/i.test(ua);
+      // Firefox on iOS uses "FxiOS"
+      const isIOSFirefox = /FxiOS/i.test(ua);
+      // Standard Safari
+      const isSafari =
+        /Safari/i.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS/i.test(ua);
+
+      // If it's one of these, it's a REAL browser, not a WebView
+      if (isIOSChrome || isIOSFirefox || isSafari) return false;
+
+      // Otherwise, if it has WebKit but isn't a known browser, it's likely a WebView (Instagram, FB, etc.)
+      return !!w.webkit;
+    }
+
+    // 3. Android Detection
+    if (/Android/i.test(ua)) {
+      return (
+        /; wv\)/i.test(ua) ||
+        (/Version\/[\d.]+/i.test(ua) &&
+          /Chrome/i.test(ua) &&
+          /Safari/i.test(ua) &&
+          /Version/i.test(ua))
+      );
+    }
+
+    return false;
   };
-
-  const isAndroidDevice = () => /Android/i.test(ua);
-
-  const isInAppBrowser = () =>
-    /FBAN|FBAV|Instagram|Line|TikTok|Twitter|OKApp|Pinterest/i.test(ua);
 
   const isStandalonePWA = () => {
     if (typeof window === "undefined") return false;
     return (
       window.matchMedia("(display-mode: standalone)").matches ||
-      (navigator as any).standalone
+      (navigator as any).standalone === true
     );
   };
 
-  const isWebView = () => {
-    if (typeof window === "undefined") return false;
-    const w = window as any;
-    const isIOSWV =
-      isIOSDevice() &&
-      (!!w.webkit ||
-        !!w.flutter_inappwebview ||
-        !!w.FaltaApp ||
-        isInAppBrowser());
-    const isAndroidWV =
-      isAndroidDevice() &&
-      (/; wv\)/i.test(ua) ||
-        /Version\/[\d.]+\s+Chrome\//i.test(ua) ||
-        /MY_FLUTTER_WEBVIEW/i.test(ua));
-    return isIOSWV || isAndroidWV;
-  };
-
-  /** Decide when to show banner */
   useEffect(() => {
     if (!isMounted) return;
 
-    const isMobile = isIOSDevice() || isAndroidDevice();
-    const shouldShow = isMobile && !isWebView() && !isStandalonePWA();
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(ua);
+    const webViewStatus = isWebView();
+    const pwaStatus = isStandalonePWA();
 
-    // Check if dismissed in this session
+    // Logic: Is Mobile AND NOT in a WebView AND NOT installed as PWA
+    const shouldShow = isMobile && !webViewStatus && !pwaStatus;
+
     const isDismissed = sessionStorage.getItem("app-banner-dismissed");
 
     if (shouldShow && !isDismissed) {
       setShowGetApp(true);
+    } else {
+      setShowGetApp(false);
     }
   }, [isMounted, ua]);
 
@@ -89,21 +104,19 @@ export default function BackHeaderForRootPages() {
   };
 
   const store = useMemo(() => {
-    if (isIOSDevice()) return { href: IOS_APPSTORE_URL, label: "Get" };
-    if (isAndroidDevice()) return { href: ANDROID_PLAY_URL, label: "Get" };
-    return { href: "#", label: "Get" };
+    if (/iPhone|iPad|iPod/i.test(ua))
+      return { href: IOS_APPSTORE_URL, label: "Get" };
+    return { href: ANDROID_PLAY_URL, label: "Get" };
   }, [ua]);
 
-  // Don't render browser-specific logic on server
   if (!isMounted) return null;
 
   return (
-    <header className=" z-50 top-0 w-full lg:hidden">
-      {/* Smart App Banner */}
+    <header className="z-50 top-0 w-full lg:hidden">
       {showGetApp && (
         <div
           dir={locale === "ar" ? "rtl" : "ltr"}
-          className="bg-primary-bg-gradient py-2  px-3 flex items-center justify-between text-white border-b border-white/10"
+          className="bg-primary-bg-gradient py-2 px-3 flex items-center justify-between text-white border-b border-white/10"
         >
           <div className="flex items-center gap-3">
             <button
@@ -134,10 +147,9 @@ export default function BackHeaderForRootPages() {
         </div>
       )}
 
-      {/* Main Header Content */}
       <div
         className={`bg-primary-bg-gradient flex justify-between items-center p-3 text-white shadow-md ${
-          showGetApp ? "pt-12 md:pt-2" : ""
+          !showGetApp ? "pt-12 md:pt-2" : ""
         }`}
       >
         <div className="flex items-center gap-3">
@@ -156,24 +168,12 @@ export default function BackHeaderForRootPages() {
             <p className="text-lg font-bold truncate max-w-[120px]">
               {user?.fullName || t("appBanner.guest")}
             </p>
-            {/* <Link
-              href="/plans"
-              className="mt-1 relative bg-white rounded-md text-error px-3 py-0.5 flex items-center gap-1.5  w-fit shadow-sm "
-            >
-              <span className="text-[14px] font-bold whitespace-nowrap">
-                {t("remaining-games")}:{" "}
-                {user?.gPoint ? Math.round(user.gPoint / 100) : 0}
-              </span>
-              <div className="bg-error text-white rounded-sm p-0.5 shadow-sm absolute -top-2 -right-2">
-                <PlusIcon size={10} />
-              </div>
-            </Link> */}
           </div>
         </div>
 
         <Link
           href="/plans"
-          className="mt-1 relative bg-white rounded-md text-error px-3 py-1.5 flex items-center gap-1.5  w-fit shadow-sm "
+          className="mt-1 relative bg-white rounded-md text-error px-3 py-1.5 flex items-center gap-1.5 w-fit shadow-sm"
         >
           <span className="text-[16px] font-bold whitespace-nowrap">
             {t("remaining-games")}:{" "}
