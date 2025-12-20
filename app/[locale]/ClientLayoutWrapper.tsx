@@ -6,7 +6,7 @@ import BottomDoc from "./_components/bottomDoc/BottomDoc";
 import { UserProvider } from "@/stores/userContext";
 import { getUserProfile } from "@/core/user/user-profile-service";
 import { useQuery } from "@tanstack/react-query";
-
+import "../toast-custom.css";
 interface ClientLayoutWrapperProps {
   children: React.ReactNode;
   locale: string;

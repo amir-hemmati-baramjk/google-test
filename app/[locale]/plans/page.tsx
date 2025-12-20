@@ -43,11 +43,11 @@ export default function PackagesPage() {
       <BackHeaderForRootPages />
 
       <div className="lg:container m-auto flex flex-col gap-5 p-4 max-w-[1200px]">
-        <div className="space-y-2 mt-4">
-          <h1 className="text-xl lg:text-4xl font-bold text-center">
+        <div className="space-y-2 lg:space-y-10 mt-4">
+          <h1 className="text-3xl lg:text-6xl font-bold text-center">
             {t("title")}
           </h1>
-          <p className="text-center text-sm lg:text-base opacity-90 max-w-[600px] m-auto">
+          <p className="text-lg font-bold lg:text-2xl opacity-90 text-center">
             {t("description")}
           </p>
         </div>

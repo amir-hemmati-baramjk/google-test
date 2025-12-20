@@ -137,7 +137,7 @@ export default function TopBar({ questionPoints }: TopBarProps) {
           <TimeResetIcon size={48} />
         </Button>
       </div>
-      <div className="hidden sm:block bg-light-purple px-5 text-secondary border-[2px] border-secondary font-bold rounded-[6px] text-sm md:text-lg lg:text-xl xl:text-2xl">
+      <div className="hidden sm:block bg-light-purple truncate max-w-[140px] px-5 text-secondary border-[2px] border-secondary font-bold rounded-[6px] text-sm md:text-lg lg:text-xl xl:text-2xl">
         {category?.name}
       </div>
     </div>

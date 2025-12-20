@@ -22,10 +22,10 @@ export default function middleware(req: NextRequest) {
   if (pathname.startsWith("/__/auth/handler")) return NextResponse.next();
 
   const cookieLocale = req.cookies.get("APP_LANG")?.value as
-    | "en"
     | "ar"
+    | "en"
     | undefined;
-  const forced = cookieLocale ?? (routing.defaultLocale as "en" | "ar");
+  const forced = cookieLocale ?? (routing.defaultLocale as "ar" | "en");
 
   const { current, rest } = splitLocale(pathname);
 

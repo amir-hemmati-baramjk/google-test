@@ -30,22 +30,23 @@ export default function ProfilePage() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const { user, setUser, setLanguage } = useUser();
-  const isLoggedIn = !!user;
+  const { user, setUser, setLanguage, isLogin } = useUser();
 
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const changeLanguage = async () => {
     const nextLocale = locale === "ar" ? "en" : "ar";
 
-    // 1. If user is NOT logged in, just change local state and route
-    if (!isLoggedIn) {
+    if (!isLogin) {
       setLanguage(nextLocale);
       router.replace({ pathname }, { locale: nextLocale });
+      const updatedUser = {
+        language: nextLocale === "ar" ? 1 : 0,
+      };
+      setUser(updatedUser as any);
       return;
     }
 
-    // 2. If user IS logged in, call the API to save preference
     try {
       const res = await changeUserLanguageService(user?.language ?? 0);
       if (res?.success) {
@@ -149,7 +150,7 @@ export default function ProfilePage() {
   ];
 
   const handleItemClick = (item: (typeof menuItems)[0]) => {
-    if (item.requiresAuth && !isLoggedIn) {
+    if (item.requiresAuth && !isLogin) {
       setShowLoginModal(true);
       return;
     }
@@ -166,13 +167,15 @@ export default function ProfilePage() {
       <BackHeaderForRootPages />
 
       <div className="flex flex-col items-center gap-8 px-5 mt-10 mx-auto text-white lg:container">
-        <div className="text-center space-y-2">
-          <h1 className="text-2xl font-bold lg:text-4xl">{t("title")}</h1>
-          <p className="text-lg font-bold lg:text-2xl opacity-90">
+        <div className="text-center space-y-5 lg:space-y-10">
+          <h1 className="text-3xl lg:text-6xl font-bold text-center">
+            {t("title")}
+          </h1>
+          <p className="text-lg font-bold lg:text-2xl opacity-90 ">
             {t("subtitle")}
           </p>
         </div>
-
+        {/* 
         <div className="grid grid-cols-2 lg:grid-cols-4 w-full gap-5">
           {stats.map((stat) => (
             <div
@@ -188,7 +191,7 @@ export default function ProfilePage() {
               </p>
             </div>
           ))}
-        </div>
+        </div> */}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
           {menuItems.map((item) => (
@@ -196,7 +199,7 @@ export default function ProfilePage() {
               key={item.key}
               onClick={() => handleItemClick(item)}
               className={`bg-white rounded-[20px] px-4 py-5 lg:py-10 flex gap-4 justify-between items-center w-full hover:bg-gray-50 transition-all group shadow-sm active:scale-[0.98] text-start ${
-                item?.requiresAuth ? "hidden" : ""
+                item?.requiresAuth && !isLogin ? "hidden" : ""
               }`}
             >
               <div className="flex gap-5 items-center">
@@ -204,10 +207,10 @@ export default function ProfilePage() {
                   <item.icon size={32} />
                 </div>
                 <div>
-                  <p className="text-primary font-bold">
+                  <p className="text-primary font-bold text-lg lg:text-2xl">
                     {tMenu(`${item.key}.title`)}
                   </p>
-                  <p className="text-primary/70 text-sm">
+                  <p className="text-primary/70 text-sm lg:text-xl">
                     {tMenu(`${item.key}.description`)}
                   </p>
                 </div>

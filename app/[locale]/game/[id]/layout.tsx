@@ -32,6 +32,8 @@ export default function GameLayout({
     queryKey: ["game", id],
     queryFn: () => getGameComplete({ id }),
     enabled: !!id,
+    staleTime: 0,
+    gcTime: 0,
   });
 
   useEffect(() => {

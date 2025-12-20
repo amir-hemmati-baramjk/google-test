@@ -54,6 +54,7 @@ export default function RestartGameModal({
             onClick={handleRestartGame}
             isLoading={isRestartPending}
             disabled={isKeepGoingPending || isRestartPending}
+            className="!whitespace-nowrap"
           >
             {t("start-again-browsed-game")}
           </Button>
@@ -64,6 +65,7 @@ export default function RestartGameModal({
               game?.isGameFinished || isKeepGoingPending || isRestartPending
             }
             isLoading={isKeepGoingPending}
+            className="!whitespace-nowrap"
           >
             {t("keep-going-browsed-game")}
           </Button>

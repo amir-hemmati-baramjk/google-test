@@ -53,7 +53,7 @@ export default function ActionCard() {
         >
           <div className="flex flex-col gap-3">
             <p
-              className={`text-md lg:text-2xl font-[700] text-${item.textVarient}`}
+              className={`text-lg lg:text-3xl font-bold text-${item.textVarient}`}
             >
               {item.title}
             </p>
@@ -80,7 +80,7 @@ export default function ActionCard() {
           {item.requiresAuth && !isLoggedIn ? (
             <Button
               onClick={() => setShowLoginModal(true)}
-              className="shadow-custom "
+              className="shadow-custom !text-[16px] !font-bold lg:text-xl"
               variant={item.buttonVarient as Variant}
               size="large"
             >
@@ -89,7 +89,7 @@ export default function ActionCard() {
           ) : (
             <Link href={item.link}>
               <Button
-                className="shadow-custom  "
+                className="shadow-custom !text-[16px] !font-bold lg:text-xl"
                 variant={item.buttonVarient as Variant}
                 size="large"
               >

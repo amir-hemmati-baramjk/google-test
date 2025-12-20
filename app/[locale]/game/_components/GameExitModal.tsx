@@ -16,7 +16,7 @@ export default function GameExitModal({ isOpen, onClose }: ChildModalProps) {
   const router = useRouter();
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="flex flex-col justify-center items-center gap-5 w-[360px] lg:max-w-[400px]">
+      <div className="flex flex-col justify-center items-center gap-5 ">
         <div className="w-full flex justify-center items-center bg-secondary text-white rounded-[20px] py-4">
           <ExitIcon size={80} />
         </div>

@@ -19,6 +19,7 @@ import { CouponInput } from "./_components/CouponInput";
 import { OrderSummaryDetails } from "./_components/OrderSummaryDetails";
 import { PaymentGatewayList } from "./_components/PaymentGatewayList";
 import { CurrencySelector } from "./_components/CurrencySelector";
+import { Loading } from "../../_components/loading/loading";
 
 const PaymentPage: React.FC = () => {
   const { planId } = useParams();
@@ -139,7 +140,11 @@ const PaymentPage: React.FC = () => {
   };
 
   if (isLoadingPackage || !packageData || !orderSummary) {
-    return <div className="text-white text-center p-10">{t("loading")}</div>;
+    return (
+      <div className="text-white text-center p-10">
+        <Loading variant="light-blue-gradient" size="large" />
+      </div>
+    );
   }
 
   const style = getPackageStyle(packageData?.gPointCount / 100 - 1);

@@ -62,7 +62,7 @@ export default function AnswerComponent() {
         <Button
           onClick={handleWhoAnswered}
           variant="secondary"
-          className="!font-[700] !py-1.5 lg:!py-1 !rounded-[6px] !text-md sm:!text-base xs:!px-6 sm:!px-4 md:!text-lg lg:!text-2xl xl:!text-3xl"
+          className="!font-[700] !py-1.5 lg:!py-1 !rounded-[6px] !text-md sm:!text-base xs:!px-2 sm:!px-4 md:!text-lg lg:!text-2xl xl:!text-3xl"
         >
           {t("who-answer")}
         </Button>
@@ -70,7 +70,7 @@ export default function AnswerComponent() {
           onClick={handleReturnToQuestion}
           variant="secondary"
           isOutline
-          className="!font-[700] !py-1.5 lg:!py-1 !rounded-[6px] !text-md sm:!text-base xs:!px-6 sm:!px-4 md:!text-lg lg:!text-2xl xl:!text-3xl"
+          className="!font-[700] !py-1.5 lg:!py-1 !rounded-[6px] !text-md sm:!text-base xs:!px-2 sm:!px-4 md:!text-lg lg:!text-2xl xl:!text-3xl"
         >
           {t("question-again")}
         </Button>

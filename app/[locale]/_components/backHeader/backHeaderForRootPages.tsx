@@ -98,7 +98,7 @@ export default function BackHeaderForRootPages() {
   if (!isMounted) return null;
 
   return (
-    <header className="sticky z-50 top-0 w-full lg:hidden">
+    <header className=" z-50 top-0 w-full lg:hidden">
       {/* Smart App Banner */}
       {showGetApp && (
         <div
@@ -137,7 +137,7 @@ export default function BackHeaderForRootPages() {
       {/* Main Header Content */}
       <div
         className={`bg-primary-bg-gradient flex justify-between items-center p-3 text-white shadow-md ${
-          !showGetApp ? "pt-12 md:pt-2" : ""
+          showGetApp ? "pt-12 md:pt-2" : ""
         }`}
       >
         <div className="flex items-center gap-3">
@@ -153,32 +153,36 @@ export default function BackHeaderForRootPages() {
             />
           </Link>
           <div className="flex flex-col">
-            <p className="text-sm font-bold truncate max-w-[120px]">
+            <p className="text-lg font-bold truncate max-w-[120px]">
               {user?.fullName || t("appBanner.guest")}
             </p>
-            <Link
+            {/* <Link
               href="/plans"
-              className="mt-1 bg-white rounded-md text-error px-3 py-0.5 flex items-center gap-1.5 relative w-fit shadow-sm active:scale-95 transition-transform"
+              className="mt-1 relative bg-white rounded-md text-error px-3 py-0.5 flex items-center gap-1.5  w-fit shadow-sm "
             >
-              <span className="text-[10px] font-bold whitespace-nowrap">
+              <span className="text-[14px] font-bold whitespace-nowrap">
                 {t("remaining-games")}:{" "}
                 {user?.gPoint ? Math.round(user.gPoint / 100) : 0}
               </span>
-              <div className="bg-error text-white rounded-sm p-0.5 shadow-sm">
+              <div className="bg-error text-white rounded-sm p-0.5 shadow-sm absolute -top-2 -right-2">
                 <PlusIcon size={10} />
               </div>
-            </Link>
+            </Link> */}
           </div>
         </div>
 
-        <div className="active:scale-90 transition-transform">
-          <Image
-            alt="Badge"
-            width={54}
-            height={54}
-            src="/icons/beginner-icon.svg"
-          />
-        </div>
+        <Link
+          href="/plans"
+          className="mt-1 relative bg-white rounded-md text-error px-3 py-1.5 flex items-center gap-1.5  w-fit shadow-sm "
+        >
+          <span className="text-[16px] font-bold whitespace-nowrap">
+            {t("remaining-games")}:{" "}
+            {user?.gPoint ? Math.round(user.gPoint / 100) : 0}
+          </span>
+          <div className="bg-error text-white rounded-full p-0.5 shadow-sm absolute -top-2 -right-2">
+            <PlusIcon size={20} />
+          </div>
+        </Link>
       </div>
     </header>
   );

@@ -1,0 +1,22 @@
+.custom-toast {
+  background-color: #eee5fd !important; /* primary */
+  color: #2f0075 !important; /* primary-content */
+  border-right: 6px solid #5d00ea !important; /* secondary */
+  border-radius: 10px !important;
+  padding: 0 10px !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
+  border: 2px solid #5d00ea !important;
+  font-size: 14px !important;
+  text-align: center !important;
+  top: 40px !important;
+}
+
+.Toastify__progress-bar {
+  background: linear-gradient(to left, #5d00ea, #5d00ea) !important;
+}
+.Toastify__toast-icon {
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  margin-inline-end: 5px !important;
+}

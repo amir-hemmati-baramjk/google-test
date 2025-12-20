@@ -9,7 +9,8 @@ import Script from "next/script";
 import NextTopLoader from "nextjs-toploader";
 import ClientLayoutWrapper from "./ClientLayoutWrapper";
 import { ToastContainer } from "react-toastify";
-
+import "react-toastify/dist/ReactToastify.css";
+import "../toast-custom.css";
 const cairo = Cairo({
   display: "swap",
   variable: "--font-cario",
@@ -84,7 +85,12 @@ export default async function LocaleLayoutWrapper({
         <QueryProvider>
           <NextIntlClientProvider locale={locale} messages={messages}>
             <ClientLayoutWrapper locale={locale}>
-              <ToastContainer />
+              <ToastContainer
+                toastClassName="custom-toast"
+                position="top-center"
+                theme="colored"
+                rtl
+              />
 
               {children}
             </ClientLayoutWrapper>

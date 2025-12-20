@@ -25,7 +25,7 @@ export default function CategoryGrid({
     <div className="overflow-hidden">
       <div
         key={currentPage}
-        className={`grid gap-3 my-auto transition-transform duration-500 ease-in-out animate-slide-in
+        className={`grid gap-1 lg:gap-3 my-auto transition-transform duration-500 ease-in-out animate-slide-in
           grid-cols-1 xs:grid-cols-2 
           ${
             itemsPerPage === 4

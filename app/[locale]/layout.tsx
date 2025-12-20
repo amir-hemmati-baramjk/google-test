@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
 import "../globals.css";
+import "../toast-custom.css";
 import QueryProvider from "@/stores/QueryProvider";
 import LocaleLayoutWrapper from "./LocaleLayoutWrapper";
 

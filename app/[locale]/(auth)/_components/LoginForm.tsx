@@ -77,13 +77,13 @@ const LoginForm = () => {
         error={errors.password}
         disabled={isLoading}
       />
-
+      {/* 
       <Link
         href={`/forgetPassword`}
         className="text-error w-full text-start text-sm hover:underline"
       >
         {t("forgot")} {t("password")}?
-      </Link>
+      </Link> */}
 
       <Button
         isLoading={isLoading}

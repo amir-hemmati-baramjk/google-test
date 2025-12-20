@@ -36,7 +36,9 @@ export default function LogoutModal({ isOpen, onClose }: ChildModalProps) {
         <div className="w-full flex justify-center items-center bg-error/30 text-error rounded-[20px] py-4">
           <ExitIcon size={80} />
         </div>
-        <p className="text-error text-lg">{t("logout-desc")}</p>
+        <p className="text-error text-lg font-bold text-center">
+          {t("logout-desc")}
+        </p>
         <div className="w-full flex justify-center items-center gap-5">
           <div className="w-1/2">
             <Button
