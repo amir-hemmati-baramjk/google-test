@@ -33,13 +33,13 @@ export default function BottomDoc() {
             variant: "light-blue-gradient",
           },
         ]),
-    {
-      name: t("tournaments"),
-      href: "/tournament",
-      icon: <TournamentIcon />,
-      requiresLogin: true,
-      variant: "orange-gradient",
-    },
+    // {
+    //   name: t("tournaments"),
+    //   href: "/tournament",
+    //   icon: <TournamentIcon />,
+    //   requiresLogin: true,
+    //   variant: "orange-gradient",
+    // },
     {
       name: t("profile"),
       href: "/profile",

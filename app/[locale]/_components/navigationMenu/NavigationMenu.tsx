@@ -40,12 +40,12 @@ export default function NavigationMenu() {
             variant: "light-blue-gradient",
           },
         ]),
-    {
-      name: t("tournaments"),
-      href: "/tournament",
-      icon: <TournamentIcon />,
-      variant: "orange-gradient",
-    },
+    // {
+    //   name: t("tournaments"),
+    //   href: "/tournament",
+    //   icon: <TournamentIcon />,
+    //   variant: "orange-gradient",
+    // },
     {
       name: t("profile"),
       href: "/profile",

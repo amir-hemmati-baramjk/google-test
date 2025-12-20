@@ -15,7 +15,7 @@ export default function AboutUsBanner() {
     "light-orange-gradient": "bg-light-orange-gradient",
     "light-blue-gradient": "bg-light-blue-gradient",
     "light-purple-gradient": "bg-light-purple-gradient",
-    "green-gradient": "bg-light-green-gradient",
+    "green-gradient": "bg-green-gradient",
   };
 
   const assistanceItems = [

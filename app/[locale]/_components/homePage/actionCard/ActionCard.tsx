@@ -1,13 +1,18 @@
 "use client";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "../../button/button";
 import { Variant } from "../../../../../type/components/variant.type";
 import { Link } from "@/i18n/routing";
+import { useUser } from "@/stores/userContext";
+import LoginModal from "@/app/[locale]/create-game/_components/LoginModal";
 
 export default function ActionCard() {
   const t = useTranslations("homepage");
+  const { user } = useUser();
+  const isLoggedIn = !!user;
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const items = [
     {
@@ -17,6 +22,7 @@ export default function ActionCard() {
       icons: "/icons/logo.svg",
       textVarient: "secondary",
       link: "/my-game",
+      requiresAuth: true,
     },
     {
       title: t("choose-categories"),
@@ -25,6 +31,7 @@ export default function ActionCard() {
       icons: "/icons/logo.svg",
       textVarient: "secondary",
       link: "/create-game",
+      requiresAuth: false,
     },
     {
       title: t("remaining-games"),
@@ -33,16 +40,16 @@ export default function ActionCard() {
       key: "GameCount",
       textVarient: "secondary",
       link: "/plans",
+      requiresAuth: false,
     },
   ];
 
   return (
-    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 w-full max-w-[1400px] mx-auto mt-5">
+    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 w-full max-w-[1400px] mx-auto mt-5 px-4 lg:px-0">
       {items.map((item, index) => (
-        <Link
+        <div
           key={index}
-          href={item.link}
-          className="flex bg-white justify-between items-center gap-5 p-3 lg:p-5 rounded-[16px] hover:shadow-lg transition-all active:scale-[0.98] group"
+          className="flex bg-white justify-between items-center gap-5 p-4 lg:p-6 rounded-[16px] shadow-sm group"
         >
           <div className="flex flex-col gap-3">
             <p
@@ -52,13 +59,14 @@ export default function ActionCard() {
             </p>
 
             {item.icons ? (
-              <Image
-                alt={item.title}
-                src={item.icons}
-                width={50}
-                height={50}
-                className="group-hover:scale-110 transition-transform"
-              />
+              <div className="relative w-[50px] h-[50px]">
+                <Image
+                  alt={item.title}
+                  src={item.icons}
+                  fill
+                  className="object-contain"
+                />
+              </div>
             ) : item.key ? (
               <p className="text-5xl lg:text-6xl font-[900] text-turquoise">
                 12
@@ -68,14 +76,34 @@ export default function ActionCard() {
             )}
           </div>
 
-          <Button
-            className="shadow-custom !text-[14px] pointer-events-none"
-            variant={item.buttonVarient as Variant}
-          >
-            {item.buttonText}
-          </Button>
-        </Link>
+          {/* Only the button is clickable */}
+          {item.requiresAuth && !isLoggedIn ? (
+            <Button
+              onClick={() => setShowLoginModal(true)}
+              className="shadow-custom "
+              variant={item.buttonVarient as Variant}
+              size="large"
+            >
+              {item.buttonText}
+            </Button>
+          ) : (
+            <Link href={item.link}>
+              <Button
+                className="shadow-custom  "
+                variant={item.buttonVarient as Variant}
+                size="large"
+              >
+                {item.buttonText}
+              </Button>
+            </Link>
+          )}
+        </div>
       ))}
+
+      <LoginModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+      />
     </div>
   );
 }

@@ -31,7 +31,7 @@ export default function CategoryCard({
             return (
               <button
                 key={`l-${points}`}
-                onClick={() => onQuestionClick(q?.id)}
+                onClick={() => onQuestionClick(q?.id as string)}
                 disabled={
                   q?.isAnswered || (game?.pendingDoublePoint && points !== 600)
                 }
