@@ -50,9 +50,9 @@ export default function BottomDoc() {
   ];
 
   return (
-    <div className="px-2 py-5 bg-primary-bg-gradient w-full fixed bottom-0 left-0 right-0 z-50 lg:hidden">
-      <div className=" flex justify-between items-center">
-        <div className="flex justify-center w-full items-center gap-2 ">
+    <div className="px-2 py-5 bg-primary-bg-gradient w-full fixed bottom-0 left-0 right-0 z-50 lg:hidden ">
+      <div className=" flex justify-between items-center ">
+        <div className="flex justify-center w-full items-center gap-6 ">
           {menuItems.map((item, index) => {
             const isActive =
               item.href === "/"
@@ -66,7 +66,7 @@ export default function BottomDoc() {
                 variant={isActive ? (item.variant as Variant) : "white"}
                 animatedIcon
                 shape={"rounded"}
-                className="!px-5 !text-[12px] sm:!text-[16px] !gap-1"
+                className="!px-5 !text-[16px] sm:!text-[18px] !gap-1"
               >
                 {item.icon}
                 {isActive && item.name}

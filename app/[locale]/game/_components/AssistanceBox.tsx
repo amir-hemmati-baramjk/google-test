@@ -128,7 +128,7 @@ export default function AssistanceBox({
       onClick={onClick}
       isLoading={isLoading}
       disabled={isDisabled}
-      className="!p-1 !rounded-[5px] w-7 h-7 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-10 lg:h-10 xl:w-14 xl:h-14"
+      className="!p-1 !rounded-[5px] w-7 h-7 sm:w-7 sm:h-7 md:w-7 md:h-7 lg:w-10 lg:h-10 xl:w-14 xl:h-14"
       variant={variant}
       shape="square"
       title={label}

@@ -45,12 +45,12 @@ export default function BackHeaderForRootPages() {
   const handleDismiss = () => setShowGetApp(false);
 
   return (
-    <header className="sticky z-50 top-0 w-full lg:hidden">
+    <header className="sticky z-50 top-0 w-full lg:hidden ">
       {/* Smart App Banner */}
       {showGetApp && (
         <div
           dir={locale === "ar" ? "rtl" : "ltr"}
-          className="bg-primary-bg-gradient py-2 px-3 flex items-center justify-between text-white border-b border-white/10"
+          className="bg-primary-bg-gradient py-2 pt-12 px-3 flex items-center justify-between text-white border-b border-white/10"
         >
           <div className="flex items-center gap-3">
             <button
@@ -82,7 +82,7 @@ export default function BackHeaderForRootPages() {
       )}
 
       {/* Main Header Content */}
-      <div className="bg-primary-bg-gradient flex justify-between items-center p-3 text-white shadow-md">
+      <div className="bg-primary-bg-gradient flex justify-between items-center p-3 text-white shadow-md ">
         <div className="flex items-center gap-3">
           <div className="border-2 border-white/50 h-[52px] w-[52px] rounded-full relative overflow-hidden shadow-inner bg-gray-100">
             <Image

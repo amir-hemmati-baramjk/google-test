@@ -45,7 +45,7 @@ export default function ActionCard() {
   ];
 
   return (
-    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 w-full max-w-[1400px] mx-auto mt-5 px-4 lg:px-0">
+    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 w-full max-w-[1400px] mx-auto mt-5  lg:px-0">
       {items.map((item, index) => (
         <div
           key={index}

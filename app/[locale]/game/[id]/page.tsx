@@ -83,7 +83,7 @@ export default function Page() {
   return (
     <div className="h-full w-full">
       {game?.layoutType === "version1" ? (
-        <div className="flex justify-between sm:justify-center items-center gap-5  sm:gap-1 lg:gap-5 flex-col sm:flex-row h-full">
+        <div className="flex justify-between sm:justify-center items-center gap-5  sm:gap-1 lg:gap-5 flex-col sm:flex-row h-full md:px-10">
           <div className="flex flex-col justify-center h-full items-center w-full ">
             <NewCategoryGrid
               categories={game?.categories || []}
@@ -112,7 +112,7 @@ export default function Page() {
               setCurrentPage((p) => Math.min(totalPages - 1, p + 1))
             }
           />
-          <div className="flex flex-row sm:flex-col gap-3 md:gap-10 lg:gap-14 w-full sm:w-1/3 bg-light-purple sm:bg-transparent p-2 py-1">
+          <div className="flex flex-row sm:flex-col gap-3 md:gap-10 lg:gap-14 w-full sm:w-1/3 bg-light-purple sm:bg-transparent p-2 py-1 pb-10 md:pb-1">
             <div className="w-1/2 sm:w-full flex flex-col gap-2">
               <TeamScoreCard teamName={game?.teamOneName} teamNumber={1} />
               <AssistanceBox team={1} context="gameboard" />
@@ -129,7 +129,7 @@ export default function Page() {
         </div>
       ) : (
         <div className="flex flex-col h-full w-full">
-          <div className="p-3 flex flex-col justify-around h-full my-auto ">
+          <div className="p-3 flex flex-col justify-around h-full my-auto md:px-10">
             <CategoryGrid
               categories={game?.categories || []}
               currentPage={currentPage}
@@ -147,7 +147,7 @@ export default function Page() {
               }
             />
           </div>
-          <div className="p-2 py-1 lg:py-3 xl:py-5 bg-light-purple w-full flex justify-center items-center h-fit ">
+          <div className="p-2 py-1 lg:py-3 xl:py-5 bg-light-purple w-full flex justify-center items-center h-fit pb-10 md:pb-1 md:px-10">
             <div className="w-1/2 sm:w-2/5 px-2 flex gap-2 justify-center items-center flex-col sm:flex-row ">
               <TeamScoreCard teamName={game?.teamOneName} teamNumber={1} />
               <div className="w-full sm:w-2/3">

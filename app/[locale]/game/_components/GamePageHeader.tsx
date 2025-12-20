@@ -56,7 +56,7 @@ export default function GamePageHeader() {
 
   return (
     <>
-      <div className="bg-primary-bg-gradient text-white flex justify-between items-center px-2 sm:px-10 py-2 gap-2">
+      <div className="bg-primary-bg-gradient text-white flex justify-between items-center px-2 sm:px-10 py-2 gap-2 pt-10 sm:pt-2">
         <div className="flex items-center gap-2 lg:gap-3">
           <button
             onClick={() => setShowExitModal(true)}
@@ -69,14 +69,13 @@ export default function GamePageHeader() {
           </button>
         </div>
 
-        {/* لوگو در وسط */}
         <div className="flex-shrink-0">
           <Image
             alt="falta-logo"
             src="/icons/logo.svg"
             width={60}
             height={60}
-            className="w-[45px] h-[45px] lg:w-[60px] lg:h-[60px]"
+            className="w-[45px] h-[45px] md:w-[55px] md:h-[55px] lg:w-[60px] lg:h-[60px]"
           />
         </div>
 
@@ -94,7 +93,6 @@ export default function GamePageHeader() {
             </div>
           </button>
 
-          {/* دکمه نوبت تیم */}
           <div className="flex flex-col items-end">
             <button
               onClick={handleTeamRoleClick}
@@ -112,11 +110,11 @@ export default function GamePageHeader() {
               </div>
             </button>
 
-            {changeTurnMutation.isPending && (
+            {/* {changeTurnMutation.isPending && (
               <p className="text-[10px] text-white mt-1 absolute translate-y-8 bg-black/20 px-2 rounded">
                 {t("gameboard.changingTurn")}
               </p>
-            )}
+            )} */}
           </div>
         </div>
       </div>
