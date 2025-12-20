@@ -5,14 +5,12 @@ import { useRouter, useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
-// Services
 import { getPlansById } from "@/core/plans/get-plan-service";
 import { getAvailableCurrencies } from "@/core/payments/available-currencies-service";
 import { fetchOrderSummary } from "@/core/payments/order-summery-service";
 import { initPaymentGateways } from "@/core/payments/initial-payment-service";
 import { createPaymentRequest } from "@/core/payments/createpayment-service";
 
-// Utilities & Components
 import { getPackageStyle } from "@/utils/package-mapping";
 import { Button } from "../../_components/button/button";
 import { BackHeaderForsubPages } from "../../_components/backHeader/backHeaderForsubPages";
@@ -27,7 +25,6 @@ const PaymentPage: React.FC = () => {
   const t = useTranslations("checkout");
   const router = useRouter();
 
-  // --- State ---
   const [gateways, setGateways] = useState([]);
   const [showGatewayList, setShowGatewayList] = useState(false);
   const [selectedGateway, setSelectedGateway] = useState<any>();
@@ -36,7 +33,6 @@ const PaymentPage: React.FC = () => {
   const [selectedCurrency, setSelectedCurrency] = useState("");
   const [orderSummary, setOrderSummary] = useState<any>();
 
-  // Full screen and button loading state
   const [isRedirecting, setIsRedirecting] = useState(false);
 
   const [isPendingApplyDiscount, startApplyDiscount] = useTransition();
@@ -98,7 +94,6 @@ const PaymentPage: React.FC = () => {
         setGateways(res.data);
       }
 
-      // If price is 0, we bypass gateway list and go straight to request
       if (orderSummary.price === 0) {
         setIsRedirecting(true);
         const response = await createPaymentRequest({
@@ -143,7 +138,6 @@ const PaymentPage: React.FC = () => {
     }
   };
 
-  // --- Early Returns ---
   if (isLoadingPackage || !packageData || !orderSummary) {
     return <div className="text-white text-center p-10">{t("loading")}</div>;
   }

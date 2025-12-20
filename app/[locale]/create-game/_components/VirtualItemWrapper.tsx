@@ -1,50 +1,47 @@
-import { Tag } from "@/type/api/categories/categories.type";
-import { useVirtualizer, VirtualItem } from "@tanstack/react-virtual";
 import { useEffect, useRef } from "react";
-import CategorySection from "./CategorySection";
-
-interface VirtualItemWrapperProps {
-  virtualItem: VirtualItem;
-  tag: Tag;
-  virtualizer: ReturnType<typeof useVirtualizer>;
-  gridClass: string;
-
-  selectedMap: Set<string>;
-  MAX_SELECTION: number;
-  handleSelectCategory: (id: string) => () => void;
-}
+import { CategoryCard } from "./CategoryCard";
 
 export default function VirtualItemWrapper({
   virtualItem,
   tag,
   virtualizer,
   gridClass,
-
   selectedMap,
   MAX_SELECTION,
-  handleSelectCategory,
-}: VirtualItemWrapperProps) {
-  const ref = useRef<HTMLDivElement>(null);
+  onToggle,
+}: any) {
+  const elementRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (ref.current) {
-      virtualizer.measureElement(ref.current);
+    if (elementRef.current) {
+      virtualizer.measureElement(elementRef.current);
     }
-  }, [tag.categories.length, virtualItem.index, virtualizer, gridClass]);
+  }, [virtualizer, gridClass, tag.categories.length]);
 
   return (
     <div
-      ref={ref}
+      ref={elementRef}
       data-index={virtualItem.index}
-      style={{ width: "100%", overflow: "hidden" }}
+      className="absolute top-0 left-0 w-full pt-6"
+      style={{ transform: `translateY(${virtualItem.start}px)` }}
     >
-      <CategorySection
-        tag={tag}
-        gridClass={gridClass}
-        selectedMap={selectedMap}
-        MAX_SELECTION={MAX_SELECTION}
-        handleSelectCategory={handleSelectCategory}
-      />
+      <h2 className="text-lg font-bold mb-4 text-primary bg-light-purple px-1 py-2 text-center rounded-lg">
+        {tag.name}
+      </h2>
+      <div className={`grid gap-4 ${gridClass} `}>
+        {tag.categories?.map((cat: any) => (
+          <CategoryCard
+            key={cat.id}
+            data={cat}
+            isSelected={selectedMap.has(cat.id)}
+            isDisabled={cat.allQuestionUsed}
+            isSelectionLimitReached={
+              selectedMap.size >= MAX_SELECTION && !selectedMap.has(cat.id)
+            }
+            onSelect={() => onToggle(cat.id)}
+          />
+        ))}
+      </div>
     </div>
   );
 }

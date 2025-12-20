@@ -7,7 +7,6 @@ import { Button } from "../../_components/button/button";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 
-// Dynamically import Modal with SSR disabled
 const Modal = dynamic(() => import("../../_components/modal/Modal"), {
   ssr: false,
 });

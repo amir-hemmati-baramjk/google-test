@@ -60,7 +60,7 @@ const AssistantSelect: React.FC<AssistantSelectProps> = ({
     return true;
   };
 
-  const t = useTranslations("index");
+  const t = useTranslations("CreateGameForm");
 
   return (
     <div className="w-full">

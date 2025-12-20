@@ -1,6 +1,8 @@
 "use client";
+
 import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 import BackHeaderForRootPages from "../_components/backHeader/backHeaderForRootPages";
 import { useUser } from "@/stores/userContext";
 import {
@@ -14,9 +16,15 @@ import { useRouter } from "@/i18n/navigation";
 import { Loading } from "../_components/loading/loading";
 
 export default function PackagesPage() {
+  const t = useTranslations("plans");
   const { isLogin, isInitialized } = useUser();
   const router = useRouter();
-  const { data: plansResponse, isLoading } = useQuery({
+
+  const {
+    data: plansResponse,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["plans", isLogin],
     queryFn: isLogin ? getPlansForLogedInUser : getPlansForGuestUser,
     enabled: isInitialized,
@@ -25,11 +33,6 @@ export default function PackagesPage() {
   const plansData: GamePackage[] = plansResponse?.data
     ? [...plansResponse.data].sort((a, b) => a.displayOrder - b.displayOrder)
     : [];
-  useEffect(() => {
-    if (plansResponse?.success && plansResponse.data) {
-      console.log("Packages loaded:", plansResponse.data);
-    }
-  }, [plansResponse]);
 
   const handleChoosePackage = (planId: string) => {
     router.push(`/checkout/${planId}`);
@@ -38,32 +41,44 @@ export default function PackagesPage() {
   return (
     <div className="text-white min-h-screen">
       <BackHeaderForRootPages />
-      <div className="lg:container m-auto flex flex-col gap-5 p-4">
-        <h1 className="text-lg lg:text-4xl font-bold text-center">
-          Game Packages
-        </h1>
 
-        <p className="text-center">
-          Choose Your Preferred Package, Increase Your Knowledge & Have Fun With
-          Us !!
-        </p>
+      <div className="lg:container m-auto flex flex-col gap-5 p-4 max-w-[1200px]">
+        <div className="space-y-2 mt-4">
+          <h1 className="text-xl lg:text-4xl font-bold text-center">
+            {t("title")}
+          </h1>
+          <p className="text-center text-sm lg:text-base opacity-90 max-w-[600px] m-auto">
+            {t("description")}
+          </p>
+        </div>
 
-        {isLoading && (
-          <div className="text-center py-10">
+        {isLoading ? (
+          <div className="flex justify-center py-20">
             <Loading variant="light-blue-gradient" size="large" />
           </div>
-        )}
+        ) : isError ? (
+          <div className="text-center py-20 text-red-400 font-bold">
+            {t("fetchError")}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 pb-20 lg:mt-10">
+            {plansData.map((plan) => (
+              <GamePackageCard
+                key={plan.id}
+                plan={plan}
+                styles={getPackageStyle(plan?.gPointCount / 100 - 1)}
+                onChoosePackage={handleChoosePackage}
+              />
+            ))}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-5 pb-20 lg:mt-10">
-          {plansData.map((plan) => (
-            <GamePackageCard
-              key={plan.id}
-              plan={plan}
-              styles={getPackageStyle(plan?.gPointCount / 100 - 1)}
-              onChoosePackage={handleChoosePackage}
-            />
-          ))}
-        </div>
+            {/* Empty State */}
+            {!isLoading && plansData.length === 0 && (
+              <div className="col-span-full text-center py-20 bg-white rounded-[15px] border border-dashed text-secondary">
+                {t("noPlans")}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

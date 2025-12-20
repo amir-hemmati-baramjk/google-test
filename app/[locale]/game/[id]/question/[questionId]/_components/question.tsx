@@ -13,10 +13,8 @@ export default function QuestionComponent() {
   const [textHeight, setTextHeight] = useState(0);
   const { questionId } = useParams();
 
-  // Get data directly from Zustand
   const { setAnswer, findQuestionById } = useGameStore();
 
-  // Get current question
   const question = useGameStore((state) => {
     const validQuestionId = questionId
       ? Array.isArray(questionId)
@@ -28,7 +26,6 @@ export default function QuestionComponent() {
       : undefined;
   });
 
-  // Measure text height
   useEffect(() => {
     if (textRef.current && question?.text) {
       setTextHeight(textRef.current.offsetHeight);

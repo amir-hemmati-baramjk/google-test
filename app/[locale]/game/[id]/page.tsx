@@ -1,58 +1,67 @@
-// page.tsx
-
 "use client";
 import { useGameStore } from "@/stores/gameStore";
-import React, { useState, useEffect, useMemo } from "react"; // ADDED useMemo
+import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import SponsorsAds from "../_components/SponsorsAds";
 import AssistanceBox from "../_components/AssistanceBox";
 import TeamScoreCard from "../_components/TeamScoreCard";
 import NavigationControls from "../_components/NavigationControls";
 import CategoryGrid from "../_components/CategoryGrid";
+import NewCategoryGrid from "../_components/NewCategoryGrid";
 
-// Define the shift amount (how many items the view slides by)
-const SHIFT_AMOUNT = 2;
+const calculateVersion1Config = (w: number, h: number) => {
+  if (w < 640) return { items: 3, shift: 3 };
+  if (h < 600) return { items: 4, shift: 4 };
+  return { items: 6, shift: 6 };
+};
+
+const calculateVersion2Config = (w: number, h: number) => {
+  if (w >= 740) {
+    return { items: 6, shift: 6 };
+  }
+
+  return { items: 4, shift: 4 };
+};
 
 export default function Page() {
   const game = useGameStore();
   const [currentPage, setCurrentPage] = useState(0);
-  const [itemsPerPage, setItemsPerPage] = useState(6);
-  const router = useRouter(); // --- Calculate Total Pages based on Overlap Logic ---
+  const [config, setConfig] = useState({ items: 6, shift: 6 });
+  const [isMounted, setIsMounted] = useState(false);
+  const router = useRouter();
 
-  const totalPages = useMemo(() => {
-    const totalItems = game?.categories?.length || 0;
-    if (totalItems <= itemsPerPage) return 1;
-    // Calculate pages based on the shift amount
-    // Total pages = Math.ceil((Total Items - Items Per Page) / Shift Amount) + 1
-    return Math.ceil((totalItems - itemsPerPage) / SHIFT_AMOUNT) + 1;
-  }, [game?.categories?.length, itemsPerPage]);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
-  const getItemsPerPage = () => {
-    // ... (Existing logic for itemsPerPage remains the same)
-    if (typeof window === "undefined") return 2;
-    const width = window.innerWidth;
-    if (width < 320) return 2;
-    if (width < 640) return 4;
-    if (width < 768) return 4;
-    if (width < 1024) return 6;
-    if (width < 1280) return 6;
-    return 6;
+  const handleResize = () => {
+    if (typeof window === "undefined") return;
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+
+    const newConfig =
+      game?.layoutType === "version1"
+        ? calculateVersion1Config(w, h)
+        : calculateVersion2Config(w, h);
+
+    setConfig(newConfig);
+    setCurrentPage(0);
   };
 
   useEffect(() => {
-    const handleResize = () => {
-      setItemsPerPage(getItemsPerPage());
-      setCurrentPage(0);
-    };
-
+    handleResize();
     window.addEventListener("resize", handleResize);
-    setItemsPerPage(getItemsPerPage());
-
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [game?.layoutType]);
+
+  const totalPages = useMemo(() => {
+    const totalItems = game?.categories?.length || 0;
+    if (totalItems <= config.items) return 1;
+
+    return Math.ceil((totalItems - config.items) / config.shift) + 1;
+  }, [game?.categories, config]);
 
   const handleQuestionClick = (questionId: string) => {
-    // ... (Existing logic remains the same)
     const gameStore = useGameStore.getState();
     let url = `/game/${game.id}/question/${questionId}`;
 
@@ -66,65 +75,95 @@ export default function Page() {
       url += "?assistant=silence";
       gameStore.setPendingSilence(false);
     }
-
     router.push(url);
-  }; // --- Updated Navigation Handlers (Use totalPages from useMemo) ---
-
-  const nextPage = () => {
-    if (currentPage < totalPages - 1) {
-      setCurrentPage(currentPage + 1);
-    }
   };
 
-  const prevPage = () => {
-    if (currentPage > 0) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
+  if (!isMounted) return null;
 
   return (
-    <>
-      <div className="p-3 flex flex-col justify-around h-full my-auto sm:px-10">
-        <CategoryGrid
-          categories={game?.categories || []}
-          currentPage={currentPage}
-          itemsPerPage={itemsPerPage}
-          shiftAmount={SHIFT_AMOUNT}
-          onQuestionClick={handleQuestionClick}
-          game={game}
-        />
-
-        <NavigationControls
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPrev={prevPage}
-          onNext={nextPage}
-        />
-      </div>
-
-      <div className="p-2 py-1 lg:py-3 xl:py-5 bg-light-purple w-full flex justify-center items-center h-fit sm:px-10">
-        <div className="w-1/2 sm:w-2/5 px-2 flex gap-2 justify-center items-center flex-col sm:flex-row border-l-[2px] border-primary sm:border-none">
-          <TeamScoreCard
-            teamName={game?.teamOneName || "Team 1"}
-            teamNumber={1}
+    <div className="h-full w-full">
+      {game?.layoutType === "version1" ? (
+        <div className="flex justify-between sm:justify-center items-center gap-5  sm:gap-1 lg:gap-5 flex-col sm:flex-row h-full">
+          <div className="flex flex-col justify-center h-full items-center w-full ">
+            <NewCategoryGrid
+              categories={game?.categories || []}
+              currentPage={currentPage}
+              itemsPerPage={config.items}
+              shiftAmount={config.shift}
+              onQuestionClick={handleQuestionClick}
+              game={game}
+            />
+            <NavigationControls
+              className="flex sm:hidden"
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPrev={() => setCurrentPage((p) => Math.max(0, p - 1))}
+              onNext={() =>
+                setCurrentPage((p) => Math.min(totalPages - 1, p + 1))
+              }
+            />
+          </div>
+          <NavigationControls
+            className="hidden sm:flex sm:flex-col"
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPrev={() => setCurrentPage((p) => Math.max(0, p - 1))}
+            onNext={() =>
+              setCurrentPage((p) => Math.min(totalPages - 1, p + 1))
+            }
           />
-
-          <div className="w-full sm:w-2/3">
-            <AssistanceBox team={1} context="gameboard" />
+          <div className="flex flex-row sm:flex-col gap-3 md:gap-10 lg:gap-14 w-full sm:w-1/3 bg-light-purple sm:bg-transparent p-2 py-1">
+            <div className="w-1/2 sm:w-full flex flex-col gap-2">
+              <TeamScoreCard teamName={game?.teamOneName} teamNumber={1} />
+              <AssistanceBox team={1} context="gameboard" />
+            </div>
+            <div className="w-1/2 sm:w-full flex flex-col gap-2">
+              <TeamScoreCard teamName={game?.teamTwoName} teamNumber={2} />
+              <AssistanceBox team={2} context="gameboard" />
+            </div>
+            <div className="hidden lg:block">
+              {" "}
+              <SponsorsAds />
+            </div>
           </div>
         </div>
-        <SponsorsAds />
-        <div className="w-1/2 sm:w-2/5 px-2 flex gap-2 justify-center items-center flex-col-reverse sm:flex-row">
-          <div className="w-full sm:w-2/3">
-            <AssistanceBox team={2} context="gameboard" />
+      ) : (
+        <div className="flex flex-col h-full w-full">
+          <div className="p-3 flex flex-col justify-around h-full my-auto ">
+            <CategoryGrid
+              categories={game?.categories || []}
+              currentPage={currentPage}
+              itemsPerPage={config.items}
+              shiftAmount={config.shift}
+              onQuestionClick={handleQuestionClick}
+              game={game}
+            />
+            <NavigationControls
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPrev={() => setCurrentPage((p) => Math.max(0, p - 1))}
+              onNext={() =>
+                setCurrentPage((p) => Math.min(totalPages - 1, p + 1))
+              }
+            />
           </div>
-
-          <TeamScoreCard
-            teamName={game?.teamTwoName || "Team 2"}
-            teamNumber={2}
-          />
+          <div className="p-2 py-1 lg:py-3 xl:py-5 bg-light-purple w-full flex justify-center items-center h-fit ">
+            <div className="w-1/2 sm:w-2/5 px-2 flex gap-2 justify-center items-center flex-col sm:flex-row ">
+              <TeamScoreCard teamName={game?.teamOneName} teamNumber={1} />
+              <div className="w-full sm:w-2/3">
+                <AssistanceBox team={1} context="gameboard" />
+              </div>
+            </div>
+            <SponsorsAds />
+            <div className="w-1/2 sm:w-2/5 px-2 flex gap-2 justify-center items-center flex-col-reverse sm:flex-row">
+              <div className="w-full sm:w-2/3">
+                <AssistanceBox team={2} context="gameboard" />
+              </div>
+              <TeamScoreCard teamName={game?.teamTwoName} teamNumber={2} />
+            </div>
+          </div>
         </div>
-      </div>
-    </>
+      )}
+    </div>
   );
 }

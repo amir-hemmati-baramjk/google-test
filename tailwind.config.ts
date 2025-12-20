@@ -5,14 +5,18 @@ const config: Config = {
   theme: {
     extend: {
       keyframes: {
+        "brand-shimmer": {
+          "0%": { "background-position": "0% center" },
+          "100%": { "background-position": "-200% center" },
+        },
         "slide-in": {
           "0%": { transform: "translateX(100%)", opacity: "0" },
           "100%": { transform: "translateX(0)", opacity: "1" },
         },
-        "slide-out": {},
       },
       animation: {
         "slide-in": "slide-in 0.5s ease-out forwards",
+        "brand-shimmer": "brand-shimmer 4s linear infinite",
       },
       colors: {
         primary: "#2f0075",
@@ -62,6 +66,8 @@ const config: Config = {
           "linear-gradient(220deg,rgba(249, 77, 8, 1) 0%, rgba(0, 43, 255, 1) 100%)",
         "green-gradient":
           "linear-gradient(90deg,rgba(79, 232, 154, 1) 0%, rgba(4, 156, 60, 1) 100%)",
+        "brand-gradient":
+          "linear-gradient(to right, #FFFFFF 0%, #E91E63 25%, #9C27B0 50%, #E91E63 75%, #FFFFFF 100%)",
       },
       gridRow: {
         "span-7": "span 7 / span 7",

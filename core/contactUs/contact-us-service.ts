@@ -9,7 +9,7 @@ export const contactUsService = async (
     const formattedData = {
       ...credentials,
     };
-    const response = await httpService.post("//contactus", formattedData);
+    const response = await httpService.post("/contactus", formattedData);
 
     return response;
   } catch (error: any) {

@@ -14,7 +14,6 @@ import {
 
 import { BaseApiResponse, ApiResponse } from "./httpSercive.types";
 
-// Custom type definitions
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
   _skipAuth?: boolean;

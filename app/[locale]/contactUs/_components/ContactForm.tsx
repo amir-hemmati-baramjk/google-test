@@ -42,7 +42,6 @@ export default function ContactForm() {
         );
         reset();
       } else {
-        // Handle server-side errors or general failures
         const errorMessage =
           typeof response.errors === "string"
             ? response.errors

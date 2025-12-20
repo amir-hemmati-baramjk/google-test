@@ -20,12 +20,10 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({
     try {
       const dateObj = new Date(dateString);
 
-      // Format as DD/MM/YY
       const day = dateObj.getDate().toString().padStart(2, "0");
       const month = (dateObj.getMonth() + 1).toString().padStart(2, "0");
       const year = dateObj.getFullYear().toString().slice(-2);
 
-      // Format as 12-hour time with AM/PM
       let hours = dateObj.getHours();
       const minutes = dateObj.getMinutes().toString().padStart(2, "0");
       const ampm = hours >= 12 ? "pm" : "am";

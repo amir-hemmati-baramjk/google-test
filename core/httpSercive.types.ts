@@ -6,7 +6,6 @@ export interface BaseApiResponse<T = any> {
   errors: string[];
 }
 
-// Your existing ApiResponse interface for frontend consistency
 export interface ApiResponse<T = any> {
   success: boolean;
   data?: T;

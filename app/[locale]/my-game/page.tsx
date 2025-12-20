@@ -50,7 +50,6 @@ export default function GamesPage() {
     );
   }
 
-  // Show error state
   if (isError && totalLoaded === 0) {
     return (
       <div className="min-h-screen">

@@ -16,7 +16,7 @@ export default function WhoAnsweredComponent() {
   const queryClient = useQueryClient();
   const router = useRouter();
   const t = useTranslations("questionPage");
-  // Get data directly from Zustand
+
   const {
     clearWhoAnswer,
     teamOneName,

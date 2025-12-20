@@ -43,7 +43,6 @@ const SignupForm = () => {
     setIsLoading(true);
     try {
       const result = await registerWithEmail(data);
-
       if (result.success) {
         setIsLogin(true);
         await sendAppTokenToServer();

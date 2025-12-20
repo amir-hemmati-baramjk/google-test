@@ -30,14 +30,14 @@ export default function CategorySection({
   }
 
   return (
-    <div className="my-5">
+    <div className="my-5 px-5">
       <div
         id={`tag-${tag.id}`}
-        className="py-4 bg-turquoise-gradient text-white text-center font-bold text-lg shadow-md"
+        className="py-4 bg-light-purple text-primary text-center font-bold text-lg shadow-md rounded-lg"
       >
         {tag.name}
       </div>
-      <div className={`grid ${gridClass} gap-4 my-5 px-5`}>
+      <div className={`grid ${gridClass} gap-4 my-5 `}>
         {tag.categories.map((category) => {
           const isSelected = selectedMap.has(category.id);
 

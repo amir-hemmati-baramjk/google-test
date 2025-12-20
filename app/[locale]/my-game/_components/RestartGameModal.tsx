@@ -39,7 +39,7 @@ export default function RestartGameModal({
 
   return (
     <Modal closeOnBackdrop isOpen={isOpen} onClose={onClose}>
-      <div className="flex flex-col justify-center items-center gap-5 max-w-[360px] lg:max-w-[]">
+      <div className="flex flex-col justify-center items-center gap-5 ">
         <div className="w-full flex justify-center items-center bg-primary/30 text-primary rounded-[20px] py-8 text-xl font-bold">
           {t("followup-from-where-you-left")}
         </div>

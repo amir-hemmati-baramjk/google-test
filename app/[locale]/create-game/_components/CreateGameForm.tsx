@@ -107,7 +107,7 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
     startTransition(async () => {
       const payload = {
         ...data,
-        categoryIds: Array.from(selectedCatItems.keys()),
+        categoryIds: selectedCatItems,
         assistants: data.assistants,
       };
 
@@ -165,7 +165,7 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
       {/* Team Details (A & B) */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-3 w-full">
         {/* Team A */}
-        <div className="flex flex-col md:flex-row items-center gap-3">
+        <div className="flex flex-col lg:flex-row items-center gap-3">
           <Textbox
             variant="primary"
             labelVariant="primary"
@@ -189,7 +189,7 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
         </div>
 
         {/* Team B */}
-        <div className="flex flex-col md:flex-row items-center gap-3">
+        <div className="flex flex-col lg:flex-row items-center gap-3">
           <Textbox
             variant="primary"
             labelVariant="primary"
@@ -214,7 +214,7 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
       </div>
 
       {/* Time Controls */}
-      <div className="flex flex-col lg:flex-row gap-3 w-full">
+      <div className="flex flex-col md:flex-row gap-3 w-full">
         <div className="w-full lg:w-1/2">
           <CounterInput
             showButtons={false}

@@ -16,8 +16,6 @@ import {
 } from "@/localeStorage/storage";
 import { User } from "@/type/api/user/user.type";
 
-// Define the user structure
-
 // Context type
 interface UserContextType {
   user: User | null;

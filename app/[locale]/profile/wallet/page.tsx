@@ -31,7 +31,7 @@ export default function WalletPage() {
 
       <div className="w-full max-w-[500px] m-auto p-5">
         {/* Balance Card */}
-        <div className="bg-secondary p-5 text-white rounded-[10px] flex flex-col justify-center items-center gap-5 shadow-lg">
+        <div className="bg-secondary p-5 lg:py-10 text-white rounded-[10px] flex flex-col justify-center items-center gap-5 shadow-lg">
           <p className="font-semibold text-lg lg:text-2xl text-center">
             {t("wallet-balance")}
           </p>

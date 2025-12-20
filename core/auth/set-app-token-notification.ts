@@ -4,24 +4,20 @@ import { accessTokenLs, fcmAppTokenLS } from "@/localeStorage/storage";
 import { getOrCreateDeviceId } from "@/utils/device";
 import { FCMTokenOptions, SendTokenResponse } from "@/type/api/auth/auth.types";
 
-// Sends FCM token to server with proper error handling and retry mechanism
 export const sendAppTokenToServer = async (
   options: FCMTokenOptions = {}
 ): Promise<SendTokenResponse> => {
   try {
-    // Check if running in browser environment
     if (typeof window === "undefined") {
       console.warn("FCM: Not in browser environment");
       return { success: false, message: "Not in browser environment" };
     }
 
-    // Check if service worker is supported
     if (!("serviceWorker" in navigator)) {
       console.warn("FCM: Service workers are not supported");
       return { success: false, message: "Service workers not supported" };
     }
 
-    // Check if notifications are supported
     if (!("Notification" in window)) {
       console.warn("FCM: Notifications are not supported");
       return { success: false, message: "Notifications not supported" };
@@ -30,20 +26,17 @@ export const sendAppTokenToServer = async (
     const deviceId = getOrCreateDeviceId();
     const authToken = accessTokenLs?.get();
 
-    // Validate authentication token - handle string | true return type
     if (!authToken || typeof authToken !== "string") {
       console.warn("FCM: No valid authentication token found");
       return { success: false, message: "User not authenticated" };
     }
 
-    // Get or create FCM token
     const token = await getOrCreateFCMToken(options);
     if (!token) {
       console.warn("FCM: Failed to get FCM token");
       return { success: false, message: "Failed to get FCM token" };
     }
 
-    // Send token to server
     const response = await sendTokenToServer(token, deviceId, authToken);
 
     if (response.success) {
@@ -63,7 +56,6 @@ export const sendAppTokenToServer = async (
   }
 };
 
-//  Gets or creates FCM token with permission handling
 const getOrCreateFCMToken = async (
   options: FCMTokenOptions = {}
 ): Promise<string | null> => {
@@ -73,10 +65,8 @@ const getOrCreateFCMToken = async (
       vapidKey = "BD-lkDW7L-DtEf_4lmMo2Gyj7wJXz92t9IPPRHitpVrl5C3WBc0O4J1QneM-3vj1mB_MHWT2ITH6KcdmAWYAl48",
     } = options;
 
-    // Check if token exists and we don't force refresh
     const existingToken = fcmAppTokenLS.get();
 
-    // Handle string | true return type for fcmAppTokenLS.get()
     const validExistingToken =
       typeof existingToken === "string" ? existingToken : null;
 
@@ -84,20 +74,17 @@ const getOrCreateFCMToken = async (
       return validExistingToken;
     }
 
-    // Check if Firebase Messaging is available
     if (!messaging) {
       console.error("FCM: Firebase messaging is not initialized");
       return null;
     }
 
-    // Request notification permission
     const permission = await Notification.requestPermission();
     if (permission !== "granted") {
       console.warn("FCM: Notification permission not granted");
       return null;
     }
 
-    // Get service worker registration
     const serviceWorkerRegistration =
       await navigator.serviceWorker.getRegistration();
     if (!serviceWorkerRegistration) {
@@ -105,7 +92,6 @@ const getOrCreateFCMToken = async (
       return null;
     }
 
-    // Get FCM token
     const token = await getToken(messaging, {
       vapidKey,
       serviceWorkerRegistration,
@@ -125,7 +111,6 @@ const getOrCreateFCMToken = async (
   }
 };
 
-//  Sends the FCM token to the server
 const sendTokenToServer = async (
   token: string,
   deviceId: string,
@@ -172,7 +157,6 @@ const sendTokenToServer = async (
   }
 };
 
-//  Removes FCM token from server and local storage
 export const removeAppTokenFromServer =
   async (): Promise<SendTokenResponse> => {
     try {
@@ -180,7 +164,6 @@ export const removeAppTokenFromServer =
       const deviceId = getOrCreateDeviceId();
       const tokenRaw = fcmAppTokenLS.get();
 
-      // Handle string | true return types
       const authToken = typeof authTokenRaw === "string" ? authTokenRaw : null;
       const token = typeof tokenRaw === "string" ? tokenRaw : null;
 
@@ -221,7 +204,6 @@ export const removeAppTokenFromServer =
     }
   };
 
-//  Checks if FCM is supported and configured
 export const isFCMSupported = (): boolean => {
   return (
     typeof window !== "undefined" &&
@@ -231,7 +213,6 @@ export const isFCMSupported = (): boolean => {
   );
 };
 
-//   Forces refresh of FCM token
 export const refreshFCMToken = async (): Promise<SendTokenResponse> => {
   return sendAppTokenToServer({ forceRefresh: true });
 };

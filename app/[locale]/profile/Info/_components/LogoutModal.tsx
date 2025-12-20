@@ -13,7 +13,7 @@ import {
   userDataSS,
 } from "@/localeStorage/storage";
 import { useRouter } from "next/navigation";
-// Dynamically import Modal with SSR disabled
+
 const Modal = dynamic(() => import("../../../_components/modal/Modal"), {
   ssr: false,
 });

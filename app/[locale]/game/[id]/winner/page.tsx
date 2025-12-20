@@ -10,13 +10,12 @@ import { useRouter } from "@/i18n/navigation";
 export default function WinnerPage() {
   const t = useTranslations("WinnerPage");
   const router = useRouter();
-  // Get individual values from store to avoid creating new object reference
+
   const teamOneName = useGameStore((state) => state.teamOneName);
   const teamOnePoints = useGameStore((state) => state.teamOnePoints);
   const teamTwoName = useGameStore((state) => state.teamTwoName);
   const teamTwoPoints = useGameStore((state) => state.teamTwoPoints);
 
-  // Determine winner, loser, or tie - memoized
   const outcome = useMemo(() => {
     if (teamOnePoints > teamTwoPoints) {
       return {
@@ -45,7 +44,6 @@ export default function WinnerPage() {
         winnerTeam: 2,
       };
     } else {
-      // Tie scenario
       return {
         winner: {
           name: teamOneName,
@@ -61,12 +59,10 @@ export default function WinnerPage() {
     }
   }, [teamOneName, teamOnePoints, teamTwoName, teamTwoPoints]);
 
-  // Render logic based on outcome
   const renderContent = () => {
     if (outcome.isTie) {
       return (
         <>
-          {/* Mobile Title for Tie */}
           <div className="flex-col justify-center items-center gap-5 flex sm:hidden">
             <p className="font-bol text-white text-3xl font-bold lg:text-4xl">
               {t("tieGame")}
@@ -76,16 +72,14 @@ export default function WinnerPage() {
             </p>
           </div>
 
-          {/* Teams Display for Tie */}
           <div className="flex justify-between lg:justify-around items-center gap-5 w-full">
-            {/* Team 1 Card - Tie Styling */}
             <div className="bg-white p-3 flex flex-col gap-3 rounded-[10px] border-4 border-yellow-500">
               <div className="py-1 px-3 md:py-5 md:px-10 w-full bg-yellow-500/20 rounded-[10px]">
                 <Image
                   alt={t("tieTeam")}
                   width={100}
                   height={100}
-                  src={"/staticImages/winner.png"} // You might want a tie-specific image
+                  src={"/staticImages/winner.png"}
                 />
               </div>
               <p className="text-yellow-600 text-xl text-center">
@@ -96,17 +90,15 @@ export default function WinnerPage() {
               </p>
             </div>
 
-            {/* Spacer for desktop - hidden on mobile */}
             <div className="hidden sm:block"></div>
 
-            {/* Team 2 Card - Tie Styling */}
             <div className="bg-white p-3 flex flex-col gap-3 rounded-[10px] border-4 border-yellow-500">
               <div className="py-1 px-3 md:py-5 md:px-10 w-full bg-yellow-500/20 rounded-[10px]">
                 <Image
                   alt={t("tieTeam")}
                   width={100}
                   height={100}
-                  src={"/staticImages/winner.png"} // You might want a tie-specific image
+                  src={"/staticImages/winner.png"}
                 />
               </div>
               <p className="text-yellow-600 text-xl text-center">
@@ -121,12 +113,10 @@ export default function WinnerPage() {
       );
     }
 
-    // Normal winner/loser scenario
     const winnerTeam = outcome.winnerTeam === 1 ? teamOneName : teamTwoName;
 
     return (
       <>
-        {/* Mobile Title */}
         <div className="flex-col justify-center items-center gap-5 flex sm:hidden">
           <p className="font-bol text-white text-3xl font-bold lg:text-4xl">
             {t("congratulations")}
@@ -139,9 +129,7 @@ export default function WinnerPage() {
           </p>
         </div>
 
-        {/* Teams Display */}
         <div className="flex justify-between lg:justify-around items-center gap-5 w-full">
-          {/* Team 1 Card */}
           <div
             className={`bg-white p-3 flex flex-col gap-3 rounded-[10px] ${
               outcome.winnerTeam === 1
@@ -183,7 +171,6 @@ export default function WinnerPage() {
             </p>
           </div>
 
-          {/* Desktop Title between cards */}
           <div className="flex-col justify-center items-center gap-5 hidden sm:flex">
             <p className="font-bol text-white text-2xl font-bold lg:text-4xl">
               {t("congratulations")}
@@ -196,7 +183,6 @@ export default function WinnerPage() {
             </p>
           </div>
 
-          {/* Team 2 Card */}
           <div
             className={`bg-white p-3 flex flex-col gap-3 rounded-[10px] ${
               outcome.winnerTeam === 2

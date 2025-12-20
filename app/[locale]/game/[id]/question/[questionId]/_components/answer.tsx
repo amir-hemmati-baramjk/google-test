@@ -13,10 +13,8 @@ export default function AnswerComponent() {
   const [textHeight, setTextHeight] = useState(0);
   const { questionId } = useParams();
 
-  // Get data directly from Zustand
   const { clearAnswer, setWhoAnswer, findQuestionById } = useGameStore();
 
-  // Get current question
   const question = useGameStore((state) => {
     const validQuestionId = questionId
       ? Array.isArray(questionId)
@@ -28,7 +26,6 @@ export default function AnswerComponent() {
       : undefined;
   });
 
-  // Measure text height
   useEffect(() => {
     if (textRef.current && question?.answer) {
       setTextHeight(textRef.current.offsetHeight);
@@ -54,7 +51,6 @@ export default function AnswerComponent() {
         {question.answer}
       </p>
 
-      {/* Media content */}
       <div
         className="flex flex-col justify-between mt-auto"
         style={{ height: `calc(90% - ${textHeight}px)` }}
@@ -62,7 +58,6 @@ export default function AnswerComponent() {
         {question.answerMedia && <Media data={question.answerMedia} />}
       </div>
 
-      {/* Bottom buttons */}
       <div className="w-full px-3 sm:px-10 m-auto absolute -bottom-5 sm:-bottom-5 left-0 flex justify-between items-center">
         <Button
           onClick={handleWhoAnswered}

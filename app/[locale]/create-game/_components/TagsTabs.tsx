@@ -1,21 +1,40 @@
-interface TagTabsProps {
-  tags: { id: string; name: string }[];
-  activeTag: string;
-  onClick: (id: string) => void;
-}
+import { useEffect, useRef } from "react";
 
-export default function TagTabs({ tags, activeTag, onClick }: TagTabsProps) {
+export default function TagTabs({ tags, activeIndex, onTabClick }: any) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const activeChild = container.children[activeIndex] as HTMLElement;
+    if (activeChild) {
+      const scrollLeft =
+        activeChild.offsetLeft -
+        container.offsetWidth / 2 +
+        activeChild.offsetWidth / 2;
+
+      container.scrollTo({
+        left: scrollLeft,
+        behavior: "smooth",
+      });
+    }
+  }, [activeIndex]);
+
   return (
-    <div className="sticky top-0 z-50 shadow-sm ">
-      <div className="flex overflow-x-auto scrollbar-hide py-3 px-4 gap-2">
-        {tags.map((tag) => (
+    <div className=" sticky top-0 z-40">
+      <div
+        ref={containerRef}
+        className="flex overflow-x-auto scrollbar-hide py-4 px-4 gap-2"
+      >
+        {tags.map((tag: any, index: number) => (
           <button
             key={tag.id}
-            onClick={() => onClick(tag.id)}
-            className={`flex-shrink-0 px-4 py-2 text-sm font-[700] rounded-[10px] whitespace-nowrap transition-colors ${
-              activeTag === tag.id
-                ? "bg-secondary text-white shadow-md"
-                : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+            onClick={() => onTabClick(index)}
+            className={`flex-shrink-0 px-5 py-2 text-sm font-bold transition-all rounded-lg whitespace-nowrap ${
+              activeIndex === index
+                ? "bg-secondary text-white shadow-md scale-105"
+                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             }`}
           >
             {tag.name}

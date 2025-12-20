@@ -7,7 +7,6 @@ export const registerWithEmail = async (
   credentials: SignUpWithEmail
 ): Promise<ApiResponse<LoginResponse>> => {
   try {
-    // Format phone number if provided
     const formattedData = {
       ...credentials,
       ...(credentials.PhoneNumber && {

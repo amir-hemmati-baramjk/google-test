@@ -40,7 +40,7 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
     control: (base, state) => ({
       ...base,
       padding: "2px",
-      borderRadius: "0.5rem", // rounded-lg
+      borderRadius: "0.5rem",
       borderColor: "rgba(255, 255, 255, 0.2)",
       backgroundColor: "white",
       boxShadow: state.isFocused ? "none" : "none",

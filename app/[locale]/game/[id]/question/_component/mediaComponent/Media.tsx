@@ -65,8 +65,6 @@ const Media: React.FC<QuestionMediaProps> = React.memo(
 
             <Image
               onClick={() => setOpenState(true)}
-              // onLoadingComplete={() => setIsLoading(false)}
-              // onError={() => setIsLoading(false)}
               width={500}
               height={500}
               className={`cursor-zoom-in object-contain  rounded-[6px] transition-opacity duration-300 ${"opacity-100"}`}

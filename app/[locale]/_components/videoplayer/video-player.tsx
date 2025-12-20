@@ -1,6 +1,3 @@
-// ============================
-// File: components/video/VideoPlayer.tsx
-// ============================
 "use client";
 import React, { useEffect, useRef } from "react";
 

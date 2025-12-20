@@ -20,15 +20,13 @@ export default function TopBar({ questionPoints }: TopBarProps) {
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const [initialTime, setInitialTime] = useState<number>(0);
   const params = useParams();
-  // Get time configurations from store
+
   const time200 = useGameStore((s) => s.time200);
   const time400 = useGameStore((s) => s.time400);
   const time600 = useGameStore((s) => s.time600);
 
-  // Calculate initial time based on question points
   const calculateInitialTime = useCallback(
     (points: number) => {
-      // Use store time values if available, otherwise fallback to default logic
       if (points <= 200 && time200 !== null && time200 !== undefined) {
         return time200;
       } else if (points <= 400 && time400 !== null && time400 !== undefined) {
@@ -36,14 +34,12 @@ export default function TopBar({ questionPoints }: TopBarProps) {
       } else if (points <= 600 && time600 !== null && time600 !== undefined) {
         return time600;
       } else {
-        // Fallback to 60 seconds if no time configuration matches
         return 60;
       }
     },
     [time200, time400, time600]
   );
 
-  // Initialize timer when component mounts or question points change
   useEffect(() => {
     const calculatedTime = calculateInitialTime(questionPoints);
     setInitialTime(calculatedTime);
@@ -51,7 +47,6 @@ export default function TopBar({ questionPoints }: TopBarProps) {
     setIsPaused(false);
   }, [questionPoints, calculateInitialTime]);
 
-  // Countdown logic
   useEffect(() => {
     if (isPaused || timeLeft <= 0) return;
 
@@ -59,7 +54,7 @@ export default function TopBar({ questionPoints }: TopBarProps) {
       setTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
-          // Handle time's up logic here if needed
+
           return 0;
         }
         return prev - 1;
@@ -69,7 +64,6 @@ export default function TopBar({ questionPoints }: TopBarProps) {
     return () => clearInterval(timer);
   }, [isPaused, timeLeft]);
 
-  // Format time to MM:SS
   const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -78,18 +72,15 @@ export default function TopBar({ questionPoints }: TopBarProps) {
       .padStart(2, "0")}`;
   };
 
-  // Handle pause/play toggle
   const handlePausePlay = () => {
     setIsPaused(!isPaused);
   };
 
-  // Handle reset timer
   const handleReset = () => {
     setTimeLeft(initialTime);
     setIsPaused(false);
   };
 
-  // Get appropriate icon for pause/play button
   const getPausePlayIcon = () => {
     if (isPaused) {
       return <PlayIcon size={24} />;

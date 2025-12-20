@@ -17,7 +17,6 @@ export default function Modal({
   useEffect(() => {
     setMounted(true);
 
-    // Create portal container only once
     if (!containerRef.current) {
       const el = document.createElement("div");
       el.setAttribute("data-modal-portal", "true");
@@ -25,9 +24,7 @@ export default function Modal({
       document.body.appendChild(el);
     }
 
-    return () => {
-      // Don't remove the portal container on unmount
-    };
+    return () => {};
   }, []);
 
   useEffect(() => {
@@ -36,18 +33,15 @@ export default function Modal({
     let closeTimeout: NodeJS.Timeout;
 
     if (isOpen) {
-      // Open modal
       document.body.style.overflow = "hidden";
-      // Small delay to trigger CSS animation
+
       requestAnimationFrame(() => setShow(true));
     } else if (show) {
-      // Close modal with animation
       setShow(false);
       closeTimeout = setTimeout(() => {
         document.body.style.overflow = "";
-      }, 350); // Match this with your CSS animation duration
+      }, 350);
     } else {
-      // Ensure body overflow is reset when not showing
       document.body.style.overflow = "";
     }
 
@@ -66,10 +60,8 @@ export default function Modal({
     e.stopPropagation();
   };
 
-  // Don't render anything if not mounted or no container
   if (!mounted || !containerRef.current) return null;
 
-  // Don't render the portal if modal is completely closed
   if (!isOpen && !show) return null;
 
   return createPortal(

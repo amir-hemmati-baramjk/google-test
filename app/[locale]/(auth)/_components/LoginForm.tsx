@@ -21,13 +21,12 @@ import {
 } from "@/type/api/auth/auth.schema";
 
 const LoginForm = () => {
-  const t = useTranslations("index");
+  const t = useTranslations("login-form");
   const locale = useLocale();
   const router = useRouter();
   const { setIsLogin } = useUser();
   const [isLoading, setIsLoading] = useState(false);
 
-  // Use useForm directly
   const {
     register,
     handleSubmit,
@@ -40,7 +39,6 @@ const LoginForm = () => {
   const onSubmit = async (data: SignInWithEmail) => {
     setIsLoading(true);
     try {
-      // Call login function with options
       const result = await loginUser(data);
       if (result.success) {
         setIsLogin(true);

@@ -1,7 +1,8 @@
 "use client";
 
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import React, { useMemo, useEffect } from "react";
+import React, { useMemo, useEffect, useState, useRef } from "react";
+import { useShallow } from "zustand/react/shallow";
 
 import { useGameStore } from "@/stores/gameStore";
 import TopBar from "./_components/topBar";
@@ -13,11 +14,14 @@ import { putDoublePoints } from "@/core/game/double-points-service";
 import { putTakePoints } from "@/core/game/take-points-service";
 import { putSilence } from "@/core/game/silence-team-service";
 import { toast } from "react-toastify";
+import { Button } from "@/app/[locale]/_components/button/button";
 
 export default function Page() {
   const params = useParams();
-  const router = useRouter();
   const searchParams = useSearchParams();
+  const [selectedOption, setSelectedOption] = useState("");
+
+  const assistantProcessed = useRef(false);
 
   const questionIdParam = params?.questionId;
   const validQuestionId = useMemo(() => {
@@ -27,136 +31,99 @@ export default function Page() {
       : questionIdParam;
   }, [questionIdParam]);
 
-  const gameIdParam = params?.id;
   const validGameId = useMemo(() => {
+    const gameIdParam = params?.id;
     if (!gameIdParam) return null;
     return Array.isArray(gameIdParam) ? gameIdParam[0] : gameIdParam;
-  }, [gameIdParam]);
+  }, [params?.id]);
 
-  // Get Zustand state
-  const answer = useGameStore((s) => s.answer);
-  const whoAnswer = useGameStore((s) => s.whoAnswer);
-  const turn = useGameStore((s) => s.turn);
-  const setPendingDoublePoint = useGameStore((s) => s.setPendingDoublePoint);
-  const setPendingTakePoint = useGameStore((s) => s.setPendingTakePoint);
-  const setPendingSilence = useGameStore((s) => s.setPendingSilence);
-
-  // Get current question from store
-  const question = useGameStore((state) => {
-    if (!validQuestionId) return undefined;
-    return state.findQuestionById(validQuestionId);
-  });
-
-  // Check if game data is ready
-  const isGameLoaded = useGameStore((state) => {
-    return (
-      state.time200 !== undefined &&
-      state.time400 !== undefined &&
-      state.time600 !== undefined &&
-      state.categories.length > 0
-    );
-  });
+  const {
+    answer,
+    whoAnswer,
+    turn,
+    setPendingDoublePoint,
+    setPendingTakePoint,
+    setPendingSilence,
+    question,
+    isGameLoaded,
+  } = useGameStore(
+    useShallow((s) => ({
+      answer: s.answer,
+      whoAnswer: s.whoAnswer,
+      turn: s.turn,
+      setPendingDoublePoint: s.setPendingDoublePoint,
+      setPendingTakePoint: s.setPendingTakePoint,
+      setPendingSilence: s.setPendingSilence,
+      question: validQuestionId
+        ? s.findQuestionById(validQuestionId)
+        : undefined,
+      isGameLoaded: s.time200 !== undefined && s.categories.length > 0,
+    }))
+  );
 
   const queryClient = useQueryClient();
 
-  // Mutations for double/take/silence (called when URL parameters are present)
   const doublePointMutation = useMutation({
-    mutationFn: () => {
-      if (!validGameId || !validQuestionId) throw new Error("Missing IDs");
-      return putDoublePoints(validGameId, validQuestionId);
-    },
+    mutationFn: () => putDoublePoints(validGameId!, validQuestionId!),
     onSuccess: (data) => {
-      if (data.success && data.data) {
+      if (data.success) {
         const gameStore = useGameStore.getState();
         gameStore.setCanUseDoublePoint(false);
-        if (turn === 1) {
-          gameStore.setUsedDoublePointTeamOne(true);
-        } else {
-          gameStore.setUsedDoublePointTeamTwo(true);
-        }
-        if (validGameId)
-          queryClient.invalidateQueries({ queryKey: ["game", validGameId] });
-        toast.success("Double points applied to this question!");
+        turn === 1
+          ? gameStore.setUsedDoublePointTeamOne(true)
+          : gameStore.setUsedDoublePointTeamTwo(true);
+        queryClient.invalidateQueries({ queryKey: ["game", validGameId] });
+        toast.success("Double points applied!");
         setPendingDoublePoint(false);
-      } else {
-        toast.error(data?.errors || "Failed to apply double points");
       }
-    },
-    onError: (err) => {
-      console.error("Double points error:", err);
-      toast.error("An error occurred while applying double points");
     },
   });
 
   const takePointMutation = useMutation({
-    mutationFn: () => {
-      if (!validGameId || !validQuestionId) throw new Error("Missing IDs");
-      return putTakePoints(validGameId, validQuestionId);
-    },
+    mutationFn: () => putTakePoints(validGameId!, validQuestionId!),
     onSuccess: (data) => {
-      if (data.success && data.data) {
-        const gameStore = useGameStore.getState();
-        gameStore.changeTakePoint(validGameId as string, turn);
-        if (validGameId)
-          queryClient.invalidateQueries({ queryKey: ["game", validGameId] });
-        toast.success("Take points applied to this question!");
+      if (data.success) {
+        useGameStore.getState().changeTakePoint(validGameId!, turn);
+        queryClient.invalidateQueries({ queryKey: ["game", validGameId] });
+        toast.success("Take points applied!");
         setPendingTakePoint(false);
-      } else {
-        toast.error(data?.errors || "Failed to apply take points");
       }
-    },
-    onError: (err) => {
-      console.error("Take points error:", err);
-      toast.error("An error occurred while applying take points");
     },
   });
 
   const silenceMutation = useMutation({
-    mutationFn: () => {
-      if (!validGameId) throw new Error("Missing game ID");
-      return putSilence(validGameId);
-    },
+    mutationFn: () => putSilence(validGameId!),
     onSuccess: (data) => {
       if (data.success) {
         const gameStore = useGameStore.getState();
-        gameStore.useSilence(validGameId as string, turn);
+        gameStore.useSilence(validGameId!, turn);
         gameStore.setCanUseSilence(false);
-        if (validGameId)
-          queryClient.invalidateQueries({ queryKey: ["game", validGameId] });
-        toast.success("Silence applied to opposing team!");
+        queryClient.invalidateQueries({ queryKey: ["game", validGameId] });
+        toast.success("Silence applied!");
         setPendingSilence(false);
-      } else {
-        toast.error(data?.errors || "Failed to apply silence");
       }
-    },
-    onError: (err) => {
-      console.error("Silence error:", err);
-      toast.error("An error occurred while applying silence");
     },
   });
 
-  // On mount, detect query params and trigger mutations if present
   useEffect(() => {
-    if (!searchParams || !validGameId || !validQuestionId) return;
-
     const assistantType = searchParams.get("assistant");
 
-    if (!assistantType) return;
+    if (
+      !assistantType ||
+      !validGameId ||
+      !validQuestionId ||
+      assistantProcessed.current
+    )
+      return;
+
+    assistantProcessed.current = true;
 
     console.log("Applying assistant:", assistantType);
 
-    if (assistantType === "doublePoint" && !doublePointMutation.isPending) {
-      console.log("Triggering double point mutation...");
-      doublePointMutation.mutate();
-    } else if (assistantType === "takePoint" && !takePointMutation.isPending) {
-      console.log("Triggering take point mutation...");
-      takePointMutation.mutate();
-    } else if (assistantType === "silence" && !silenceMutation.isPending) {
-      console.log("Triggering silence mutation...");
-      silenceMutation.mutate();
-    }
+    if (assistantType === "doublePoint") doublePointMutation.mutate();
+    else if (assistantType === "takePoint") takePointMutation.mutate();
+    else if (assistantType === "silence") silenceMutation.mutate();
 
-    // Clean up URL parameters after processing
     const url = new URL(window.location.href);
     url.searchParams.delete("assistant");
     window.history.replaceState({}, "", url.toString());
@@ -171,8 +138,12 @@ export default function Page() {
   }
 
   return (
-    <div className="p-5 lg:p-10 h-full w-full flex justify-center items-center">
-      <div className="border-[3px] border-secondary rounded-[40px] p-5 h-full w-full bg-light-purple relative">
+    <div className="p-5 lg:p-10 h-full w-full overflow-auto">
+      <div
+        className={`border-[3px] border-secondary rounded-[40px] p-5 w-full bg-light-purple relative ${
+          question?.options?.length > 0 ? "h-[75%] md:h-[85%]" : "h-full"
+        }`}
+      >
         <TopBar questionPoints={question.points} />
 
         {!answer && !whoAnswer ? (
@@ -183,6 +154,28 @@ export default function Page() {
           <WhoAnsweredComponent />
         )}
       </div>
+
+      {question?.options && !whoAnswer && (
+        <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-2 mt-8 [container-type:inline-size]">
+          {question.options.map((item) => (
+            <Button
+              key={item.id}
+              onClick={() => setSelectedOption(item?.id)}
+              variant={
+                answer
+                  ? item?.id === question?.correctOption?.id
+                    ? "success"
+                    : "error"
+                  : "secondary"
+              }
+              isOutline={!(selectedOption === item?.id || !!answer)}
+              className="  lg:!font-bold whitespace- !text-xs lg:!text-xl !rounded-[6px]"
+            >
+              {item?.text}
+            </Button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

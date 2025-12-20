@@ -1,4 +1,3 @@
-// components/AssistanceBox.tsx
 "use client";
 import React from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -33,13 +32,16 @@ export default function AssistanceBox({
   const t = useTranslations("GamePage");
   const router = useRouter();
   const queryClient = useQueryClient();
+
   const turn = useGameStore((state) => state.turn);
   const gameId = useGameStore((state) => state.id);
   const answer = useGameStore((s) => s.answer);
   const whoAnswer = useGameStore((s) => s.whoAnswer);
+  const layoutType = useGameStore((s) => s.layoutType);
+
+  const assistants = useGameStore((s) => s.assistants) || [];
   const gameStore = useGameStore.getState();
 
-  // --- Mutations for Question Assistants ---
   const changeQuestionMutation = useMutation({
     mutationFn: () => {
       if (!questionId) throw new Error("Question ID missing");
@@ -54,26 +56,19 @@ export default function AssistanceBox({
       }
     },
   });
-  const isChangeQuestionLoading = changeQuestionMutation.isPending;
 
   const skipQuestionMutation = useMutation({
     mutationFn: () => {
       if (!questionId) throw new Error("Question ID missing");
       return putSkipQuestion(gameId, questionId);
     },
-    onSuccess: () => {
-      toast.success(t("assistants.questionSkipped"));
-    },
+    onSuccess: () => toast.success(t("assistants.questionSkipped")),
   });
-  const isSkipQuestionLoading = skipQuestionMutation.isPending;
 
   const silenceMutation = useMutation({
-    mutationFn: () => {
-      return putSilence(gameId);
-    },
+    mutationFn: () => putSilence(gameId),
     onSuccess: () => toast.success(t("assistants.silenceApplied")),
   });
-  const isSilenceLoading = silenceMutation.isPending;
 
   const fiftyFiftyMutation = useMutation({
     mutationFn: () => {
@@ -82,73 +77,59 @@ export default function AssistanceBox({
     },
     onSuccess: () => toast.success(t("assistants.fiftyFiftyUsed")),
   });
-  const isFiftyFiftyLoading = fiftyFiftyMutation.isPending;
 
-  // --- Handler functions ---
-  const handleChangeQuestion = () => changeQuestionMutation.mutate();
-  const handleSkipQuestion = () => skipQuestionMutation.mutate();
-  const handleFiftyFifty = () => fiftyFiftyMutation.mutate();
-  const handleSilence = () => silenceMutation.mutate();
+  const isAssistantDisabled = (
+    assistantKey:
+      | "DoublePoints"
+      | "TakePoints"
+      | "ChangeQuestion"
+      | "SkipQuestion"
+      | "UseSilence"
+      | "Remove2Options",
+    usedTeamOne: boolean,
+    usedTeamTwo: boolean,
+    contextRestriction: boolean = false
+  ): boolean => {
+    if (!assistants.includes(assistantKey)) return true;
 
-  // Handle assistant clicks for gameboard context
+    if (contextRestriction) return true;
+
+    if (turn !== team) return true;
+    if (team === 1 && usedTeamOne) return true;
+    if (team === 2 && usedTeamTwo) return true;
+    if (answer || whoAnswer) return true;
+
+    return false;
+  };
+
   const handleAssistantClick = (
-    assistantType: "doublePoint" | "takePoint" | "silence"
+    assistantType: "DoublePoints" | "TakePoints" | "UseSilence"
   ) => {
     if (context === "gameboard") {
-      // Set pending state and redirect to gameboard
-      if (assistantType === "doublePoint") {
+      if (assistantType === "DoublePoints")
         gameStore.setPendingDoublePoint(true);
-      } else if (assistantType === "takePoint") {
-        gameStore.setPendingTakePoint(true);
-      } else if (assistantType === "silence") {
-        gameStore.setPendingSilence(true);
-      }
+      if (assistantType === "TakePoints") gameStore.setPendingTakePoint(true);
+      if (assistantType === "UseSilence") gameStore.setPendingSilence(true);
+
       toast.info(t("gameboard.selectQuestionAssistant"));
       router.push(`/game/${gameId}`);
     }
   };
 
-  // --- Helper function to check if assistant is disabled ---
-  const isAssistantDisabled = (
-    canUse: boolean,
-    usedTeamOne: boolean,
-    usedTeamTwo: boolean,
-    assistantName: string
-  ): boolean => {
-    if (!canUse) return true;
-    if (turn !== team) return true;
-    if (team === 1 && usedTeamOne) return true;
-    if (team === 2 && usedTeamTwo) return true;
-    if (answer || whoAnswer) return true;
-    return false;
-  };
-
-  // --- Assistant Button Component ---
-  interface AssistantButtonProps {
-    onClick: () => void;
-    isLoading: boolean;
-    isDisabled: boolean;
-    variant: string;
-    icon: React.ReactNode;
-    label: string;
-    className?: string;
-  }
-
-  const AssistantButton: React.FC<AssistantButtonProps> = ({
+  const AssistantButton = ({
     onClick,
     isLoading,
     isDisabled,
     variant,
     icon,
     label,
-    className = "",
-  }) => (
+  }: any) => (
     <Button
       onClick={onClick}
       isLoading={isLoading}
       disabled={isDisabled}
-      className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7  lg:w-10 lg:h-10 xl:w-14 xl:h-14 ${className}`}
-      variant={variant as any}
+      className="!p-1 !rounded-[5px] w-7 h-7 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-10 lg:h-10 xl:w-14 xl:h-14"
+      variant={variant}
       shape="square"
       title={label}
     >
@@ -158,165 +139,113 @@ export default function AssistanceBox({
 
   return (
     <div className="flex flex-col items-center gap-2">
-      <p className={`font-bold  ${questionId ? "hidden" : "text-secondary"}`}>
-        {t("gameboard.assistance")}
-      </p>
       <div
-        className={` ${
-          questionId
-            ? "grid grid-cols-3 md:grid-cols-6 gap-2"
-            : "grid grid-cols-3 gap-2"
-        }`}
+        className={
+          questionId || layoutType === "version1"
+            ? "grid grid-cols-6 gap-2"
+            : "grid grid-cols-6 md:grid-cols-3 gap-2"
+        }
       >
-        {context === "question" ? (
-          // Question Context Assistants
-          <>
-            <AssistantButton
-              onClick={handleChangeQuestion}
-              isLoading={isChangeQuestionLoading}
-              isDisabled={isAssistantDisabled(
-                gameStore?.canUseChangeQuestion || false,
-                gameStore?.usedChangeQuestionTeamOne || false,
-                gameStore?.usedChangeQuestionTeamTwo || false,
-                "changeQuestion"
-              )}
-              variant="light-blue-gradient"
-              icon={<ChangeQuestionIcon size={48} />}
-              label={t("assistants.changeQuestion")}
+        {/* 1. Change Question */}
+        <AssistantButton
+          onClick={() => changeQuestionMutation.mutate()}
+          isLoading={changeQuestionMutation.isPending}
+          isDisabled={isAssistantDisabled(
+            "ChangeQuestion",
+            !!gameStore?.usedChangeQuestionTeamOne,
+            !!gameStore?.usedChangeQuestionTeamTwo,
+            context === "gameboard"
+          )}
+          variant="light-blue-gradient"
+          icon={<ChangeQuestionIcon size={48} />}
+          label={t("assistants.changeQuestion")}
+        />
+
+        {/* 2. Skip Question */}
+        <AssistantButton
+          onClick={() => skipQuestionMutation.mutate()}
+          isLoading={skipQuestionMutation.isPending}
+          isDisabled={isAssistantDisabled(
+            "SkipQuestion",
+            !!gameStore?.usedSkipQuestionTeamOne,
+            !!gameStore?.usedSkipQuestionTeamTwo,
+            context === "gameboard"
+          )}
+          variant="light-orange-gradient"
+          icon={<SkipQuestionIcon size={48} />}
+          label={t("assistants.skipQuestion")}
+        />
+
+        {/* 3. Use Silence */}
+        <AssistantButton
+          onClick={() =>
+            context === "gameboard"
+              ? handleAssistantClick("UseSilence")
+              : silenceMutation.mutate()
+          }
+          isLoading={silenceMutation.isPending}
+          isDisabled={isAssistantDisabled(
+            "UseSilence",
+            !!gameStore?.usedSilenceTeamOne,
+            !!gameStore?.usedSilenceTeamTwo,
+            context === "question"
+          )}
+          variant="primary"
+          icon={
+            <Image
+              alt="silence"
+              width={48}
+              height={48}
+              src="/icons/redCard.svg"
             />
-            <AssistantButton
-              onClick={handleSkipQuestion}
-              isLoading={isSkipQuestionLoading}
-              isDisabled={isAssistantDisabled(
-                gameStore?.canUseSkipQuestion || false,
-                gameStore?.usedSkipQuestionTeamOne || false,
-                gameStore?.usedSkipQuestionTeamTwo || false,
-                "skipQuestion"
-              )}
-              variant="light-orange-gradient"
-              icon={<SkipQuestionIcon size={48} />}
-              label={t("assistants.skipQuestion")}
-            />
-            <AssistantButton
-              onClick={handleSilence}
-              isLoading={isSilenceLoading}
-              isDisabled={true} // Silence disabled in question context
-              variant="primary"
-              icon={
-                <Image
-                  alt="red card icons"
-                  width={48}
-                  height={48}
-                  src={"/icons/redCard.svg"}
-                />
-              }
-              label={t("assistants.silence")}
-            />
-            <AssistantButton
-              onClick={handleFiftyFifty}
-              isLoading={isFiftyFiftyLoading}
-              isDisabled={isAssistantDisabled(
-                gameStore?.canUseRemoveTwoOption || false,
-                gameStore?.usedRemoveOptionTeamOne || false,
-                gameStore?.usedRemoveOptionTeamTwo || false,
-                "fiftyFifty"
-              )}
-              variant="light-purple-gradient"
-              icon={<FiftyByFiftyIcon size={48} />}
-              label={t("assistants.fiftyFifty")}
-            />
-            <AssistantButton
-              onClick={() => {}} // No action in question context
-              isLoading={false}
-              isDisabled={true}
-              variant="magenta-gradient"
-              icon={<DoublePointsIcon size={48} />}
-              label={t("assistants.doublePoints")}
-            />
-            <AssistantButton
-              onClick={() => {}} // No action in question context
-              isLoading={false}
-              isDisabled={true}
-              variant="orange-gradient"
-              icon={<TakePointsIcon size={48} />}
-              label={t("assistants.takePoints")}
-            />
-          </>
-        ) : (
-          // Gameboard Context Assistants
-          <>
-            <AssistantButton
-              onClick={handleChangeQuestion}
-              isLoading={isChangeQuestionLoading}
-              isDisabled={true} // Change question disabled in gameboard
-              variant="light-blue-gradient"
-              icon={<ChangeQuestionIcon size={48} />}
-              label={t("assistants.changeQuestion")}
-            />
-            <AssistantButton
-              onClick={handleSkipQuestion}
-              isLoading={isSkipQuestionLoading}
-              isDisabled={true} // Skip question disabled in gameboard
-              variant="light-orange-gradient"
-              icon={<SkipQuestionIcon size={48} />}
-              label={t("assistants.skipQuestion")}
-            />
-            <AssistantButton
-              onClick={() => handleAssistantClick("silence")}
-              isLoading={isSilenceLoading}
-              isDisabled={isAssistantDisabled(
-                gameStore?.canUseSilence || false,
-                gameStore?.usedSilenceTeamOne || false,
-                gameStore?.usedSilenceTeamTwo || false,
-                "silence"
-              )}
-              variant="primary"
-              icon={
-                <Image
-                  alt="red card icons"
-                  width={48}
-                  height={48}
-                  src={"/icons/redCard.svg"}
-                />
-              }
-              label={t("assistants.silence")}
-            />
-            <AssistantButton
-              onClick={handleFiftyFifty}
-              isLoading={isFiftyFiftyLoading}
-              isDisabled={true} // 50/50 disabled in gameboard
-              variant="light-purple-gradient"
-              icon={<FiftyByFiftyIcon size={48} />}
-              label={t("assistants.fiftyFifty")}
-            />
-            <AssistantButton
-              onClick={() => handleAssistantClick("doublePoint")}
-              isLoading={false}
-              isDisabled={isAssistantDisabled(
-                gameStore?.canUseDoublePoint || false,
-                gameStore?.usedDoublePointTeamOne || false,
-                gameStore?.usedDoublePointTeamTwo || false,
-                "doublePoint"
-              )}
-              variant="magenta-gradient"
-              icon={<DoublePointsIcon size={48} />}
-              label={t("assistants.doublePoints")}
-            />
-            <AssistantButton
-              onClick={() => handleAssistantClick("takePoint")}
-              isLoading={false}
-              isDisabled={isAssistantDisabled(
-                gameStore?.canUseTakePoints || false,
-                gameStore?.usedTakePointsTeamOne || false,
-                gameStore?.usedTakePointsTeamTwo || false,
-                "takePoint"
-              )}
-              variant="orange-gradient"
-              icon={<TakePointsIcon size={48} />}
-              label={t("assistants.takePoints")}
-            />
-          </>
-        )}
+          }
+          label={t("assistants.silence")}
+        />
+
+        {/* 4. Fifty Fifty (Remove2Options) */}
+        <AssistantButton
+          onClick={() => fiftyFiftyMutation.mutate()}
+          isLoading={fiftyFiftyMutation.isPending}
+          isDisabled={isAssistantDisabled(
+            "Remove2Options",
+            !!gameStore?.usedRemoveOptionTeamOne,
+            !!gameStore?.usedRemoveOptionTeamTwo,
+            context === "gameboard"
+          )}
+          variant="light-purple-gradient"
+          icon={<FiftyByFiftyIcon size={48} />}
+          label={t("assistants.fiftyFifty")}
+        />
+
+        {/* 5. Double Points */}
+        <AssistantButton
+          onClick={() => handleAssistantClick("DoublePoints")}
+          isLoading={false}
+          isDisabled={isAssistantDisabled(
+            "DoublePoints",
+            !!gameStore?.usedDoublePointTeamOne,
+            !!gameStore?.usedDoublePointTeamTwo,
+            context === "question"
+          )}
+          variant="magenta-gradient"
+          icon={<DoublePointsIcon size={48} />}
+          label={t("assistants.doublePoints")}
+        />
+
+        {/* 6. Take Points */}
+        <AssistantButton
+          onClick={() => handleAssistantClick("TakePoints")}
+          isLoading={false}
+          isDisabled={isAssistantDisabled(
+            "TakePoints",
+            !!gameStore?.usedTakePointsTeamOne,
+            !!gameStore?.usedTakePointsTeamTwo,
+            context === "question"
+          )}
+          variant="orange-gradient"
+          icon={<TakePointsIcon size={48} />}
+          label={t("assistants.takePoints")}
+        />
       </div>
     </div>
   );

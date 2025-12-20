@@ -7,12 +7,10 @@ import {
   WnPayload,
 } from "@/type/api/auth/auth.types";
 
-// Constants for social login configuration
 export const AUTH_ORIGIN =
   process.env.NEXT_PUBLIC_AUTH_ORIGIN ?? "https://auth.befalta.com";
 export const SOCIAL_LOGIN_ENDPOINT = "/auth/external/login";
 
-//  Send social login data to backend
 export const postSocialLogin = async (
   payload: SocialLoginPayload,
   endpoint: string = "/auth/login"
@@ -32,7 +30,6 @@ export const postSocialLogin = async (
   }
 };
 
-//  Send social register data to backend
 export const postSocialRegister = async (
   payload: SocialLoginPayload,
   endpoint: string = "/auth/register"
@@ -52,7 +49,6 @@ export const postSocialRegister = async (
   }
 };
 
-//  Save tokens from server response to local storage
 export const persistFromResponse = (
   res: ApiResponse<SocialLoginResponse>
 ): boolean => {
@@ -71,7 +67,6 @@ export const persistFromResponse = (
   return false;
 };
 
-//  Read data from window.name (for social login)
 export const readFromWindowName = (): WnPayload | null => {
   try {
     if (typeof window.name === "string" && window.name.startsWith("SOCIAL|")) {
@@ -82,7 +77,6 @@ export const readFromWindowName = (): WnPayload | null => {
   return null;
 };
 
-//  Read data from URL hash (for social login)
 export const readFromHash = (): WnPayload | null => {
   try {
     const hash = window.location.hash?.slice(1) || "";
@@ -95,7 +89,6 @@ export const readFromHash = (): WnPayload | null => {
   return null;
 };
 
-//  Call external login with social token
 export const callExternalLogin = async (
   payload: SocialLoginPayload
 ): Promise<boolean> => {
@@ -115,7 +108,6 @@ export const callExternalLogin = async (
   throw new Error((res.errors as string) || `Login failed`);
 };
 
-//  Clean URL query parameters after social login
 export const cleanQueryParams = (): void => {
   const url = new URL(window.location.href);
   url.searchParams.delete("sid");

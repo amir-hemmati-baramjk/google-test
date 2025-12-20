@@ -15,7 +15,7 @@ export default function LoginModal({ isOpen, onClose }: ChildModalProps) {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="flex flex-col justify-center items-center gap-5">
+      <div className="flex flex-col justify-center items-center gap-5 ">
         <div className="w-full flex justify-center items-center  bg-primary/30 text-primary rounded-[20px] py-4">
           <p className="text-primary py-8 text-lg text-center font-bold">
             {t("you-not-registered")}

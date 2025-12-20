@@ -30,7 +30,6 @@ export default function LoginButtons() {
   const [loading, setLoading] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
 
-  //  Process login via window.name or hash
   const processWindowNameLogin = async (): Promise<boolean> => {
     setStatus(t("processing"));
 
@@ -39,12 +38,11 @@ export default function LoginButtons() {
     if (!wn) {
       wn = readFromWindowName();
     }
-    // Clear window name for security
+
     try {
       window.name = "";
     } catch {}
 
-    // Clean URL hash if exists
     if (window.location.hash) {
       window.history.replaceState(
         null,
@@ -54,7 +52,6 @@ export default function LoginButtons() {
     }
 
     if (wn?.idToken) {
-      // Check if token is expired
       if (wn.exp && Date.now() > wn.exp) {
         setStatus(t("timeout"));
         cleanQueryParams();
@@ -83,7 +80,6 @@ export default function LoginButtons() {
     return false;
   };
 
-  //Finalize login process and redirect
   const finalizeLogin = async (): Promise<void> => {
     setStatus(t("success"));
     try {
@@ -96,7 +92,6 @@ export default function LoginButtons() {
     router.push("/login/success");
   };
 
-  //  Process redirect login via iframe
   const processRedirectLogin = async (sid: string): Promise<void> => {
     setStatus(t("processing"));
 
@@ -115,7 +110,6 @@ export default function LoginButtons() {
           data?: any;
         };
 
-        // Validate message type and session ID
         if (type !== "social-relay" || incomingSid !== sid) return;
 
         window.removeEventListener("message", onMessage);
@@ -149,10 +143,8 @@ export default function LoginButtons() {
           });
       };
 
-      // Listen for messages from iframe
       window.addEventListener("message", onMessage);
 
-      // Create hidden iframe for token relay
       const iframe = document.createElement("iframe");
       iframe.style.display = "none";
       iframe.src = `${AUTH_ORIGIN}/token-relay.html?sid=${encodeURIComponent(
@@ -160,8 +152,6 @@ export default function LoginButtons() {
       )}&origin=${encodeURIComponent(window.location.origin)}`;
       document.body.appendChild(iframe);
 
-      // Set timeout for iframe communication
-      // تنظیم تایم‌اوت برای ارتباط iframe
       const timeout = window.setTimeout(() => {
         window.removeEventListener("message", onMessage);
         setStatus(t("timeout"));
@@ -170,7 +160,6 @@ export default function LoginButtons() {
       }, 12000);
 
       // Cleanup function
-      // تابع پاک‌سازی
       return () => {
         window.clearTimeout(timeout);
         window.removeEventListener("message", onMessage);
@@ -179,7 +168,6 @@ export default function LoginButtons() {
     });
   };
 
-  // Handle social login on component mount
   useEffect(() => {
     const url = new URL(window.location.href);
     const social = url.searchParams.get("social");
@@ -200,7 +188,6 @@ export default function LoginButtons() {
     handleSocialLogin();
   }, []);
 
-  //  Handle social login button clicks
   const handleSocialLogin = async (provider: "google" | "apple") => {
     try {
       setLoading(provider === "google" ? "gredir" : "aredir");

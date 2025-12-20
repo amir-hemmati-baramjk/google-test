@@ -6,8 +6,7 @@ import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { routing } from "@/i18n/routing";
 import Script from "next/script";
-import NavigationMenu from "./_components/navigationMenu/NavigationMenu";
-import BottomDoc from "./_components/bottomDoc/BottomDoc";
+import NextTopLoader from "nextjs-toploader";
 import ClientLayoutWrapper from "./ClientLayoutWrapper";
 import { ToastContainer } from "react-toastify";
 
@@ -81,10 +80,12 @@ export default async function LocaleLayoutWrapper({
         />
       </head>
       <body suppressHydrationWarning className="antialiased bg-main-bg">
+        <NextTopLoader showSpinner={false} />
         <QueryProvider>
           <NextIntlClientProvider locale={locale} messages={messages}>
             <ClientLayoutWrapper locale={locale}>
               <ToastContainer />
+
               {children}
             </ClientLayoutWrapper>
           </NextIntlClientProvider>

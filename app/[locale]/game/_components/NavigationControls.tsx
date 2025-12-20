@@ -1,10 +1,10 @@
-// components/NavigationControls.tsx
 "use client";
 import React from "react";
 
 import { useLocale, useTranslations } from "next-intl";
 import { Button } from "../../_components/button/button";
 import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react";
+import { useGameStore } from "@/stores/gameStore";
 
 interface NavigationControlsProps {
   currentPage: number;
@@ -23,6 +23,7 @@ export default function NavigationControls({
 }: NavigationControlsProps) {
   const t = useTranslations("GamePage.gameboard.navigation");
   const locale = useLocale();
+  const game = useGameStore();
   return (
     <div
       className={`flex justify-center items-center gap-4 mt-2 ${
@@ -30,7 +31,9 @@ export default function NavigationControls({
       } ${className}`}
     >
       <Button
-        className="!p-1.5 w-8 h-8 sm:w-7 sm:h-7 lg:w-8 lg:h-8 !rounded-[5px]"
+        className={`!p-1.5 w-8 h-8 sm:w-7 sm:h-7 lg:w-8 lg:h-8 !rounded-[5px] ${
+          game?.layoutType == "version1" ? "sm:-rotate-90" : ""
+        }`}
         size="small"
         variant="primary"
         shape="square"
@@ -41,11 +44,13 @@ export default function NavigationControls({
       </Button>
 
       <p className="text-white text-xs lg:text-md">
-        {t("page")} {currentPage + 1} {t("of")} {totalPages}
+        {currentPage + 1} / {totalPages}
       </p>
 
       <Button
-        className="!p-1.5 w-8 h-8 sm:w-7 sm:h-7 lg:w-8 lg:h-8 !rounded-[5px]"
+        className={`!p-1.5 w-8 h-8 sm:w-7 sm:h-7 lg:w-8 lg:h-8 !rounded-[5px] ${
+          game?.layoutType == "version1" ? "sm:-rotate-90" : ""
+        }`}
         size="small"
         variant="primary"
         shape="square"
