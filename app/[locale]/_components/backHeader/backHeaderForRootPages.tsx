@@ -15,42 +15,95 @@ const IOS_APPSTORE_URL =
 export default function BackHeaderForRootPages() {
   const { user } = useUser();
   const [showGetApp, setShowGetApp] = useState(false);
+  const [isMounted, setIsMounted] = useState(false); // To handle hydration
   const t = useTranslations("BackHeaderRootPages");
   const locale = useLocale();
 
-  const ua = useMemo(
-    () => (typeof navigator !== "undefined" ? navigator.userAgent || "" : ""),
-    []
-  );
-
-  // Heuristics for banner visibility
+  /** Set mounted state */
   useEffect(() => {
-    const isIOS = /iPhone|iPad|iPod/i.test(ua);
-    const isAndroid = /Android/i.test(ua);
-    const isWebView = /wv|webview|FBAN|FBAV|Instagram|TikTok/i.test(ua);
-    const isStandalone =
-      typeof window !== "undefined" &&
-      (window.matchMedia("(display-mode: standalone)").matches ||
-        (navigator as any).standalone);
+    setIsMounted(true);
+  }, []);
 
-    setShowGetApp((isIOS || isAndroid) && !isWebView && !isStandalone);
-  }, [ua]);
+  const ua = useMemo(() => {
+    if (typeof navigator === "undefined") return "";
+    return navigator.userAgent || navigator.vendor || "";
+  }, []);
+
+  /** Device detection Helpers */
+  const isIOSDevice = () => {
+    if (typeof navigator === "undefined") return false;
+    const iOSUA = /iPhone|iPad|iPod/i.test(ua);
+    const iPadOnMac =
+      navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
+    return iOSUA || iPadOnMac;
+  };
+
+  const isAndroidDevice = () => /Android/i.test(ua);
+
+  const isInAppBrowser = () =>
+    /FBAN|FBAV|Instagram|Line|TikTok|Twitter|OKApp|Pinterest/i.test(ua);
+
+  const isStandalonePWA = () => {
+    if (typeof window === "undefined") return false;
+    return (
+      window.matchMedia("(display-mode: standalone)").matches ||
+      (navigator as any).standalone
+    );
+  };
+
+  const isWebView = () => {
+    if (typeof window === "undefined") return false;
+    const w = window as any;
+    const isIOSWV =
+      isIOSDevice() &&
+      (!!w.webkit ||
+        !!w.flutter_inappwebview ||
+        !!w.FaltaApp ||
+        isInAppBrowser());
+    const isAndroidWV =
+      isAndroidDevice() &&
+      (/; wv\)/i.test(ua) ||
+        /Version\/[\d.]+\s+Chrome\//i.test(ua) ||
+        /MY_FLUTTER_WEBVIEW/i.test(ua));
+    return isIOSWV || isAndroidWV;
+  };
+
+  /** Decide when to show banner */
+  useEffect(() => {
+    if (!isMounted) return;
+
+    const isMobile = isIOSDevice() || isAndroidDevice();
+    const shouldShow = isMobile && !isWebView() && !isStandalonePWA();
+
+    // Check if dismissed in this session
+    const isDismissed = sessionStorage.getItem("app-banner-dismissed");
+
+    if (shouldShow && !isDismissed) {
+      setShowGetApp(true);
+    }
+  }, [isMounted, ua]);
+
+  const handleDismiss = () => {
+    setShowGetApp(false);
+    sessionStorage.setItem("app-banner-dismissed", "true");
+  };
 
   const store = useMemo(() => {
-    if (/iPhone|iPad|iPod/i.test(ua))
-      return { href: IOS_APPSTORE_URL, label: t("appBanner.get") };
-    return { href: ANDROID_PLAY_URL, label: t("appBanner.get") };
-  }, [ua, t]);
+    if (isIOSDevice()) return { href: IOS_APPSTORE_URL, label: "Get" };
+    if (isAndroidDevice()) return { href: ANDROID_PLAY_URL, label: "Get" };
+    return { href: "#", label: "Get" };
+  }, [ua]);
 
-  const handleDismiss = () => setShowGetApp(false);
+  // Don't render browser-specific logic on server
+  if (!isMounted) return null;
 
   return (
-    <header className="sticky z-50 top-0 w-full lg:hidden ">
+    <header className="sticky z-50 top-0 w-full lg:hidden">
       {/* Smart App Banner */}
       {showGetApp && (
         <div
           dir={locale === "ar" ? "rtl" : "ltr"}
-          className="bg-primary-bg-gradient py-2 pt-12 md:pt-2 px-3 flex items-center justify-between text-white border-b border-white/10"
+          className="bg-primary-bg-gradient py-2  px-3 flex items-center justify-between text-white border-b border-white/10"
         >
           <div className="flex items-center gap-3">
             <button
@@ -82,16 +135,23 @@ export default function BackHeaderForRootPages() {
       )}
 
       {/* Main Header Content */}
-      <div className="bg-primary-bg-gradient flex justify-between items-center p-3 text-white shadow-md ">
+      <div
+        className={`bg-primary-bg-gradient flex justify-between items-center p-3 text-white shadow-md ${
+          !showGetApp ? "pt-12 md:pt-2" : ""
+        }`}
+      >
         <div className="flex items-center gap-3">
-          <div className="border-2 border-white/50 h-[52px] w-[52px] rounded-full relative overflow-hidden shadow-inner bg-gray-100">
+          <Link
+            href="/profile"
+            className="border-2 border-white/50 h-[52px] w-[52px] rounded-full relative overflow-hidden shadow-inner bg-gray-100 block"
+          >
             <Image
               src={user?.picture?.downloadUrl ?? "/staticImages/profile.svg"}
               alt="Profile"
               fill
               className="object-cover"
             />
-          </div>
+          </Link>
           <div className="flex flex-col">
             <p className="text-sm font-bold truncate max-w-[120px]">
               {user?.fullName || t("appBanner.guest")}
@@ -111,14 +171,14 @@ export default function BackHeaderForRootPages() {
           </div>
         </div>
 
-        <button className="active:scale-90 transition-transform">
+        <div className="active:scale-90 transition-transform">
           <Image
             alt="Badge"
             width={54}
             height={54}
             src="/icons/beginner-icon.svg"
           />
-        </button>
+        </div>
       </div>
     </header>
   );
