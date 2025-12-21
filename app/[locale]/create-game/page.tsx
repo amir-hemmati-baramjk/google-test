@@ -21,6 +21,7 @@ import { CreateGameModal } from "./_components/CreateGameModal";
 import LoginModal from "./_components/LoginModal";
 import PaymentModal from "./_components/PaymentModal";
 import SelectedItemsBar from "./_components/SelectedItemsBar";
+import LogoMotionLoading from "../_components/logoMotionLoading/LogoMotionLoading";
 
 export default function CategoriesPage() {
   const { isInitialized, isLogin, user } = useUser();
@@ -126,8 +127,8 @@ export default function CategoriesPage() {
   }, [tagSections, selectedCatItems]);
   if (isLoading || !isInitialized) {
     return (
-      <div className="h-screen flex items-center justify-center">
-        <Loading size="large" variant="light-blue-gradient" />
+      <div className="flex justify-center py-20 w-screen h-screen items-center backdrop-blur-3xl absolute top-0 left-0 z-[1000]">
+        <LogoMotionLoading />
       </div>
     );
   }

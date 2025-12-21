@@ -11,6 +11,7 @@ import { Game } from "@/type/api/game/game.type";
 import { getGameList } from "@/core/game/get-game-list-service";
 import { useTranslations } from "next-intl";
 import GameCardSkeleton from "./_components/GameCardSkeleton";
+import LogoMotionLoading from "../_components/logoMotionLoading/LogoMotionLoading";
 
 const PAGE_SIZE = 12;
 export default function GamesPage() {
@@ -36,16 +37,8 @@ export default function GamesPage() {
 
   if (isLoading && totalLoaded === 0) {
     return (
-      <div className="min-h-screen">
-        <BackHeaderForsubPages title={t("myGames")} />
-        <Banner />
-        <div className="lg:container mx-auto px-5 mt-20">
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 6 }).map((_, index) => (
-              <GameCardSkeleton key={index} />
-            ))}
-          </div>
-        </div>
+      <div className="flex justify-center py-20 w-screen h-screen items-center backdrop-blur-3xl absolute top-0 left-0 z-[1000]">
+        <LogoMotionLoading />
       </div>
     );
   }

@@ -22,7 +22,7 @@ export const CreateGameModal: React.FC<CreateGameModalProps> = ({
 
   return (
     <Modal isOpen={show} onClose={handleClose}>
-      <div className=" w-full lg:w-[600px] h-full bg-white overflow-scroll">
+      <div className=" w-full  h-full bg-white overflow-scroll">
         <div className=" w-full m-auto">
           <div className=" w-full bg-white  overflow-y-scroll no-scrollbar mx-auto">
             <div

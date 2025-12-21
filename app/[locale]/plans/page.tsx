@@ -14,6 +14,7 @@ import GamePackageCard from "./_components/GamePackageCard";
 import { GamePackage } from "@/type/api/plans/plans.type";
 import { useRouter } from "@/i18n/navigation";
 import { Loading } from "../_components/loading/loading";
+import LogoMotionLoading from "../_components/logoMotionLoading/LogoMotionLoading";
 
 export default function PackagesPage() {
   const t = useTranslations("plans");
@@ -53,8 +54,8 @@ export default function PackagesPage() {
         </div>
 
         {isLoading ? (
-          <div className="flex justify-center py-20">
-            <Loading variant="light-blue-gradient" size="large" />
+          <div className="flex justify-center py-20 w-screen h-screen items-center backdrop-blur-3xl absolute top-0 left-0 z-[1000]">
+            <LogoMotionLoading />
           </div>
         ) : isError ? (
           <div className="text-center py-20 text-red-400 font-bold">

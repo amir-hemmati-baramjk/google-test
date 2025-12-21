@@ -20,6 +20,7 @@ import { OrderSummaryDetails } from "./_components/OrderSummaryDetails";
 import { PaymentGatewayList } from "./_components/PaymentGatewayList";
 import { CurrencySelector } from "./_components/CurrencySelector";
 import { Loading } from "../../_components/loading/loading";
+import LogoMotionLoading from "../../_components/logoMotionLoading/LogoMotionLoading";
 
 const PaymentPage: React.FC = () => {
   const { planId } = useParams();
@@ -141,8 +142,8 @@ const PaymentPage: React.FC = () => {
 
   if (isLoadingPackage || !packageData || !orderSummary) {
     return (
-      <div className="text-white text-center p-10">
-        <Loading variant="light-blue-gradient" size="large" />
+      <div className="flex justify-center py-20 w-screen h-screen items-center backdrop-blur-3xl absolute top-0 left-0 z-[1000]">
+        <LogoMotionLoading />
       </div>
     );
   }
@@ -154,10 +155,7 @@ const PaymentPage: React.FC = () => {
       {/* Full Screen Loading Overlay */}
       {isRedirecting && (
         <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm">
-          <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
-          <p className="mt-4 text-lg font-semibold text-white">
-            {t("redirecting-to-payment")}
-          </p>
+          <LogoMotionLoading />
         </div>
       )}
 

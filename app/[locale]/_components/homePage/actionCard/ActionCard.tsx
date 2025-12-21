@@ -2,6 +2,7 @@
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import React, { useState } from "react";
+import { motion, Variants } from "framer-motion"; // Added motion
 import { Button } from "../../button/button";
 import { Variant } from "../../../../../type/components/variant.type";
 import { Link } from "@/i18n/routing";
@@ -44,14 +45,50 @@ export default function ActionCard() {
     },
   ];
 
+  // 1. Entrance Variants
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15, delayChildren: 0.2 },
+    },
+  };
+
+  const cardVariants: Variants = {
+    hidden: { y: 40, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 100, damping: 15 },
+    },
+  };
+
   return (
-    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 w-full max-w-[1400px] mx-auto mt-5  lg:px-0">
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      className="grid grid-cols-1 gap-5 md:grid-cols-2 w-full max-w-[1400px] mx-auto mt-5 lg:px-0"
+    >
       {items.map((item, index) => (
-        <div
+        <motion.div
           key={index}
-          className="flex bg-white justify-between items-center gap-5 p-4 lg:p-6 rounded-[16px] shadow-sm group"
+          variants={cardVariants}
+          whileHover={{
+            y: -8,
+            boxShadow:
+              "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
+          }}
+          className="flex bg-white justify-between items-center gap-5 p-4 lg:p-6 rounded-[16px] shadow-sm group relative overflow-hidden"
         >
-          <div className="flex flex-col gap-3">
+          {/* Subtle background flash on hover */}
+          <motion.div
+            className="absolute inset-0 bg-gray-50/50 opacity-0 group-hover:opacity-100 transition-opacity"
+            // pointerEvents="none"
+          />
+
+          <div className="flex flex-col gap-3 z-10">
             <p
               className={`text-lg lg:text-3xl font-bold text-${item.textVarient}`}
             >
@@ -59,51 +96,67 @@ export default function ActionCard() {
             </p>
 
             {item.icons ? (
-              <div className="relative w-[50px] h-[50px]">
+              <motion.div
+                className="relative w-[50px] h-[50px]"
+                initial={{ scale: 0, rotate: -45 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ delay: 0.5 + index * 0.1, type: "spring" }}
+                whileHover={{ rotate: 360, scale: 1.2 }}
+              >
                 <Image
                   alt={item.title}
                   src={item.icons}
                   fill
                   className="object-contain"
                 />
-              </div>
+              </motion.div>
             ) : item.key ? (
-              <p className="text-5xl lg:text-6xl font-[900] text-turquoise">
+              <motion.p
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.6, type: "spring" }}
+                className="text-5xl lg:text-6xl font-[900] text-turquoise"
+              >
                 12
-              </p>
+              </motion.p>
             ) : (
               <div className="w-[50px] h-[50px]"></div>
             )}
           </div>
 
-          {/* Only the button is clickable */}
-          {item.requiresAuth && !isLoggedIn ? (
-            <Button
-              onClick={() => setShowLoginModal(true)}
-              className="shadow-custom !text-[16px] !font-bold lg:text-xl"
-              variant={item.buttonVarient as Variant}
-              size="large"
-            >
-              {item.buttonText}
-            </Button>
-          ) : (
-            <Link href={item.link}>
-              <Button
-                className="shadow-custom !text-[16px] !font-bold lg:text-xl"
-                variant={item.buttonVarient as Variant}
-                size="large"
-              >
-                {item.buttonText}
-              </Button>
-            </Link>
-          )}
-        </div>
+          <div className="z-10">
+            {item.requiresAuth && !isLoggedIn ? (
+              <motion.div whileTap={{ scale: 0.95 }}>
+                <Button
+                  onClick={() => setShowLoginModal(true)}
+                  className="shadow-custom !text-[16px] !font-bold lg:text-xl"
+                  variant={item.buttonVarient as Variant}
+                  size="large"
+                >
+                  {item.buttonText}
+                </Button>
+              </motion.div>
+            ) : (
+              <Link href={item.link}>
+                <motion.div whileTap={{ scale: 0.95 }}>
+                  <Button
+                    className="shadow-custom !text-[16px] !font-bold lg:text-xl"
+                    variant={item.buttonVarient as Variant}
+                    size="large"
+                  >
+                    {item.buttonText}
+                  </Button>
+                </motion.div>
+              </Link>
+            )}
+          </div>
+        </motion.div>
       ))}
 
       <LoginModal
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
       />
-    </div>
+    </motion.div>
   );
 }

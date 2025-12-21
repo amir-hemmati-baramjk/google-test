@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useRef } from "react";
 import { CategoryCard } from "./CategoryCard";
 
@@ -28,7 +29,7 @@ export default function VirtualItemWrapper({
       <h2 className="text-lg font-bold mb-4 text-primary bg-light-purple px-1 py-2 text-center rounded-lg">
         {tag.name}
       </h2>
-      <div className={`grid gap-4 ${gridClass} `}>
+      <div className={`grid gap-4 ${gridClass}`}>
         {tag.categories?.map((cat: any) => (
           <CategoryCard
             key={cat.id}

@@ -9,6 +9,7 @@ import GamePageHeader from "../_components/GamePageHeader";
 import { Loading } from "../../_components/loading/loading";
 import { usePreloadMedia } from "@/hooks/usePreloadMedia";
 import GameOverModal from "../_components/GameOverModal";
+import LogoMotionLoading from "../../_components/logoMotionLoading/LogoMotionLoading";
 
 export default function GameLayout({
   children,
@@ -99,10 +100,8 @@ export default function GameLayout({
   });
   if (isLoading) {
     return (
-      <div className="game-layout">
-        <div className="fixed top-0 left-0 w-full h-full z-[9999] backdrop-blur-md bg-black/40 flex items-center justify-center">
-          <Loading size="large" type="ring" variant="light-blue-gradient" />
-        </div>
+      <div className="flex justify-center py-20 w-screen h-screen items-center backdrop-blur-3xl absolute top-0 left-0 z-[1000]">
+        <LogoMotionLoading />
       </div>
     );
   }
@@ -123,7 +122,7 @@ export default function GameLayout({
         <GamePageHeader />
       </div>
       <div
-        className=" flex flex-col justify-between "
+        className=" flex flex-col justify-between md:justify-center md:overflow-scroll"
         style={{ height: `calc(100vh - ${headerHeight}px)` }}
       >
         {children}

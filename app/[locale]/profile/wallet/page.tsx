@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { BackHeaderForsubPages } from "../../_components/backHeader/backHeaderForsubPages";
 import { TransactionItem } from "./_components/TransactionItem";
 import { getWallet } from "@/core/wallet/get-wallet-service";
+import LogoMotionLoading from "../../_components/logoMotionLoading/LogoMotionLoading";
 
 export default function WalletPage() {
   const t = useTranslations("wallet");
@@ -22,7 +23,11 @@ export default function WalletPage() {
   const transactions = walletInfo?.history?.data || [];
 
   if (isLoading) {
-    return <div className="text-white text-center p-10">Loading...</div>;
+    return (
+      <div className="flex justify-center py-20 w-screen h-screen items-center backdrop-blur-3xl absolute top-0 left-0 z-[1000]">
+        <LogoMotionLoading />
+      </div>
+    );
   }
 
   return (

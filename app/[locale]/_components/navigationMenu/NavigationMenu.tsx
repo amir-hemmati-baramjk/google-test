@@ -56,12 +56,7 @@ export default function NavigationMenu() {
 
   return (
     <div
-      className={`w-full hidden  lg:block bg-primary-bg-gradient transition-all duration-500 ease-out
-        ${
-          isScrolled
-            ? "fixed top-0 left-0 right-0 z-50 shadow-lg translate-y-0 opacity-100"
-            : "relative shadow-none -translate-y-5 opacity-100 mt-10"
-        }`}
+      className={`w-full hidden lg:block bg-primary-bg-gradient sticky top-0 left-0 right-0 z-50 shadow-lg translate-y-0 opacity-100`}
     >
       <div className="container mx-auto flex justify-between items-center p-5">
         {/* Logo */}

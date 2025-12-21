@@ -3,8 +3,15 @@ import React, { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import BackHeaderForRootPages from "../_components/backHeader/backHeaderForRootPages";
 import { ArrowRightIcon, WalletIcon } from "lucide-react";
+import {
+  motion,
+  Variants,
+  useSpring,
+  useTransform,
+  animate,
+} from "framer-motion"; // Added Framer Motion
 
-// Icons
+// Icons ... (Your existing imports)
 import { PrivacyPolicyIcon } from "../_components/icons/PrivacyPolicyIcon";
 import { LanguageIcon } from "../_components/icons/LanguageIcon";
 import { ContactUsIcon } from "../_components/icons/ContactUsIcon";
@@ -22,6 +29,36 @@ import { usePathname, useRouter } from "@/i18n/navigation";
 import { toast } from "react-toastify";
 import LoginModal from "../create-game/_components/LoginModal";
 
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { type: "spring", stiffness: 100, damping: 12 },
+  },
+};
+const Counter = ({ value }: { value: string }) => {
+  const [displayValue, setDisplayValue] = React.useState(0);
+  const target = parseInt(value.replace(/,/g, ""));
+
+  React.useEffect(() => {
+    const controls = animate(0, target, {
+      duration: 2,
+      onUpdate: (value) => setDisplayValue(Math.floor(value)),
+    });
+    return () => controls.stop();
+  }, [target]);
+
+  return <span>{displayValue.toLocaleString()}</span>;
+};
 export default function ProfilePage() {
   const t = useTranslations("profile");
   const tMenu = useTranslations("profile.menuItems");
@@ -31,7 +68,6 @@ export default function ProfilePage() {
   const pathname = usePathname();
 
   const { user, setUser, setLanguage, isLogin } = useUser();
-
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const changeLanguage = async () => {
@@ -78,21 +114,21 @@ export default function ProfilePage() {
       id: 2,
       icon: QuestionsAvailableIcon,
       color: "bg-light-blue-gradient",
-      value: "15000",
+      value: "12400",
       label: "questionsAvailable",
     },
     {
       id: 3,
       icon: AverageRatingIcon,
       color: "bg-light-purple-gradient",
-      value: "15000",
+      value: "4800",
       label: "averageRating",
     },
     {
       id: 4,
       icon: WinRateIcon,
       color: "bg-light-orange-gradient",
-      value: "15000",
+      value: "85",
       label: "winRate",
     },
   ];
@@ -154,84 +190,116 @@ export default function ProfilePage() {
       setShowLoginModal(true);
       return;
     }
-
-    if (item.onClick) {
-      item.onClick();
-    } else if (item.href) {
-      router.push(item.href);
-    }
+    if (item.onClick) item.onClick();
+    else if (item.href) router.push(item.href);
   };
 
   return (
-    <div className="pb-24">
-      <BackHeaderForRootPages />
+    <>
+      <div className="pb-24">
+        <BackHeaderForRootPages />
 
-      <div className="flex flex-col items-center gap-8 px-5 mt-10 mx-auto text-white lg:container">
-        <div className="text-center space-y-5 lg:space-y-10">
-          <h1 className="text-3xl lg:text-6xl font-bold text-center">
-            {t("title")}
-          </h1>
-          <p className="text-lg font-bold lg:text-2xl opacity-90 ">
-            {t("subtitle")}
-          </p>
-        </div>
-        {/* 
-        <div className="grid grid-cols-2 lg:grid-cols-4 w-full gap-5">
-          {stats.map((stat) => (
-            <div
-              key={stat.id}
-              className="bg-white rounded-[20px] p-4 flex flex-col gap-3 justify-center items-center shadow-sm"
-            >
-              <div className={`${stat.color} p-3 rounded-full text-white`}>
-                <stat.icon size={36} />
-              </div>
-              <p className="text-primary font-bold text-lg">{stat.value}</p>
-              <p className="text-primary font-medium text-sm text-center">
-                {t(`stats.${stat.label}`)}
-              </p>
-            </div>
-          ))}
-        </div> */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="flex flex-col items-center gap-8 px-5 mt-10 mx-auto text-white lg:container"
+        >
+          <motion.div
+            variants={itemVariants}
+            className="text-center space-y-5 lg:space-y-10"
+          >
+            <h1 className="text-3xl lg:text-7xl font-black text-center tracking-tight">
+              {t("title")}
+            </h1>
+            <p className="text-lg font-medium lg:text-2xl opacity-80 uppercase tracking-widest">
+              {t("subtitle")}
+            </p>
+          </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
-          {menuItems.map((item) => (
-            <button
-              key={item.key}
-              onClick={() => handleItemClick(item)}
-              className={`bg-white rounded-[20px] px-4 py-5 lg:py-10 flex gap-4 justify-between items-center w-full hover:bg-gray-50 transition-all group shadow-sm active:scale-[0.98] text-start ${
-                item?.requiresAuth && !isLogin ? "hidden" : ""
-              }`}
-            >
-              <div className="flex gap-5 items-center">
-                <div className={`${item.color} p-2 rounded-xl text-white`}>
-                  <item.icon size={32} />
+          <motion.div
+            variants={containerVariants}
+            className="grid grid-cols-2 lg:grid-cols-4 w-full gap-2 lg:gap-5"
+          >
+            {stats.map((stat) => (
+              <motion.div
+                key={stat.id}
+                variants={itemVariants}
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="bg-white rounded-[24px] p-6 flex flex-col gap-3 justify-center items-center shadow-lg border border-white/20"
+              >
+                <div
+                  className={`${stat.color} p-4 rounded-2xl text-white shadow-md`}
+                >
+                  <stat.icon size={36} />
                 </div>
-                <div>
-                  <p className="text-primary font-bold text-lg lg:text-2xl">
-                    {tMenu(`${item.key}.title`)}
-                  </p>
-                  <p className="text-primary/70 text-sm lg:text-xl">
-                    {tMenu(`${item.key}.description`)}
-                  </p>
-                </div>
-              </div>
-              <ArrowRightIcon
-                size={30}
-                className={`text-secondary transition-transform ${
-                  isRTL
-                    ? "rotate-180 group-hover:-translate-x-2"
-                    : "group-hover:translate-x-2"
+                <p className="text-primary font-black text-2xl lg:text-3xl">
+                  <Counter value={stat.value} />
+                  {stat.label === "winRate" ? "%" : ""}
+                </p>
+                <p className="text-primary/60 font-bold text-xs uppercase tracking-tighter text-center">
+                  {t(`stats.${stat.label}`)}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <motion.div
+            variants={containerVariants}
+            className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full"
+          >
+            {menuItems.map((item) => (
+              <motion.button
+                key={item.key}
+                variants={itemVariants}
+                onClick={() => handleItemClick(item)}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={`bg-white rounded-[24px] px-6 py-6 lg:py-10 flex gap-4 justify-between items-center w-full group shadow-md transition-all text-start border border-transparent hover:border-secondary/20 ${
+                  item?.requiresAuth && !isLogin ? "hidden" : ""
                 }`}
-              />
-            </button>
-          ))}
-        </div>
+              >
+                <div className="flex gap-5 items-center">
+                  <motion.div
+                    whileHover={{ rotate: 360 }}
+                    className={`${item.color} p-3 rounded-2xl text-white shadow-sm`}
+                  >
+                    <item.icon size={32} />
+                  </motion.div>
+                  <div>
+                    <p className="text-primary font-black text-lg lg:text-2xl">
+                      {tMenu(`${item.key}.title`)}
+                    </p>
+                    <p className="text-primary/60 text-sm lg:text-xl font-medium">
+                      {tMenu(`${item.key}.description`)}
+                    </p>
+                  </div>
+                </div>
+                <div className="bg-secondary/10 p-2 rounded-full group-hover:bg-secondary transition-colors">
+                  <ArrowRightIcon
+                    size={24}
+                    className={`text-secondary group-hover:text-white transition-transform ${
+                      isRTL
+                        ? "rotate-180 group-hover:-translate-x-1"
+                        : "group-hover:translate-x-1"
+                    }`}
+                  />
+                </div>
+              </motion.button>
+            ))}
+          </motion.div>
+        </motion.div>
+
+        <LoginModal
+          isOpen={showLoginModal}
+          onClose={() => setShowLoginModal(false)}
+        />
       </div>
 
       <LoginModal
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
       />
-    </div>
+    </>
   );
 }
