@@ -12,6 +12,7 @@ import { ReturnToGameBoardIcon } from "../../_components/icons/ReturnToGameBoard
 import { TeamRoleIcon } from "../../_components/icons/TeamRoleIcon";
 import { LayoutPanelLeft, LayoutPanelTop } from "lucide-react";
 import { motion } from "framer-motion";
+import { useRouter } from "@/i18n/navigation";
 const GameExitModal = dynamic(() => import("./GameExitModal"), {
   ssr: false,
 });
@@ -19,7 +20,7 @@ const GameExitModal = dynamic(() => import("./GameExitModal"), {
 export default function GamePageHeader() {
   const [showExitModal, setShowExitModal] = useState(false);
   const t = useTranslations("GamePage");
-
+  const router = useRouter();
   const {
     id,
     turn,
@@ -58,7 +59,10 @@ export default function GamePageHeader() {
           >
             <ExitIcon size={32} />
           </button>
-          <button className="bg-white text-secondary flex justify-center items-center rounded-[10px] w-9 h-9 lg:w-10 lg:h-10 hover:bg-secondary/10 transition-colors">
+          <button
+            onClick={() => router.replace(`/game/${id}`)}
+            className="bg-white text-secondary flex justify-center items-center rounded-[10px] w-9 h-9 lg:w-10 lg:h-10 hover:bg-secondary/10 transition-colors"
+          >
             <ReturnToGameBoardIcon size={32} />
           </button>
         </div>
