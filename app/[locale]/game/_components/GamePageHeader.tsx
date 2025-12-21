@@ -79,20 +79,17 @@ export default function GamePageHeader() {
               duration: 1.2,
               ease: "easeOut",
             }}
-            whileHover={{
-              scale: 1.15,
-              rotate: 2,
-              filter: "drop-shadow(0px 0px 18px rgba(255,255,255,0.8))",
-            }}
             className="relative"
           >
             {/* Floating pulse */}
             <motion.div
               animate={{
                 y: [0, -6, 0],
+                scale: [1, 1.1, 1],
+                filter: "drop-shadow(0px 0px 18px rgba(255,255,255,0.8))",
               }}
               transition={{
-                duration: 3,
+                duration: 4,
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
@@ -102,7 +99,7 @@ export default function GamePageHeader() {
                 src="/icons/logo.svg"
                 width={60}
                 height={60}
-                className="w-[45px] h-[45px] md:w-[45px] md:h-[45px] lg:w-[60px] lg:h-[60px]"
+                className="w-[45px] h-[45px] md:w-[45px] md:h-[45px] lg:w-[70px] lg:h-[70px] xl:h-[80] xl:w-[80]"
                 priority
               />
             </motion.div>
