@@ -426,5 +426,15 @@
       "download": "حمل التطبيق لتجربة أفضل",
       "guest": "زائر"
     }
+  },
+  "assistants": {
+    "onlyOnePerTurn": "يُسمح باستخدام وسيلة مساعدة واحدة فقط في كل دور!",
+    "doublePointsSuccess": "تم تفعيل النقاط المضاعفة!",
+    "takePointsSuccess": "تم تفعيل خاصية كسب النقاط!",
+    "silenceSuccess": "تم تطبيق خاصية الصمت!",
+    "fiftyFiftySuccess": "تم حذف خيارين خاطئين!",
+    "changeQuestionSuccess": "تم تغيير السؤال بنجاح!",
+    "skipQuestionSuccess": "تم تخطي السؤال وتسجيل النقاط!",
+    "selectQuestion": "الآن اختر سؤالاً لتطبيق الوسيلة المساعدة عليه."
   }
 }

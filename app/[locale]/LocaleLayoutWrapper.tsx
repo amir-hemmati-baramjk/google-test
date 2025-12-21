@@ -89,7 +89,6 @@ export default async function LocaleLayoutWrapper({
                 toastClassName="custom-toast"
                 position="top-center"
                 theme="colored"
-                rtl
               />
 
               {children}

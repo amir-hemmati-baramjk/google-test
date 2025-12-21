@@ -75,7 +75,9 @@ export default function CategoryCard({
                     qIndex === 0 ? "border-r-primary border-r-[1px]" : ""
                   }`}
                 >
-                  {q.points}
+                  {game?.pendingDoublePoint && q.points == 600
+                    ? q.points * 2
+                    : q.points}
                 </button>
               ))}
           </div>

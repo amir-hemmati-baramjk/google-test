@@ -419,5 +419,15 @@
       "download": "Download our app for better experience",
       "guest": "Guest User"
     }
+  },
+  "assistants": {
+    "onlyOnePerTurn": "You can only use one assistant per turn!",
+    "doublePointsSuccess": "Double points activated!",
+    "takePointsSuccess": "Take points activated!",
+    "silenceSuccess": "Silence applied!",
+    "fiftyFiftySuccess": "Two wrong options removed!",
+    "changeQuestionSuccess": "Question changed!",
+    "skipQuestionSuccess": "Question skipped!",
+    "selectQuestion": "Now select a question to apply the assistant."
   }
 }

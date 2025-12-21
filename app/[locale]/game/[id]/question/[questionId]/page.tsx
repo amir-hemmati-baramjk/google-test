@@ -15,12 +15,14 @@ import { putTakePoints } from "@/core/game/take-points-service";
 import { putSilence } from "@/core/game/silence-team-service";
 import { toast } from "react-toastify";
 import { Button } from "@/app/[locale]/_components/button/button";
+import { useTranslations } from "next-intl";
+import LogoMotionLoading from "@/app/[locale]/_components/logoMotionLoading/LogoMotionLoading";
 
 export default function Page() {
   const params = useParams();
   const searchParams = useSearchParams();
   const [selectedOption, setSelectedOption] = useState("");
-
+  const assistanceT = useTranslations("assistants");
   const assistantProcessed = useRef(false);
 
   const questionIdParam = params?.questionId;
@@ -73,7 +75,7 @@ export default function Page() {
           ? gameStore.setUsedDoublePointTeamOne(true)
           : gameStore.setUsedDoublePointTeamTwo(true);
         queryClient.invalidateQueries({ queryKey: ["game", validGameId] });
-        toast.success("Double points applied!");
+        toast.success(assistanceT("doublePointsSuccess"));
         setPendingDoublePoint(false);
       }
     },
@@ -85,7 +87,7 @@ export default function Page() {
       if (data.success) {
         useGameStore.getState().changeTakePoint(validGameId!, turn);
         queryClient.invalidateQueries({ queryKey: ["game", validGameId] });
-        toast.success("Take points applied!");
+        toast.success(assistanceT("takePointsSuccess"));
         setPendingTakePoint(false);
       }
     },
@@ -99,7 +101,7 @@ export default function Page() {
         gameStore.useSilence(validGameId!, turn);
         gameStore.setCanUseSilence(false);
         queryClient.invalidateQueries({ queryKey: ["game", validGameId] });
-        toast.success("Silence applied!");
+        toast.success(assistanceT("silenceSuccess"));
         setPendingSilence(false);
       }
     },
@@ -131,8 +133,8 @@ export default function Page() {
 
   if (!isGameLoaded || !question) {
     return (
-      <div className="w-full h-full flex justify-center items-center">
-        <p className="text-secondary text-lg">Loading question...</p>
+      <div className="flex justify-center py-20 w-screen h-screen items-center backdrop-blur-3xl absolute top-0 left-0 z-[1000]">
+        <LogoMotionLoading />
       </div>
     );
   }
