@@ -45,14 +45,20 @@ export default function CategoryCard({
 
   return (
     <div className="w-full bg-primary-gradient p-1 lg:p-2 xl:p-3 rounded-[10px]">
-      <div className="bg-white flex justify-center items-center rounded-[10px]">
+      <div className="relative w-full aspect-square bg-white rounded-[15px] overflow-hidden shadow-sm group">
+        {/* افکت لودینگ یا پس‌زمینه نرم */}
+        <div className="absolute inset-0 bg-gray-100 animate-pulse -z-10" />
+
         <Image
           alt={category.name || t("emptyCategory")}
-          width={200}
-          height={200}
+          fill
+          priority={true}
           src={category.picture?.downloadUrl || "/default-image.jpg"}
-          className="w-full sm:w-[70%] lg:w-full h-auto object-cover transition-opacity duration-300"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 70vw, 33vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-110"
         />
+
+        <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors" />
       </div>
       <div className="flex flex-col justify-center gap-1 py-2 w-full">
         {[200, 400, 600].map((points) => (

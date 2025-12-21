@@ -21,6 +21,7 @@ export default function GameLayout({
   const id = params.id as string;
   const isWinnerPage = pathname.includes("/winner");
   const setGame = useGameStore((s) => s.setGame);
+  const reset = useGameStore((state) => state.resetGame);
   const headerRef = useRef<HTMLDivElement>(null);
   const [headerHeight, setHeaderHeight] = useState(0);
   const [mediaUrls, setMediaUrls] = useState<string[]>([]);
@@ -39,6 +40,7 @@ export default function GameLayout({
 
   useEffect(() => {
     if (gameData?.success) {
+      reset();
       setGame(gameData.data as Game);
 
       if (gameData?.data) {

@@ -10,14 +10,8 @@ import { useTranslations } from "next-intl";
 import { ExitIcon } from "../../_components/icons/ExitIcon";
 import { ReturnToGameBoardIcon } from "../../_components/icons/ReturnToGameBoardIcon";
 import { TeamRoleIcon } from "../../_components/icons/TeamRoleIcon";
-import {
-  LayoutDashboard,
-  LayoutGridIcon,
-  LayoutIcon,
-  LayoutPanelLeft,
-  LayoutPanelTop,
-} from "lucide-react";
-
+import { LayoutPanelLeft, LayoutPanelTop } from "lucide-react";
+import { motion } from "framer-motion";
 const GameExitModal = dynamic(() => import("./GameExitModal"), {
   ssr: false,
 });
@@ -56,7 +50,7 @@ export default function GamePageHeader() {
 
   return (
     <>
-      <div className="bg-primary-bg-gradient text-white flex justify-between items-center px-2 sm:px-10 py-2 gap-2 pt-12 sm:pt-2">
+      <div className="bg-primary-bg-gradient text-white flex justify-between items-center px-2 sm:px-10 py-1 gap-2 pt-12 sm:pt-2">
         <div className="flex items-center gap-2 lg:gap-3">
           <button
             onClick={() => setShowExitModal(true)}
@@ -70,13 +64,49 @@ export default function GamePageHeader() {
         </div>
 
         <div className="flex-shrink-0">
-          <Image
-            alt="falta-logo"
-            src="/icons/logo.svg"
-            width={60}
-            height={60}
-            className="w-[45px] h-[45px] md:w-[55px] md:h-[55px] lg:w-[60px] lg:h-[60px]"
-          />
+          <motion.div
+            initial={{
+              scale: 0.2,
+              opacity: 0,
+              filter: "blur(10px)",
+            }}
+            animate={{
+              scale: 1,
+              opacity: 1,
+              filter: "blur(0px)",
+            }}
+            transition={{
+              duration: 1.2,
+              ease: "easeOut",
+            }}
+            whileHover={{
+              scale: 1.15,
+              rotate: 2,
+              filter: "drop-shadow(0px 0px 18px rgba(255,255,255,0.8))",
+            }}
+            className="relative"
+          >
+            {/* Floating pulse */}
+            <motion.div
+              animate={{
+                y: [0, -6, 0],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              <Image
+                alt="falta-logo"
+                src="/icons/logo.svg"
+                width={60}
+                height={60}
+                className="w-[45px] h-[45px] md:w-[45px] md:h-[45px] lg:w-[60px] lg:h-[60px]"
+                priority
+              />
+            </motion.div>
+          </motion.div>
         </div>
 
         <div className="flex items-center gap-2 lg:gap-4">
@@ -109,12 +139,6 @@ export default function GamePageHeader() {
                 <TeamRoleIcon size={32} className="text-secondary" />
               </div>
             </button>
-
-            {/* {changeTurnMutation.isPending && (
-              <p className="text-[10px] text-white mt-1 absolute translate-y-8 bg-black/20 px-2 rounded">
-                {t("gameboard.changingTurn")}
-              </p>
-            )} */}
           </div>
         </div>
       </div>

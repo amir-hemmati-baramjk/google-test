@@ -128,7 +128,7 @@ export default function Page() {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col h-full w-full">
+        <div className="flex flex-col lg:h-full w-full md:mt-10 lg:mt-0">
           <div className="p-3 flex flex-col justify-around h-full my-auto md:px-10">
             <CategoryGrid
               categories={game?.categories || []}

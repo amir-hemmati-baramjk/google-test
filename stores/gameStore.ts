@@ -15,7 +15,7 @@ interface GameState extends Game {
   setGame: (game: Game) => void;
   setScrollX: (x: number) => void;
   findQuestionById: (id: string) => Question | undefined;
-
+  resetGame: () => void;
   changeQuestion: (
     gameId: string,
     questionId: string,
@@ -146,7 +146,42 @@ export const useGameStore = create<GameState>()(
       setPendingDoublePoint: (value) => set({ pendingDoublePoint: value }),
       setPendingTakePoint: (value) => set({ pendingTakePoint: value }),
       setPendingSilence: (value) => set({ pendingSilence: value }),
+      resetGame: () => {
+        set({
+          answer: null,
+          whoAnswer: null,
+          teamOnePoints: 0,
+          teamTwoPoints: 0,
+          turn: 1,
+          isGameFinished: false,
+          isSilenceInThisTurn: false,
+          isDoublePointInThisTurn: false,
+          isTeamOneSilenceInThisTurn: false,
+          isTeamTwoSilenceInThisTurn: false,
 
+          usedChangeQuestionTeamOne: false,
+          usedDoublePointTeamOne: false,
+          usedSilenceTeamOne: false,
+          usedTakePointsTeamOne: false,
+          usedSkipQuestionTeamOne: false,
+          usedRemoveOptionTeamOne: false,
+          silenceTurnTeamOne: 0,
+
+          usedChangeQuestionTeamTwo: false,
+          usedDoublePointTeamTwo: false,
+          usedSilenceTeamTwo: false,
+          usedTakePointsTeamTwo: false,
+          usedSkipQuestionTeamTwo: false,
+          usedRemoveOptionTeamTwo: false,
+          silenceTurnTeamTwo: 0,
+
+          pendingDoublePoint: false,
+          pendingTakePoint: false,
+          pendingSilence: false,
+
+          categories: [],
+        });
+      },
       setCanUseRemoveTwoOption: (value) =>
         set((state) => ({
           canUseRemoveTwoOption:

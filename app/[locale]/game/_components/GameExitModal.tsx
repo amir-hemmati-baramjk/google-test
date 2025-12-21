@@ -20,7 +20,7 @@ export default function GameExitModal({ isOpen, onClose }: ChildModalProps) {
         <div className="w-full flex justify-center items-center bg-secondary text-white rounded-[20px] py-4">
           <ExitIcon size={80} />
         </div>
-        <p className="text-secondary text-lg font-bold">
+        <p className="text-secondary text-lg font-bold text-center">
           {t("exit-game-desc")}
         </p>
         <div className="w-full flex justify-center items-center gap-5">

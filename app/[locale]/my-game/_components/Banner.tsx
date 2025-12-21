@@ -1,9 +1,13 @@
+"use client";
+
 import React from "react";
 import { Button } from "../../_components/button/button";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 
 export default function Banner() {
   const t = useTranslations("GamesPage");
+  const router = useRouter();
 
   return (
     <div className="m-auto lg:container w-full bg-primary-bg-gradient p-3 lg:p-12 gap-5 mt-5 flex justify-between items-center text-white rounded-[16px]">
@@ -22,6 +26,7 @@ export default function Banner() {
               className="!font-bold"
               variant="light-purple-gradient"
               size="large"
+              onClick={() => router.push("/plans")}
             >
               {t("buyGames")}
             </Button>
@@ -29,6 +34,7 @@ export default function Banner() {
               className="!bg-white !text-secondary !font-bold"
               variant="white"
               size="large"
+              onClick={() => router.push("/create-game")}
             >
               {t("createGames")}
             </Button>
