@@ -41,8 +41,9 @@ const PaymentPage: React.FC = () => {
   const [isPendingGatewayFetch, startGatewayFetch] = useTransition();
 
   const { data: packageResponse, isLoading: isLoadingPackage } = useQuery({
-    queryKey: ["gamePackage", planId],
-    queryFn: () => getPlansById({ id: planId as string }),
+    queryKey: ["gamePackage", planId, selectedCurrency],
+    queryFn: () =>
+      getPlansById({ id: planId as string, currency: selectedCurrency }),
     enabled: !!planId,
   });
 

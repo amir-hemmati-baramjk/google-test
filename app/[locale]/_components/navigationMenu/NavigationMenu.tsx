@@ -68,7 +68,7 @@ export default function NavigationMenu() {
             src={"/icons/logo.svg"}
           />
           <div className="flex flex-col gap-1">
-            <p className="text-4xl font-bold">Falta</p>
+            <p className="text-2xl xl:text-4xl font-bold">Falta</p>
             <p className="text-lg font-[300]">Game Platform</p>
           </div>
         </div>
@@ -87,7 +87,7 @@ export default function NavigationMenu() {
                 variant={isActive ? (item.variant as Variant) : "white"}
                 animatedIcon
                 shape="rounded"
-                className="!text-2xl !font-bold"
+                className="text-xl xl:!text-2xl !font-bold !whitespace-nowrap"
               >
                 {item.icon}
                 {item.name}

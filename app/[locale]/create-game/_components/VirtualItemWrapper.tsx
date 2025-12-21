@@ -29,7 +29,9 @@ export default function VirtualItemWrapper({
       <h2 className="text-lg font-bold mb-4 text-primary bg-light-purple px-1 py-2 text-center rounded-lg">
         {tag.name}
       </h2>
-      <div className={`grid gap-4 ${gridClass}`}>
+      <div
+        className={`grid gap-4 grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7`}
+      >
         {tag.categories?.map((cat: any) => (
           <CategoryCard
             key={cat.id}
