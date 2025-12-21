@@ -80,7 +80,9 @@ export default function CategoryCard({
                 }
                 className="flex-1 bg-[#1000C7] text-white font-bold text-[16px]  xl:text-[32px] rounded-[15px]  transition-transform active:scale-95 disabled:opacity-30 py-3 sm:p-2 md:py-1.5 lg:py-2"
               >
-                {points}
+                {game?.pendingDoublePoint && points == 600
+                  ? points * 2
+                  : points}
               </button>
             );
           })}
