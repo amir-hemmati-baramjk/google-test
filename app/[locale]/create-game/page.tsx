@@ -39,21 +39,19 @@ export default function CategoriesPage() {
     MAX_SELECTION,
   } = useCategoryLogic(searchTerm, isLogin, isInitialized, user);
 
-  // --- FILTER LOGIC ---
+  // --- FILTERING LOGIC ---
   const filteredData = useMemo(() => {
+    // If no tag is selected, show everything
     if (!activeTagId)
       return { sections: tagSections, grid: allUniqueCategories };
 
     // Filter sections for List View
-    const filteredSections = tagSections.filter(
-      (tag: any) => tag.id === activeTagId
-    );
+    const sections = tagSections.filter((tag: any) => tag.id === activeTagId);
 
-    // Extract categories for Grid View
-    const filteredGrid =
-      filteredSections.length > 0 ? filteredSections[0].categories : [];
+    // Filter categories for Grid View (Flattened)
+    const gridItems = sections.length > 0 ? sections[0].categories : [];
 
-    return { sections: filteredSections, grid: filteredGrid };
+    return { sections, grid: gridItems };
   }, [tagSections, allUniqueCategories, activeTagId]);
 
   const rowCount =
@@ -64,32 +62,34 @@ export default function CategoriesPage() {
   const virtualizer = useVirtualizer({
     count: rowCount,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => (viewMode === "list" ? 400 : 200),
-    overscan: 2,
+    estimateSize: () => (viewMode === "list" ? 450 : 200),
+    overscan: 5,
   });
 
   const handleTagSelect = (tagId: string) => {
     setActiveTagId(tagId);
-    virtualizer.scrollToOffset(0); // Reset scroll to top when filter changes
+    // Reset scroll to top so user sees the start of the filtered results
+    virtualizer.scrollToOffset(0);
   };
 
   if (isLoading || !isInitialized) return <LogoMotionLoading />;
 
   return (
-    <div className="min-h-screen flex flex-col bg-primary h-screen overflow-hidden">
+    <div className="min-h-screen flex flex-col bg-primary overflow-hidden">
       <BackHeaderForsubPages title={t("createGame")} />
 
+      {/* Header Toolbar */}
       <div className="px-4 mt-3 sticky top-0 left-0 z-40">
         <div className="px-4 py-3 bg-light-purple z-20 rounded-lg">
           <div className="flex items-center gap-1.5 md:gap-3">
-            {/* Search, View Switcher, and TagFilter stay as they were */}
+            {/* Desktop Search */}
             <div className="hidden md:flex relative flex-1">
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder={t("searchPlaceholder")}
-                className="w-full bg-white text-primary px-10 py-2 rounded-full outline-none text-sm font-medium"
+                className="w-full bg-white text-primary px-10 py-2 rounded-full outline-none text-[16px] font-medium border border-primary/20"
               />
               <Search
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-primary/40"
@@ -97,6 +97,15 @@ export default function CategoriesPage() {
               />
             </div>
 
+            {/* Mobile Search Toggle */}
+            <button
+              onClick={() => setIsSearchOpen(!isSearchOpen)}
+              className="md:hidden p-2 bg-white rounded-full border border-primary text-primary"
+            >
+              <Search size={20} />
+            </button>
+
+            {/* View Switcher */}
             <div className="flex bg-white/10 p-1 rounded-full border border-white/10 shrink-0 gap-1.5">
               <button
                 onClick={() => setViewMode("grid")}
@@ -116,6 +125,7 @@ export default function CategoriesPage() {
               </button>
             </div>
 
+            {/* Tag Filter */}
             <TagFilter
               tags={tagSections}
               activeTagId={activeTagId}
@@ -123,13 +133,38 @@ export default function CategoriesPage() {
               onSelect={handleTagSelect}
             />
 
+            {/* Random Pick */}
             <button
               onClick={handleRandomSelect}
-              className="bg-secondary text-white px-4 py-2 rounded-full font-bold shadow-md shrink-0"
+              className="bg-secondary text-white p-2.5 rounded-full shadow-md shrink-0 active:scale-90 transition-transform"
             >
               <Wand2 size={18} />
             </button>
           </div>
+
+          {/* Mobile Search Drawer */}
+          {isSearchOpen && (
+            <div className="md:hidden mt-3 relative animate-in slide-in-from-top-2 duration-200">
+              <input
+                autoFocus
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder={t("searchPlaceholder")}
+                className="w-full bg-white text-primary px-10 py-2.5 rounded-xl outline-none shadow-xl border border-primary/20 text-[16px]"
+              />
+              <button
+                onClick={() => {
+                  setSearchTerm("");
+                  setIsSearchOpen(false);
+                }}
+                className="absolute right-3 top-1/2 -translate-y-1/2"
+              >
+                <X size={20} className="text-gray-400" />
+              </button>
+            </div>
+          )}
+
           <SelectedItemsBar
             selectedCategories={selectedObjects}
             onRemove={handleCategoryToggle}
@@ -138,45 +173,53 @@ export default function CategoriesPage() {
         </div>
       </div>
 
+      {/* Main Virtual List */}
       <div
         ref={parentRef}
-        className="flex-1 overflow-y-auto relative md:px-4 pb-40 scroll-smooth"
+        className="flex-1 overflow-y-auto relative md:px-4 pb-40 scroll-smooth h-[calc(100vh-200px)]"
       >
-        <div
-          style={{
-            height: `${virtualizer.getTotalSize()}px`,
-            position: "relative",
-            width: "100%",
-          }}
-        >
-          {virtualizer
-            .getVirtualItems()
-            .map((virtualItem) =>
-              viewMode === "list" ? (
-                <VirtualItemWrapper
-                  key={`list-${activeTagId}-${virtualItem.index}`}
-                  virtualItem={virtualItem}
-                  tag={filteredData.sections[virtualItem.index]}
-                  virtualizer={virtualizer}
-                  gridClass={gridClass}
-                  selectedMap={new Set(selectedCatItems)}
-                  MAX_SELECTION={MAX_SELECTION}
-                  onToggle={handleCategoryToggle}
-                />
-              ) : (
-                <VirtualGridWrapper
-                  key={`grid-${activeTagId}-${virtualItem.index}`}
-                  virtualItem={virtualItem}
-                  allCategories={filteredData.grid}
-                  columns={columnsCount}
-                  virtualizer={virtualizer}
-                  selectedMap={new Set(selectedCatItems)}
-                  MAX_SELECTION={MAX_SELECTION}
-                  onToggle={handleCategoryToggle}
-                />
-              )
-            )}
-        </div>
+        {filteredData.grid.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-64 text-white/50">
+            <Search size={48} className="mb-4 opacity-20" />
+            <p>{t("noResults")}</p>
+          </div>
+        ) : (
+          <div
+            style={{
+              height: `${virtualizer.getTotalSize()}px`,
+              position: "relative",
+              width: "100%",
+            }}
+          >
+            {virtualizer
+              .getVirtualItems()
+              .map((virtualItem) =>
+                viewMode === "list" ? (
+                  <VirtualItemWrapper
+                    key={`list-${activeTagId}-${virtualItem.index}`}
+                    virtualItem={virtualItem}
+                    tag={filteredData.sections[virtualItem.index]}
+                    virtualizer={virtualizer}
+                    gridClass={gridClass}
+                    selectedMap={new Set(selectedCatItems)}
+                    MAX_SELECTION={MAX_SELECTION}
+                    onToggle={handleCategoryToggle}
+                  />
+                ) : (
+                  <VirtualGridWrapper
+                    key={`grid-${activeTagId}-${virtualItem.index}`}
+                    virtualItem={virtualItem}
+                    allCategories={filteredData.grid}
+                    columns={columnsCount}
+                    virtualizer={virtualizer}
+                    selectedMap={new Set(selectedCatItems)}
+                    MAX_SELECTION={MAX_SELECTION}
+                    onToggle={handleCategoryToggle}
+                  />
+                )
+              )}
+          </div>
+        )}
       </div>
 
       <PlayActionBar

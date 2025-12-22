@@ -34,14 +34,15 @@ export const TagFilter = ({
   }, []);
 
   return (
-    <div className="relative shrink-0" ref={containerRef}>
+    <div
+      className="relative shrink-0 min-w-[150px] lg:min-w-[220px]"
+      ref={containerRef}
+    >
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between gap-2 bg-white text-primary px-4 py-2 rounded-full font-bold text-xs sm:text-sm shadow-sm border border-primary min-w-[120px]"
+        className="flex w-full items-center justify-between gap-2 bg-white text-primary px-4 py-2 rounded-full font-bold text-xs sm:text-sm shadow-sm border border-primary min-w-[120px]"
       >
-        <span className="truncate max-w-[80px]">
-          {activeTag?.name || label}
-        </span>
+        <span className="truncate ">{activeTag?.name || label}</span>
         <ChevronDown
           size={14}
           className={`transition-transform duration-200 ${
