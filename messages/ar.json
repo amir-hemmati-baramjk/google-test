@@ -272,7 +272,9 @@
     "remaining": "متبقي",
     "searchPlaceholder": "ابحث عن الفئات...",
     "noResultsTitle": "لم يتم العثور على نتائج",
-    "noResultsDesc": "حاول البحث عن مصطلح آخر"
+    "noResultsDesc": "حاول البحث عن مصطلح آخر",
+    "tags": "كل التصنيفات",
+    "random": "عشوائي"
   },
   "loginModal": {
     "you-not-registered": "هل لديك حساب بالفعل؟",

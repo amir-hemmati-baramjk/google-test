@@ -18,15 +18,15 @@ export const CategoryCard = React.memo(
     return (
       <div
         onClick={() => !isBlocked && onSelect()}
-        className={`p-3 relative rounded-[10px] cursor-pointer transition-all ${
-          isSelected
-            ? "bg-category-card-bg-gradient text-white"
-            : "bg-[#B9C6F3] text-primary"
-        } ${
+        className={` relative  cursor-pointer transition-all rounded-[10px] overflow-hidden  ${
           isBlocked ? "opacity-50 cursor-not-allowed" : "hover:scale-[1.02]"
         }`}
       >
-        <div className="inverted-radius overflow-hidden bg-white relative aspect-video">
+        <div
+          className={`inverted-radius overflow-hidden  relative aspect-video ${
+            isSelected ? "bg-primary-gradient" : "bg-white"
+          }`}
+        >
           <Image
             alt={data.name || "category"}
             fill
@@ -35,11 +35,17 @@ export const CategoryCard = React.memo(
           />
         </div>
 
-        <p className="font-bold text-[18px] mt-3 text-center line-clamp-2 h-[54px] px-2 leading-tight">
+        <p
+          className={`font-bold text-[18px]  text-center line-clamp-2 h-[54px] px-2 leading-tight flex justify-center items-center ${
+            isSelected
+              ? "bg-category-card-bg-gradient text-white"
+              : "bg-light-blue"
+          }`}
+        >
           {data.name || t("unnamedCategory")}
         </p>
 
-        <div className="absolute right-2 top-2 z-20">
+        <div className="absolute right-0 top-0 z-20">
           <button
             type="button"
             onClick={(e) => {
