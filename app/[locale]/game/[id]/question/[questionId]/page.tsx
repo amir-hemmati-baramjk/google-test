@@ -120,8 +120,6 @@ export default function Page() {
 
     assistantProcessed.current = true;
 
-    console.log("Applying assistant:", assistantType);
-
     if (assistantType === "doublePoint") doublePointMutation.mutate();
     else if (assistantType === "takePoint") takePointMutation.mutate();
     else if (assistantType === "silence") silenceMutation.mutate();

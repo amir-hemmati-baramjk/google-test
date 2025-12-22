@@ -80,7 +80,10 @@ export default async function LocaleLayoutWrapper({
           }}
         />
       </head>
-      <body suppressHydrationWarning className="antialiased bg-main-bg">
+      <body
+        suppressHydrationWarning
+        className="antialiased bg-main-bg !select-none"
+      >
         <NextTopLoader showSpinner={false} />
         <QueryProvider>
           <NextIntlClientProvider locale={locale} messages={messages}>

@@ -78,7 +78,14 @@ const Media: React.FC<QuestionMediaProps> = React.memo(
         {/* Video Player */}
         {data?.mediaType === 1 && (
           <div className="overflow-hidden flex justify-center h-full w-fit min-w-[300px]">
-            <VideoPlayer src={data?.downloadUrl} />
+            <VideoPlayer
+              onEnd={() => {
+                if (setShowQuestiontext) {
+                  setShowQuestiontext(true);
+                }
+              }}
+              src={data?.downloadUrl}
+            />
           </div>
         )}
 
