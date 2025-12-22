@@ -136,9 +136,10 @@ export default function CategoriesPage() {
             {/* Random Pick */}
             <button
               onClick={handleRandomSelect}
-              className="bg-secondary text-white p-2.5 rounded-full shadow-md shrink-0 active:scale-90 transition-transform"
+              className="bg-secondary text-white p-2.5 rounded-full flex justify-center items-center gap-5 md:px-5 shadow-md shrink-0 active:scale-90 transition-transform"
             >
               <Wand2 size={18} />
+              <span className="hidden md:block">{t("random")}</span>
             </button>
           </div>
 
