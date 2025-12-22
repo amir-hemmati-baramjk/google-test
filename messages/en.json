@@ -274,7 +274,10 @@
     "edit": "Edit",
     "search": "Search",
     "play": "Play",
-    "remaining": "Remaining"
+    "remaining": "Remaining",
+    "searchPlaceholder": "Search categories...",
+    "noResultsTitle": "No results found",
+    "noResultsDesc": "Try searching for a different term"
   },
   "loginModal": {
     "you-not-registered": "Already have an account?",

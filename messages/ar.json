@@ -269,7 +269,10 @@
     "categoryInfo": "معلومات الفئة",
     "altImage": "صورة الفئة",
     "play": "لعب",
-    "remaining": "متبقي"
+    "remaining": "متبقي",
+    "searchPlaceholder": "ابحث عن الفئات...",
+    "noResultsTitle": "لم يتم العثور على نتائج",
+    "noResultsDesc": "حاول البحث عن مصطلح آخر"
   },
   "loginModal": {
     "you-not-registered": "هل لديك حساب بالفعل؟",

@@ -1,11 +1,12 @@
 "use client";
 import { Button } from "@/app/[locale]/_components/button/button";
 import Image from "next/image";
-
 import { useTranslations } from "next-intl";
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { useGameStore } from "@/stores/gameStore";
 import { useRouter } from "@/i18n/navigation";
+import { motion, Variants } from "framer-motion"; // Fix: Import Variants type
+import confetti from "canvas-confetti";
 
 export default function WinnerPage() {
   const t = useTranslations("WinnerPage");
@@ -16,228 +17,213 @@ export default function WinnerPage() {
   const teamTwoName = useGameStore((state) => state.teamTwoName);
   const teamTwoPoints = useGameStore((state) => state.teamTwoPoints);
 
+  useEffect(() => {
+    const end = Date.now() + 3 * 1000;
+    (function frame() {
+      confetti({
+        particleCount: 3,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors: ["#FFD700", "#FFFFFF"],
+      });
+      confetti({
+        particleCount: 3,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors: ["#FFD700", "#FFFFFF"],
+      });
+      if (Date.now() < end) requestAnimationFrame(frame);
+    })();
+  }, []);
+
   const outcome = useMemo(() => {
-    if (teamOnePoints > teamTwoPoints) {
-      return {
-        winner: {
-          name: teamOneName,
-          points: teamOnePoints,
-        },
-        loser: {
-          name: teamTwoName,
-          points: teamTwoPoints,
-        },
-        isTie: false,
-        winnerTeam: 1,
-      };
-    } else if (teamTwoPoints > teamOnePoints) {
-      return {
-        winner: {
-          name: teamTwoName,
-          points: teamTwoPoints,
-        },
-        loser: {
-          name: teamOneName,
-          points: teamOnePoints,
-        },
-        isTie: false,
-        winnerTeam: 2,
-      };
-    } else {
-      return {
-        winner: {
-          name: teamOneName,
-          points: teamOnePoints,
-        },
-        loser: {
-          name: teamTwoName,
-          points: teamTwoPoints,
-        },
-        isTie: true,
-        winnerTeam: null,
-      };
-    }
+    const isTie = teamOnePoints === teamTwoPoints;
+    const winnerTeam = teamOnePoints > teamTwoPoints ? 1 : 2;
+    const winnerName = winnerTeam === 1 ? teamOneName : teamTwoName;
+    return { isTie, winnerTeam, winnerName };
   }, [teamOneName, teamOnePoints, teamTwoName, teamTwoPoints]);
 
-  const renderContent = () => {
-    if (outcome.isTie) {
-      return (
-        <>
-          <div className="flex-col justify-center items-center gap-5 flex sm:hidden">
-            <p className="font-bol text-white text-3xl font-bold lg:text-4xl">
-              {t("tieGame")}
+  // Fix: Explicitly typed as Variants to resolve index signature error
+  const containerVars: Variants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
+  };
+
+  const itemVars: Variants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 100 },
+    },
+  };
+
+  return (
+    <div className="p-4 flex flex-col items-center justify-center w-full h-full bg-primary overflow-x-hidden ">
+      <motion.div
+        variants={containerVars}
+        initial="hidden"
+        animate="visible"
+        className="w-full max-w-5xl flex flex-col items-center gap-6 lg:gap-10"
+      >
+        {/* 2. Main Header - Visible on ALL screens */}
+        <motion.div
+          variants={itemVars}
+          className="text-center space-y-2 px-4 sm:hidden lg:block"
+        >
+          <p className="text-white text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight">
+            {outcome.isTie ? t("tieGame") : t("congratulations")}
+          </p>
+          <p className="text-white text-xl md:text-2xl font-bold opacity-90">
+            {outcome.isTie
+              ? t("bothTeamsScored", { points: teamOnePoints })
+              : t("onYourVictory")}
+          </p>
+          {!outcome.isTie && (
+            <p className="text-yellow-400 text-3xl md:text-5xl font-black drop-shadow-md">
+              {outcome.winnerName} {t("winner")}!
             </p>
-            <p className="font-bol text-white text-2xl font-bold lg:text-2xl">
-              {t("bothTeamsScored", { points: outcome.winner.points })}
-            </p>
-          </div>
+          )}
+        </motion.div>
 
-          <div className="flex justify-between lg:justify-around items-center gap-5 w-full">
-            <div className="bg-white p-3 flex flex-col gap-3 rounded-[10px] border-4 border-yellow-500">
-              <div className="py-1 px-3 md:py-5 md:px-10 w-full bg-yellow-500/20 rounded-[10px]">
-                <Image
-                  alt={t("tieTeam")}
-                  width={100}
-                  height={100}
-                  src={"/staticImages/winner.png"}
-                />
-              </div>
-              <p className="text-yellow-600 text-xl text-center">
-                {teamOneName}
-              </p>
-              <p className="text-yellow-600 text-lg text-center">
-                {teamOnePoints} {t("points")}
-              </p>
-            </div>
-
-            <div className="hidden sm:block"></div>
-
-            <div className="bg-white p-3 flex flex-col gap-3 rounded-[10px] border-4 border-yellow-500">
-              <div className="py-1 px-3 md:py-5 md:px-10 w-full bg-yellow-500/20 rounded-[10px]">
-                <Image
-                  alt={t("tieTeam")}
-                  width={100}
-                  height={100}
-                  src={"/staticImages/winner.png"}
-                />
-              </div>
-              <p className="text-yellow-600 text-xl text-center">
-                {teamTwoName}
-              </p>
-              <p className="text-yellow-600 text-lg text-center">
-                {teamTwoPoints} {t("points")}
-              </p>
-            </div>
-          </div>
-        </>
-      );
-    }
-
-    const winnerTeam = outcome.winnerTeam === 1 ? teamOneName : teamTwoName;
-
-    return (
-      <>
-        <div className="flex-col justify-center items-center gap-5 flex sm:hidden">
-          <p className="font-bol text-white text-3xl font-bold lg:text-4xl">
-            {t("congratulations")}
-          </p>
-          <p className="font-bol text-white text-2xl font-bold lg:text-2xl">
-            {t("onYourVictory")}
-          </p>
-          <p className="font-bol text-white text-3xl font-bold lg:text-4xl">
-            {winnerTeam} {t("winner")}!
-          </p>
-        </div>
-
-        <div className="flex justify-between lg:justify-around items-center gap-5 w-full">
-          <div
-            className={`bg-white p-3 flex flex-col gap-3 rounded-[10px] ${
-              outcome.winnerTeam === 1
-                ? "border-4 border-primary"
-                : "border-4 border-error"
+        {/* 3. Responsive Cards Grid - Added md:grid-cols-[1fr_auto_1fr] for middle text */}
+        <div className="grid grid-cols-2 md:grid-cols-[1fr_auto_1fr] gap-3 md:gap-8 w-full px-2   justify-items-center items-center">
+          {/* Team 1 Card */}
+          <motion.div
+            variants={itemVars}
+            className={`bg-white p-3 flex flex-col gap-3 rounded-[15px] border-4 w-full md:max-w-[220px] lg:max-w-[280px] ${
+              outcome.isTie || outcome.winnerTeam === 1
+                ? "border-primary"
+                : "border-error"
             }`}
           >
             <div
-              className={`py-1 px-3 md:py-5 md:px-10 w-full ${
-                outcome.winnerTeam === 1 ? "bg-primary/20" : "bg-error/20"
-              } rounded-[10px]`}
+              className={`py-4 lg:py-10 rounded-[10px] flex justify-center items-center ${
+                outcome.isTie || outcome.winnerTeam === 1
+                  ? "bg-primary/20"
+                  : "bg-error/20"
+              }`}
             >
               <Image
-                alt={
-                  outcome.winnerTeam === 1 ? t("winningTeam") : t("losingTeam")
-                }
+                alt="result"
                 width={100}
                 height={100}
+                className="w-16 h-16 md:w-20 md:h-20 lg:w-32 lg:h-32 object-contain"
                 src={
-                  outcome.winnerTeam === 1
+                  outcome.isTie || outcome.winnerTeam === 1
                     ? "/staticImages/winner.png"
                     : "/staticImages/lose.png"
                 }
               />
             </div>
             <p
-              className={`${
-                outcome.winnerTeam === 1 ? "text-primary" : "text-error"
-              } text-xl text-center`}
+              className={`text-xl font-bold text-center truncate px-1 ${
+                outcome.isTie || outcome.winnerTeam === 1
+                  ? "text-primary"
+                  : "text-error"
+              }`}
             >
               {teamOneName}
             </p>
             <p
-              className={`${
-                outcome.winnerTeam === 1 ? "text-primary" : "text-error"
-              } text-lg text-center`}
+              className={`text-lg font-bold text-center ${
+                outcome.isTie || outcome.winnerTeam === 1
+                  ? "text-primary"
+                  : "text-error"
+              }`}
             >
-              {teamOnePoints} {t("points")}
+              {teamOnePoints} <span className="text-xs">{t("points")}</span>
             </p>
-          </div>
+          </motion.div>
 
-          <div className="flex-col justify-center items-center gap-5 hidden sm:flex">
-            <p className="font-bol text-white text-2xl font-bold lg:text-4xl">
-              {t("congratulations")}
-            </p>
-            <p className="font-bol text-white text-xl font-bold lg:text-2xl">
-              {t("onYourVictory")}
-            </p>
-            <p className="font-bol text-white text-2xl font-bold lg:text-4xl">
-              {winnerTeam} {t("winner")}!
-            </p>
-          </div>
+          {/* New: Result text between cards (Visible on md and up) */}
+          <motion.div
+            variants={itemVars}
+            className="hidden md:flex items-center justify-center"
+          >
+            <motion.div
+              variants={itemVars}
+              className="text-center space-y-2 px-4 hidden sm:block lg:hidden"
+            >
+              <p className="text-white text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-tight">
+                {outcome.isTie ? t("tieGame") : t("congratulations")}
+              </p>
+              <p className="text-white text-xl md:text-2xl font-bold opacity-90">
+                {outcome.isTie
+                  ? t("bothTeamsScored", { points: teamOnePoints })
+                  : t("onYourVictory")}
+              </p>
+              {!outcome.isTie && (
+                <p className="text-yellow-400 text-3xl md:text-5xl font-black drop-shadow-md">
+                  {outcome.winnerName} {t("winner")}!
+                </p>
+              )}
+            </motion.div>
+          </motion.div>
 
-          <div
-            className={`bg-white p-3 flex flex-col gap-3 rounded-[10px] ${
-              outcome.winnerTeam === 2
-                ? "border-4 border-primary"
-                : "border-4 border-error"
+          {/* Team 2 Card */}
+          <motion.div
+            variants={itemVars}
+            className={`bg-white p-3 flex flex-col gap-3 rounded-[15px] border-4 w-full md:max-w-[220px] lg:max-w-[280px] ${
+              outcome.isTie || outcome.winnerTeam === 2
+                ? "border-primary"
+                : "border-error"
             }`}
           >
             <div
-              className={`py-1 px-3 md:py-5 md:px-10 w-full ${
-                outcome.winnerTeam === 2 ? "bg-primary/20" : "bg-error/20"
-              } rounded-[10px]`}
+              className={`py-4 lg:py-10 rounded-[10px] flex justify-center items-center ${
+                outcome.isTie || outcome.winnerTeam === 2
+                  ? "bg-primary/20"
+                  : "bg-error/20"
+              }`}
             >
               <Image
-                alt={
-                  outcome.winnerTeam === 2 ? t("winningTeam") : t("losingTeam")
-                }
+                alt="result"
                 width={100}
                 height={100}
+                className="w-16 h-16 md:w-20 md:h-20 lg:w-32 lg:h-32 object-contain"
                 src={
-                  outcome.winnerTeam === 2
+                  outcome.isTie || outcome.winnerTeam === 2
                     ? "/staticImages/winner.png"
                     : "/staticImages/lose.png"
                 }
               />
             </div>
             <p
-              className={`${
-                outcome.winnerTeam === 2 ? "text-primary" : "text-error"
-              } text-xl text-center`}
+              className={`text-xl font-bold text-center truncate px-1 ${
+                outcome.isTie || outcome.winnerTeam === 2
+                  ? "text-primary"
+                  : "text-error"
+              }`}
             >
               {teamTwoName}
             </p>
             <p
-              className={`${
-                outcome.winnerTeam === 2 ? "text-primary" : "text-error"
-              } text-lg text-center`}
+              className={`text-lg font-bold text-center ${
+                outcome.isTie || outcome.winnerTeam === 2
+                  ? "text-primary"
+                  : "text-error"
+              }`}
             >
-              {teamTwoPoints} {t("points")}
+              {teamTwoPoints} <span className="text-xs">{t("points")}</span>
             </p>
-          </div>
+          </motion.div>
         </div>
-      </>
-    );
-  };
 
-  return (
-    <div className="p-5 sm:p-0 sm:container sm:m-auto flex flex-col justify-center items-center gap-5 lg:gap-10 w-full h-full ">
-      {renderContent()}
-      <Button
-        onClick={() => router.replace("/")}
-        size="large"
-        variant="secondary"
-      >
-        {t("backToHomePage")}
-      </Button>
+        {/* 4. Action Button */}
+        <motion.div variants={itemVars} className="w-full max-w-[240px] mt-4">
+          <Button
+            onClick={() => router.replace("/")}
+            size="large"
+            variant="secondary"
+            className="w-full py-4 text-lg font-black rounded-xl shadow-lg"
+          >
+            {t("backToHomePage")}
+          </Button>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }

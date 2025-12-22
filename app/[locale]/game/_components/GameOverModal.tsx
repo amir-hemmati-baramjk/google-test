@@ -15,14 +15,14 @@ export default function GameOverModal({ isOpen, onClose }: ChildModalProps) {
   const { id } = useParams();
   return (
     <Modal closeOnBackdrop={false} isOpen={isOpen} onClose={onClose}>
-      <div className="flex flex-col justify-center items-center gap-5 min-w-[290px] max-w-[360px] md:min-w-[360px] lg:max-w-[400px]">
+      <div className="flex flex-col justify-center items-center gap-5 ">
         <div className="w-full flex justify-center items-center bg-secondary text-primary rounded-[20px] py-8 text-xl font-bold">
           <Image
             alt="falta-logo"
             src="/icons/logo.svg"
             width={40}
             height={40}
-            className="w-[45px] h-[45px] lg:w-[60px] lg:h-[60px]"
+            className="w-[45px] h-[45px] md:w-[60px] md:h-[60px] lg:w-[80px] lg:h-[80px]"
           />
         </div>
 
