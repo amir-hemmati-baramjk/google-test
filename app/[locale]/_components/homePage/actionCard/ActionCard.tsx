@@ -117,7 +117,7 @@ export default function ActionCard() {
                 transition={{ delay: 0.6, type: "spring" }}
                 className="text-5xl lg:text-6xl font-[900] text-turquoise"
               >
-                12
+                {user?.gPoint ? Math.round((user?.gPoint as number) / 100) : 0}{" "}
               </motion.p>
             ) : (
               <div className="w-[50px] h-[50px]"></div>
