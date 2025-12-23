@@ -46,9 +46,7 @@ export default function CategoryCard({
   return (
     <div className="w-full bg-primary-gradient p-1 lg:p-2 xl:p-3 rounded-[10px]">
       <div className="relative w-full aspect-square bg-white rounded-[15px] overflow-hidden shadow-sm group">
-        {/* افکت لودینگ یا پس‌زمینه نرم */}
         <div className="absolute inset-0 bg-gray-100 animate-pulse -z-10" />
-
         <Image
           alt={category.name || t("emptyCategory")}
           fill
@@ -60,11 +58,11 @@ export default function CategoryCard({
 
         <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors" />
       </div>
-      <div className="flex flex-col justify-center gap-1 py-2 w-full">
+      <div className="flex flex-col justify-center gap-1 py-1 lg:py-2  w-full">
         {[200, 400, 600].map((points) => (
           <div
             key={points}
-            className="w-full py-1.5 xl:py-2.5 grid grid-cols-2 text-[14px] md:text-[16px] lg:text-[20px] xl:text-[24px] font-[600] bg-[#EEE5FD] rounded-[12px]"
+            className="w-full py-1.5 sm:py-1 lg:py-1.5 xl:py-2.5 grid grid-cols-2 text-[14px] md:text-[16px] lg:text-[20px] xl:text-[24px] font-[600] bg-[#EEE5FD] rounded-[12px]"
           >
             {category?.questions
               ?.filter((q: any) => q?.points === points)

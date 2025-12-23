@@ -11,7 +11,7 @@ import NewCategoryGrid from "../_components/NewCategoryGrid";
 
 const calculateVersion1Config = (w: number, h: number) => {
   if (w < 640) return { items: 3, shift: 3 };
-  if (h < 600) return { items: 4, shift: 4 };
+  if (h < 900) return { items: 4, shift: 4 };
   return { items: 6, shift: 6 };
 };
 
@@ -81,7 +81,7 @@ export default function Page() {
   if (!isMounted) return null;
 
   return (
-    <div className="h-full sm:h-fit w-full">
+    <div className="h-full sm:h-fit lg:h-full w-full">
       {game?.layoutType === "version1" ? (
         <div className="flex justify-between sm:justify-center items-center gap-5  sm:gap-1 lg:gap-5 flex-col sm:flex-row h-full md:px-11">
           <div className="flex flex-col justify-center h-full items-center w-full ">
@@ -112,7 +112,7 @@ export default function Page() {
               setCurrentPage((p) => Math.min(totalPages - 1, p + 1))
             }
           />
-          <div className="flex flex-row sm:flex-col gap-3 md:gap-10 lg:gap-14 w-full sm:w-1/3 bg-light-purple sm:bg-transparent p-2 py-1 pb-10 md:pb-1">
+          <div className="flex flex-row sm:flex-col gap-3 md:gap-10 3xl:gap-14 w-full sm:w-1/3 bg-light-purple sm:bg-transparent p-2 py-1 pb-10 md:pb-1">
             <div className="w-1/2 sm:w-full flex flex-col gap-2">
               <TeamScoreCard teamName={game?.teamOneName} teamNumber={1} />
               <AssistanceBox team={1} context="gameboard" />
@@ -129,7 +129,7 @@ export default function Page() {
         </div>
       ) : (
         <div className="flex flex-col lg:h-full w-full md:mt-10 lg:mt-0">
-          <div className="p-3 flex flex-col justify-around h-full my-auto md:px-10">
+          <div className="py-2 flex flex-col justify-around h-full my-auto md:px-10">
             <CategoryGrid
               categories={game?.categories || []}
               currentPage={currentPage}

@@ -111,9 +111,9 @@ export default function TeamScoreCard({
     <div
       className={`flex justify-center items-center gap-5 w-full mt-auto ${className}`}
     >
-      <div className="w-full text-center gap-1 flex flex-col justify-between items-center lg:gap-2 2xl:gap-3 text-[10px] md:text-[16px] lg:text-[14px] xl:text-[24px]">
+      <div className="w-full text-center gap-1 flex flex-col justify-between items-center lg:gap-2 3xl:gap-2 text-[10px] md:text-[16px] lg:text-[14px] xl:text-[24px]">
         <p
-          className={`font-bold  text-lg sm:text-md sm:py-0 lg:text-lg xl:text-xl 3xl:text-2xl w-full rounded-[10px] py-1 lg:py-2 xl:py-3 
+          className={`font-bold  text-lg sm:text-md sm:py-0 lg:text-lg xl:text-xl 3xl:text-2xl w-full rounded-[10px] py-1 lg:py-2 3xl:py-3 
           ${
             teamNumber == 1
               ? "bg-primary-gradient text-white"
@@ -126,7 +126,7 @@ export default function TeamScoreCard({
         <div className="w-full flex justify-between items-center gap-2 p-1 m-auto rounded-[8px] h-fit">
           {/* Subtract Points Button */}
           <Button
-            className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7  lg:w-10 lg:h-10 xl:w-14 xl:h-14
+            className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7  lg:w-10 lg:h-10 3xl:w-14 3xl:h-14
                ${
                  !isQuestionPage &&
                  game?.layoutType === "version2" &&
@@ -144,11 +144,11 @@ export default function TeamScoreCard({
           {/* Points Display */}
           <div className="relative w-[80%]">
             <div
-              className={`border-[2px] text-sm sm:text-md lg:text-lg xl:text-xl 2xl:text-2xl h-full rounded-[8px] w-full  flex justify-center items-center font-[700] min-w-[80px] transition-colors
+              className={`border-[2px] text-sm sm:text-md lg:text-lg xl:text-xl 3xl:text-2xl h-full rounded-[8px] w-full  flex justify-center items-center font-[700] min-w-[80px] transition-colors
                 ${
                   teamNumber == 2
                     ? `border-orange-600 !bg-white text-orange-600 bg-light-purple/5 py-1`
-                    : `border-secondary text-primary bg-white  py-1`
+                    : `border-secondary text-primary bg-white py-1`
                 }
                 ${isUpdating ? "opacity-50 cursor-not-allowed" : ""}
               `}
@@ -170,11 +170,11 @@ export default function TeamScoreCard({
 
           {/* Add Points Button */}
           <Button
-            className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 lg:w-10 lg:h-10 xl:w-14 xl:h-14
+            className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7 lg:w-10 lg:h-10 3xl:w-14 3xl:h-14
                  ${
                    !isQuestionPage &&
                    game?.layoutType === "version2" &&
-                   "md:w-9 md:h-9"
+                   "md:!w-9 md:!h-9"
                  } `}
             variant={teamNumber == 2 ? "orange-gradient" : "primary-gradient"}
             shape="square"

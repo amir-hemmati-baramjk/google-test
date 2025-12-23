@@ -22,7 +22,7 @@ export default function CategoryGrid({
   }, [categories, currentPage, itemsPerPage, shiftAmount]);
 
   return (
-    <div className="">
+    <div className="mt-5">
       <div
         key={currentPage}
         className={`grid gap-1 lg:gap-3 my-auto transition-transform duration-500 ease-in-out animate-slide-in

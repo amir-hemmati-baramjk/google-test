@@ -50,6 +50,7 @@ const config: Config = {
         lg: "1024px",
         xl: "1280px",
         "2xl": "1536px",
+        "3xl": "1920px",
       },
       boxShadow: {
         custom: "0px 24px 39px -30px #093143",

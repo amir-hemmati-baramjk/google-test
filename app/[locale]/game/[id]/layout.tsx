@@ -124,7 +124,7 @@ export default function GameLayout({
         <GamePageHeader />
       </div>
       <div
-        className=" flex flex-col justify-between md:justify-center md:overflow-scroll"
+        className=" flex flex-col h-full justify-between md:justify-center lg:justify-between md:overflow-scroll"
         style={{ height: `calc(100vh - ${headerHeight}px)` }}
       >
         {children}

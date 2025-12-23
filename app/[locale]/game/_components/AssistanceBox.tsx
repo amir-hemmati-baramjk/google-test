@@ -143,7 +143,7 @@ export default function AssistanceBox({
           )}
           variant="light-blue-gradient"
           shape="square"
-          className="!p-1 !rounded-[5px] w-7 h-7 sm:w-7 sm:h-7 md:w-7 md:h-7 lg:w-10 lg:h-10 xl:w-14 xl:h-14"
+          className="!p-1 !rounded-[5px] w-7 h-7 sm:w-7 sm:h-7 md:w-7 md:h-7 lg:w-10 lg:h-10 3xl:w-14 3xl:h-14"
         >
           <ChangeQuestionIcon size={iconSize} />
         </Button>
@@ -160,7 +160,7 @@ export default function AssistanceBox({
           )}
           variant="light-orange-gradient"
           shape="square"
-          className="!p-1 !rounded-[5px] w-7 h-7 sm:w-7 sm:h-7 md:w-7 md:h-7 lg:w-10 lg:h-10 xl:w-14 xl:h-14"
+          className="!p-1 !rounded-[5px] w-7 h-7 sm:w-7 sm:h-7 md:w-7 md:h-7 lg:w-10 lg:h-10 3xl:w-14 3xl:h-14"
         >
           <SkipQuestionIcon size={iconSize} />
         </Button>
@@ -181,7 +181,7 @@ export default function AssistanceBox({
           )}
           variant="primary"
           shape="square"
-          className="!p-1 !rounded-[5px] w-7 h-7 sm:w-7 sm:h-7 md:w-7 md:h-7 lg:w-10 lg:h-10 xl:w-14 xl:h-14"
+          className="!p-1 !rounded-[5px] w-7 h-7 sm:w-7 sm:h-7 md:w-7 md:h-7 lg:w-10 lg:h-10 3xl:w-14 3xl:h-14"
         >
           <div className="relative w-6 h-6 lg:w-10 lg:h-10">
             <Image
@@ -205,7 +205,7 @@ export default function AssistanceBox({
           )}
           variant="light-purple-gradient"
           shape="square"
-          className="!p-1 !rounded-[5px] w-7 h-7 sm:w-7 sm:h-7 md:w-7 md:h-7 lg:w-10 lg:h-10 xl:w-14 xl:h-14"
+          className="!p-1 !rounded-[5px] w-7 h-7 sm:w-7 sm:h-7 md:w-7 md:h-7 lg:w-10 lg:h-10 3xl:w-14 3xl:h-14"
         >
           <FiftyByFiftyIcon size={iconSize} />
         </Button>
@@ -221,7 +221,7 @@ export default function AssistanceBox({
           )}
           variant="magenta-gradient"
           shape="square"
-          className="!p-1 !rounded-[5px] w-7 h-7 sm:w-7 sm:h-7 md:w-7 md:h-7 lg:w-10 lg:h-10 xl:w-14 xl:h-14"
+          className="!p-1 !rounded-[5px] w-7 h-7 sm:w-7 sm:h-7 md:w-7 md:h-7 lg:w-10 lg:h-10 3xl:w-14 3xl:h-14"
         >
           <DoublePointsIcon size={iconSize} />
         </Button>
@@ -237,7 +237,7 @@ export default function AssistanceBox({
           )}
           variant="orange-gradient"
           shape="square"
-          className="!p-1 !rounded-[5px] w-7 h-7 sm:w-7 sm:h-7 md:w-7 md:h-7 lg:w-10 lg:h-10 xl:w-14 xl:h-14"
+          className="!p-1 !rounded-[5px] w-7 h-7 sm:w-7 sm:h-7 md:w-7 md:h-7 lg:w-10 lg:h-10 3xl:w-14 3xl:h-14"
         >
           <TakePointsIcon size={iconSize} />
         </Button>
