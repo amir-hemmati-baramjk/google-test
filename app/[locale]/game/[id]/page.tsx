@@ -119,7 +119,7 @@ export default function Page() {
   if (!isMounted) return null;
 
   return (
-    <div className="h-full sm:h-fit lg:h-full w-full overflow-y-hidden">
+    <div className="h-full sm:h-fit lg:h-full w-full overflow-x-hidden">
       {game?.layoutType === "version1" ? (
         /* --- VERSION 1 LAYOUT --- */
         <div className="flex justify-between sm:justify-center items-center gap-5 sm:gap-1 lg:gap-5 flex-col sm:flex-row h-full md:px-11">
@@ -191,7 +191,7 @@ export default function Page() {
         </div>
       ) : (
         /* --- VERSION 2 LAYOUT --- */
-        <div className="flex flex-col lg:h-full w-full md:mt-10 lg:mt-0">
+        <div className="flex flex-col lg:h-full w-full xl:mt-10 lg:mt-0">
           <div className="py-2 flex flex-col justify-around h-full my-auto md:px-10 relative">
             <motion.div
               drag="x"
