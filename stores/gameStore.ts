@@ -1,3 +1,4 @@
+"use client";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { Game, Question } from "@/type/api/game/game.type";
@@ -5,7 +6,8 @@ import { Game, Question } from "@/type/api/game/game.type";
 interface GameState extends Game {
   layoutType: "version1" | "version2";
   toggleLayout: () => void;
-
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
   answer: string | null;
   whoAnswer: string | null;
   setAnswer: (value: string) => void;
@@ -42,7 +44,6 @@ interface GameState extends Game {
   ) => void;
   changeTurn: (gameId: string, newTurn?: number) => void;
   useSilence: (gameId: string, team: number) => void;
-
   canUseRemoveTwoOption: boolean;
   canUseDoublePoint: boolean;
   canUseTakePoints: boolean;
@@ -55,14 +56,12 @@ interface GameState extends Game {
   setCanUseSilence: (value: boolean) => void;
   setCanUseSkipQuestion: (value: boolean) => void;
   setCanUseChangeQuestion: (value: boolean) => void;
-
   pendingDoublePoint: boolean;
   pendingTakePoint: boolean;
   pendingSilence: boolean;
   setPendingDoublePoint: (value: boolean) => void;
   setPendingTakePoint: (value: boolean) => void;
   setPendingSilence: (value: boolean) => void;
-
   setUsedDoublePointTeamOne: (value: boolean) => void;
   setUsedDoublePointTeamTwo: (value: boolean) => void;
   setUsedTakePointsTeamOne: (value: boolean) => void;
@@ -85,7 +84,8 @@ export const useGameStore = create<GameState>()(
         set((state) => ({
           layoutType: state.layoutType === "version1" ? "version2" : "version1",
         })),
-
+      currentPage: 0,
+      setCurrentPage: (page) => set({ currentPage: page }),
       answer: null,
       whoAnswer: null,
       id: "",
@@ -131,7 +131,6 @@ export const useGameStore = create<GameState>()(
       time400: 70,
       time600: 100,
       assistants: null,
-
       canUseRemoveTwoOption: true,
       canUseDoublePoint: true,
       canUseTakePoints: true,
@@ -141,7 +140,6 @@ export const useGameStore = create<GameState>()(
       pendingDoublePoint: false,
       pendingTakePoint: false,
       pendingSilence: false,
-
       setScrollX: (x) => set({ scrollX: x }),
       setPendingDoublePoint: (value) => set({ pendingDoublePoint: value }),
       setPendingTakePoint: (value) => set({ pendingTakePoint: value }),
@@ -153,12 +151,12 @@ export const useGameStore = create<GameState>()(
           teamOnePoints: 0,
           teamTwoPoints: 0,
           turn: 1,
+          currentPage: 0,
           isGameFinished: false,
           isSilenceInThisTurn: false,
           isDoublePointInThisTurn: false,
           isTeamOneSilenceInThisTurn: false,
           isTeamTwoSilenceInThisTurn: false,
-
           usedChangeQuestionTeamOne: false,
           usedDoublePointTeamOne: false,
           usedSilenceTeamOne: false,
@@ -166,7 +164,6 @@ export const useGameStore = create<GameState>()(
           usedSkipQuestionTeamOne: false,
           usedRemoveOptionTeamOne: false,
           silenceTurnTeamOne: 0,
-
           usedChangeQuestionTeamTwo: false,
           usedDoublePointTeamTwo: false,
           usedSilenceTeamTwo: false,
@@ -174,11 +171,9 @@ export const useGameStore = create<GameState>()(
           usedSkipQuestionTeamTwo: false,
           usedRemoveOptionTeamTwo: false,
           silenceTurnTeamTwo: 0,
-
           pendingDoublePoint: false,
           pendingTakePoint: false,
           pendingSilence: false,
-
           categories: [],
         });
       },
@@ -210,7 +205,6 @@ export const useGameStore = create<GameState>()(
           canUseChangeQuestion:
             state.assistants?.includes("ChangeQuestion") ?? value,
         })),
-
       setUsedDoublePointTeamOne: (value) =>
         set({ usedDoublePointTeamOne: value }),
       setUsedDoublePointTeamTwo: (value) =>
@@ -233,13 +227,11 @@ export const useGameStore = create<GameState>()(
         set({ usedRemoveOptionTeamOne: value }),
       setUsedRemoveOptionTeamTwo: (value) =>
         set({ usedRemoveOptionTeamTwo: value }),
-
       setGame: (game) => set((state) => ({ ...state, ...game })),
       setAnswer: (value) => set({ answer: value }),
       clearAnswer: () => set({ answer: null }),
       setWhoAnswer: (value) => set({ whoAnswer: value }),
       clearWhoAnswer: () => set({ whoAnswer: null }),
-
       findQuestionById: (id) => {
         const { categories } = get();
         for (const category of categories) {
@@ -248,7 +240,6 @@ export const useGameStore = create<GameState>()(
         }
         return undefined;
       },
-
       changeTurn: (gameId, newTurn) =>
         set((state) => {
           if (state.id !== gameId) return state;
@@ -261,7 +252,6 @@ export const useGameStore = create<GameState>()(
             isTeamTwoSilenceInThisTurn: false,
           };
         }),
-
       updateTeamPoints: (gameId, team, points) =>
         set((state) => {
           if (state.id !== gameId) return state;
@@ -269,7 +259,6 @@ export const useGameStore = create<GameState>()(
             ? { teamOnePoints: points }
             : { teamTwoPoints: points };
         }),
-
       changeQuestion: (gameId, questionId, newQuestionData, team) =>
         set((state) => {
           if (state.id !== gameId) return state;
@@ -287,7 +276,6 @@ export const useGameStore = create<GameState>()(
             })),
           };
         }),
-
       removeTwoAnswerForMultipleChoiceQuestioon: (
         gameId,
         questionId,
@@ -314,7 +302,6 @@ export const useGameStore = create<GameState>()(
             })),
           };
         }),
-
       changeTakePoint: (gameId, team) =>
         set((state) => {
           if (state.id !== gameId) return state;
@@ -326,7 +313,6 @@ export const useGameStore = create<GameState>()(
               team === 2 ? true : state.usedTakePointsTeamTwo,
           };
         }),
-
       changeSkipQuestion: (gameId, team, questionId) =>
         set((state) => {
           if (state.id !== gameId) return state;
@@ -334,12 +320,10 @@ export const useGameStore = create<GameState>()(
             .flatMap((cat) => cat.questions)
             .find((q) => q.id === questionId);
           if (!question) return state;
-
           const updatedPoints =
             team === 1
               ? state.teamOnePoints + question.points
               : state.teamTwoPoints + question.points;
-
           return {
             ...state,
             categories: state.categories.map((cat) => ({
@@ -357,7 +341,6 @@ export const useGameStore = create<GameState>()(
             teamTwoPoints: team === 2 ? updatedPoints : state.teamTwoPoints,
           };
         }),
-
       whoAnswered: (gameId, questionId, data) =>
         set((state) => {
           const updatedGame = { ...state, ...data };
@@ -373,7 +356,6 @@ export const useGameStore = create<GameState>()(
                 updatedQuestions.length,
             };
           });
-
           return {
             ...updatedGame,
             categories: updatedCategories,
@@ -382,7 +364,6 @@ export const useGameStore = create<GameState>()(
             ),
           };
         }),
-
       useSilence: (gameId, team) =>
         set((state) => {
           if (state.id !== gameId) return state;

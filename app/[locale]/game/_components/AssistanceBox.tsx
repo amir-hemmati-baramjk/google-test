@@ -219,7 +219,7 @@ export default function AssistanceBox({
               : gameStore.usedDoublePointTeamTwo,
             "gameboard"
           )}
-          variant="magenta-gradient"
+          variant="magenta-gradients"
           shape="square"
           className="!p-1 !rounded-[5px] w-7 h-7 sm:w-7 sm:h-7 md:w-7 md:h-7 lg:w-10 lg:h-10 3xl:w-14 3xl:h-14"
         >

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useTranslations } from "next-intl";
+import { motion } from "framer-motion";
 import { Button } from "../../_components/button/button";
 import { PackageStyle } from "@/utils/package-mapping";
 import { GamePackage } from "@/type/api/plans/plans.type";
@@ -19,30 +20,40 @@ export default function GamePackageCard({
   onChoosePackage,
 }: GamePackageCardProps) {
   const t = useTranslations("plans");
-  const { variant, textColor, IconComponent } = styles;
+  const { variant, buttonVariant, textColor, IconComponent } = styles;
   const { isLogin } = useUser();
   const [showLoginModal, setShowLoginModal] = useState(false);
+
   const gameCount =
     parseInt(plan.name.match(/\d+/)?.[0] || plan.gamesCount.toString()) || 0;
 
   const displayPrice = `${plan.currency} ${plan.price.toFixed(2)}`;
 
   return (
-    <div className="bg-white p-3 flex flex-col gap-5 rounded-[12px] text-black shadow-md border border-gray-100 transition-transform hover:scale-[1.02]">
-      {/* Header Section */}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -10, transition: { duration: 0.2 } }}
+      className="bg-white p-3 flex flex-col gap-5 rounded-[12px] text-black shadow-md border border-gray-100 h-full"
+    >
+      {/* Header Section - variant must now contain the full 'bg-...' string */}
       <div
-        className={`bg-${variant} flex flex-col justify-center items-center gap-3 text-white rounded-[10px] p-5 shadow-inner`}
+        className={`${variant} flex flex-col justify-center items-center gap-3 text-white rounded-[10px] p-5 shadow-inner transition-all duration-300`}
       >
         <p className="text-xl font-bold text-center leading-tight">
           {plan.name}
         </p>
 
-        <IconComponent size={56} />
+        <motion.div
+          animate={{ scale: [1, 1.1, 1] }}
+          transition={{ repeat: Infinity, duration: 3 }}
+        >
+          <IconComponent size={56} />
+        </motion.div>
 
         <p className="text-2xl font-black">{displayPrice}</p>
       </div>
 
-      {/* Description Section */}
       <div className="flex-1 px-2">
         <p
           className={`${textColor} text-center text-sm font-bold leading-relaxed`}
@@ -53,11 +64,10 @@ export default function GamePackageCard({
         </p>
       </div>
 
-      {/* Action Button */}
       <Button
         size="normal"
-        variant={variant}
-        className="w-full font-bold uppercase tracking-wide"
+        variant={buttonVariant}
+        className="w-full font-bold uppercase tracking-wide transform active:scale-95 transition-transform"
         onClick={() => {
           if (isLogin) {
             onChoosePackage(plan.id);
@@ -68,10 +78,11 @@ export default function GamePackageCard({
       >
         {t("buyNow")}
       </Button>
+
       <LoginModal
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
       />
-    </div>
+    </motion.div>
   );
 }

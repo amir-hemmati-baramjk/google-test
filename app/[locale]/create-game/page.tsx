@@ -75,7 +75,7 @@ export default function CategoriesPage() {
   if (isLoading || !isInitialized) return <LogoMotionLoading />;
 
   return (
-    <div className="min-h-screen flex flex-col bg-primary overflow-hidden">
+    <div className="min-h-screen flex flex-col bg-main-bg overflow-hidden">
       <BackHeaderForsubPages title={t("createGame")} />
 
       {/* Header Toolbar */}

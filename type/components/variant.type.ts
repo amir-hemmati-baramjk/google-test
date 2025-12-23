@@ -10,7 +10,7 @@ export type Variant =
   | "primary-gradient"
   | "secondary-gradient"
   | "turquoise-gradient"
-  | "magenta-gradient"
+  | "magenta-gradients"
   | "orange-gradient"
   | "light-purple-gradient"
   | "light-blue-gradient"

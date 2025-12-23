@@ -33,7 +33,7 @@
       rgba(3, 99, 114, 1) 0%,
       rgba(6, 182, 211, 1) 100%
     );
-    --magenta-gradient: linear-gradient(
+    --magenta-gradients: linear-gradient(
       90deg,
       rgba(119, 23, 70, 1) 0%,
       rgba(210, 41, 125, 1) 100%

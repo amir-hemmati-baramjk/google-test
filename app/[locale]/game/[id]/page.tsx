@@ -2,6 +2,7 @@
 import { useGameStore } from "@/stores/gameStore";
 import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import SponsorsAds from "../_components/SponsorsAds";
 import AssistanceBox from "../_components/AssistanceBox";
 import TeamScoreCard from "../_components/TeamScoreCard";
@@ -9,6 +10,7 @@ import NavigationControls from "../_components/NavigationControls";
 import CategoryGrid from "../_components/CategoryGrid";
 import NewCategoryGrid from "../_components/NewCategoryGrid";
 
+// --- Configuration Helpers ---
 const calculateVersion1Config = (w: number, h: number) => {
   if (w < 640) return { items: 3, shift: 3 };
   if (h < 900) return { items: 4, shift: 4 };
@@ -16,55 +18,91 @@ const calculateVersion1Config = (w: number, h: number) => {
 };
 
 const calculateVersion2Config = (w: number, h: number) => {
-  if (w >= 740) {
-    return { items: 6, shift: 6 };
-  }
-
+  if (w >= 740) return { items: 6, shift: 6 };
   return { items: 4, shift: 4 };
+};
+
+const gridVariants: Variants = {
+  initial: (direction: number) => ({
+    x: direction > 0 ? 200 : -200,
+    opacity: 0,
+    scale: 0.95,
+  }),
+  animate: {
+    x: 0,
+    opacity: 1,
+    scale: 1,
+    transition: {
+      x: { type: "spring", stiffness: 300, damping: 30 },
+      opacity: { duration: 0.2 },
+    },
+  },
+  exit: (direction: number) => ({
+    x: direction > 0 ? -200 : 200,
+    opacity: 0,
+    scale: 0.95,
+    transition: {
+      x: { type: "spring", stiffness: 300, damping: 30 },
+      opacity: { duration: 0.2 },
+    },
+  }),
 };
 
 export default function Page() {
   const game = useGameStore();
-  const [currentPage, setCurrentPage] = useState(0);
+  const { currentPage, setCurrentPage } = useGameStore();
   const [config, setConfig] = useState({ items: 6, shift: 6 });
   const [isMounted, setIsMounted] = useState(false);
+  const [direction, setDirection] = useState(0);
   const router = useRouter();
 
+  // Unified Effect to handle Resize AND Layout Switching
   useEffect(() => {
     setIsMounted(true);
-  }, []);
 
-  const handleResize = () => {
-    if (typeof window === "undefined") return;
-    const w = window.innerWidth;
-    const h = window.innerHeight;
+    const handleConfigUpdate = () => {
+      if (typeof window === "undefined") return;
+      const w = window.innerWidth;
+      const h = window.innerHeight;
 
-    const newConfig =
-      game?.layoutType === "version1"
-        ? calculateVersion1Config(w, h)
-        : calculateVersion2Config(w, h);
+      const newConfig =
+        game?.layoutType === "version1"
+          ? calculateVersion1Config(w, h)
+          : calculateVersion2Config(w, h);
 
-    setConfig(newConfig);
-    setCurrentPage(0);
-  };
+      setConfig(newConfig);
+      // Reset page to 0 on layout switch to prevent "empty item" issues
+      setCurrentPage(0);
+    };
 
-  useEffect(() => {
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [game?.layoutType]);
+    handleConfigUpdate();
+
+    window.addEventListener("resize", handleConfigUpdate);
+    return () => window.removeEventListener("resize", handleConfigUpdate);
+  }, [game?.layoutType, setCurrentPage]); // Watch layoutType strictly
 
   const totalPages = useMemo(() => {
     const totalItems = game?.categories?.length || 0;
     if (totalItems <= config.items) return 1;
-
     return Math.ceil((totalItems - config.items) / config.shift) + 1;
   }, [game?.categories, config]);
+
+  const handlePageChange = (newIdx: number) => {
+    if (newIdx >= 0 && newIdx < totalPages) {
+      setDirection(newIdx > currentPage ? 1 : -1);
+      setCurrentPage(newIdx);
+    }
+  };
+
+  const onDragEnd = (event: any, info: any) => {
+    const threshold = 50;
+    if (info.offset.x < -threshold) handlePageChange(currentPage + 1);
+    else if (info.offset.x > threshold) handlePageChange(currentPage - 1);
+  };
 
   const handleQuestionClick = (questionId: string) => {
     const gameStore = useGameStore.getState();
     let url = `/game/${game.id}/question/${questionId}`;
-
     if (gameStore.pendingDoublePoint) {
       url += "?assistant=doublePoint";
       gameStore.setPendingDoublePoint(false);
@@ -81,70 +119,112 @@ export default function Page() {
   if (!isMounted) return null;
 
   return (
-    <div className="h-full sm:h-fit lg:h-full w-full">
+    <div className="h-full sm:h-fit lg:h-full w-full overflow-y-hidden">
       {game?.layoutType === "version1" ? (
-        <div className="flex justify-between sm:justify-center items-center gap-5  sm:gap-1 lg:gap-5 flex-col sm:flex-row h-full md:px-11">
-          <div className="flex flex-col justify-center h-full items-center w-full ">
-            <NewCategoryGrid
-              categories={game?.categories || []}
-              currentPage={currentPage}
-              itemsPerPage={config.items}
-              shiftAmount={config.shift}
-              onQuestionClick={handleQuestionClick}
-              game={game}
-            />
+        /* --- VERSION 1 LAYOUT --- */
+        <div className="flex justify-between sm:justify-center items-center gap-5 sm:gap-1 lg:gap-5 flex-col sm:flex-row h-full md:px-11">
+          <div className="flex flex-col justify-center h-full items-center w-full relative">
+            <motion.div
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              onDragEnd={onDragEnd}
+              className="w-full h-full cursor-grab active:cursor-grabbing"
+            >
+              <AnimatePresence mode="wait" custom={direction}>
+                <motion.div
+                  key={`v1-${currentPage}`} // Key includes layout to force re-render
+                  custom={direction}
+                  variants={gridVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  className="w-full h-full"
+                >
+                  <NewCategoryGrid
+                    categories={game?.categories || []}
+                    currentPage={currentPage}
+                    itemsPerPage={config.items}
+                    shiftAmount={config.shift}
+                    onQuestionClick={handleQuestionClick}
+                    game={game}
+                  />
+                </motion.div>
+              </AnimatePresence>
+            </motion.div>
             <NavigationControls
               className="flex sm:hidden"
               currentPage={currentPage}
               totalPages={totalPages}
-              onPrev={() => setCurrentPage((p) => Math.max(0, p - 1))}
-              onNext={() =>
-                setCurrentPage((p) => Math.min(totalPages - 1, p + 1))
-              }
+              onPrev={() => handlePageChange(currentPage - 1)}
+              onNext={() => handlePageChange(currentPage + 1)}
             />
           </div>
           <NavigationControls
             className="hidden sm:flex sm:flex-col"
             currentPage={currentPage}
             totalPages={totalPages}
-            onPrev={() => setCurrentPage((p) => Math.max(0, p - 1))}
-            onNext={() =>
-              setCurrentPage((p) => Math.min(totalPages - 1, p + 1))
-            }
+            onPrev={() => handlePageChange(currentPage - 1)}
+            onNext={() => handlePageChange(currentPage + 1)}
           />
           <div className="flex flex-row sm:flex-col gap-3 md:gap-10 3xl:gap-14 w-full sm:w-1/3 bg-light-purple sm:bg-transparent p-2 py-1 pb-10 md:pb-1">
-            <div className="w-1/2 sm:w-full flex flex-col gap-2">
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              className="w-1/2 sm:w-full flex flex-col gap-2"
+            >
               <TeamScoreCard teamName={game?.teamOneName} teamNumber={1} />
               <AssistanceBox team={1} context="gameboard" />
-            </div>
-            <div className="w-1/2 sm:w-full flex flex-col gap-2">
+            </motion.div>
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.1 }}
+              className="w-1/2 sm:w-full flex flex-col gap-2"
+            >
               <TeamScoreCard teamName={game?.teamTwoName} teamNumber={2} />
               <AssistanceBox team={2} context="gameboard" />
-            </div>
+            </motion.div>
             <div className="hidden lg:block">
-              {" "}
               <SponsorsAds />
             </div>
           </div>
         </div>
       ) : (
+        /* --- VERSION 2 LAYOUT --- */
         <div className="flex flex-col lg:h-full w-full md:mt-10 lg:mt-0">
-          <div className="py-2 flex flex-col justify-around h-full my-auto md:px-10">
-            <CategoryGrid
-              categories={game?.categories || []}
-              currentPage={currentPage}
-              itemsPerPage={config.items}
-              shiftAmount={config.shift}
-              onQuestionClick={handleQuestionClick}
-              game={game}
-            />
+          <div className="py-2 flex flex-col justify-around h-full my-auto md:px-10 relative">
+            <motion.div
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              onDragEnd={onDragEnd}
+              className="w-full h-full cursor-grab active:cursor-grabbing"
+            >
+              <AnimatePresence mode="wait" custom={direction}>
+                <motion.div
+                  key={`v2-${currentPage}`} // Force re-render on layout change
+                  custom={direction}
+                  variants={gridVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  className="w-full h-full"
+                >
+                  <CategoryGrid
+                    categories={game?.categories || []}
+                    currentPage={currentPage}
+                    itemsPerPage={config.items}
+                    shiftAmount={config.shift}
+                    onQuestionClick={handleQuestionClick}
+                    game={game}
+                  />
+                </motion.div>
+              </AnimatePresence>
+            </motion.div>
             <NavigationControls
               currentPage={currentPage}
               totalPages={totalPages}
-              onPrev={() => setCurrentPage((p) => Math.max(0, p - 1))}
-              onNext={() =>
-                setCurrentPage((p) => Math.min(totalPages - 1, p + 1))
-              }
+              onPrev={() => handlePageChange(currentPage - 1)}
+              onNext={() => handlePageChange(currentPage + 1)}
             />
           </div>
           <div className="p-2 py-1 lg:py-3 xl:py-5 bg-light-purple w-full flex justify-center items-center h-fit pb-10 md:pb-1 md:px-10">

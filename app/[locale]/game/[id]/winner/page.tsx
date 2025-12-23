@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { useMemo, useEffect } from "react";
 import { useGameStore } from "@/stores/gameStore";
 import { useRouter } from "@/i18n/navigation";
-import { motion, Variants } from "framer-motion"; // Fix: Import Variants type
+import { motion, Variants } from "framer-motion";
 import confetti from "canvas-confetti";
 
 export default function WinnerPage() {

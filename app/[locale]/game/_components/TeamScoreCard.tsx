@@ -174,7 +174,7 @@ export default function TeamScoreCard({
                  ${
                    !isQuestionPage &&
                    game?.layoutType === "version2" &&
-                   "md:!w-9 md:!h-9"
+                   "md:w-9 md:h-9"
                  } `}
             variant={teamNumber == 2 ? "orange-gradient" : "primary-gradient"}
             shape="square"

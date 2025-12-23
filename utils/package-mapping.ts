@@ -6,8 +6,9 @@ import { Game1Icon } from "@/app/[locale]/_components/icons/Game1Icon";
 import { Game2Icon } from "@/app/[locale]/_components/icons/Game2Icon";
 
 export interface PackageStyle {
-  variant:
-    | "magenta-gradient"
+  variant: string;
+  buttonVariant:
+    | "magenta-gradients"
     | "orange-gradient"
     | "light-blue-gradient"
     | "primary-gradient";
@@ -17,28 +18,38 @@ export interface PackageStyle {
 
 export const getPackageStyle = (index: number): PackageStyle => {
   switch (index) {
-    case 0: // 1 Game
+    case 0:
       return {
-        variant: "primary-gradient",
+        variant: "bg-primary-gradient",
+        buttonVariant: "primary-gradient",
         textColor: "text-pink-600",
         IconComponent: Game1Icon,
       };
-    case 1: // 2 Games
+    case 1:
       return {
-        variant: "light-blue-gradient",
+        variant: "bg-light-blue-gradient",
+        buttonVariant: "light-blue-gradient",
         textColor: "text-blue-600",
         IconComponent: Game2Icon,
       };
-    case 4: // 5 Games
+    case 4:
       return {
-        variant: "orange-gradient",
+        variant: "bg-orange-gradient",
+        buttonVariant: "orange-gradient",
         textColor: "text-orange-600",
         IconComponent: FiveGameIcon,
       };
-    case 9: // 10 Games
+    case 9:
+      return {
+        variant: "bg-package-magenta-gradients",
+        buttonVariant: "magenta-gradients",
+        textColor: "text-pink",
+        IconComponent: TenGameIcon,
+      };
     default:
       return {
-        variant: "magenta-gradient",
+        variant: "bg-magenta-gradient",
+        buttonVariant: "magenta-gradients",
         textColor: "text-pink",
         IconComponent: TenGameIcon,
       };

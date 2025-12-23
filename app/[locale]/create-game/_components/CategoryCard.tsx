@@ -24,7 +24,7 @@ export const CategoryCard = React.memo(
       >
         <div
           className={`inverted-radius overflow-hidden  relative aspect-video ${
-            isSelected ? "bg-primary-gradient" : "bg-white"
+            isSelected ? "bg-primary-bg-gradient" : "bg-white"
           }`}
         >
           <Image

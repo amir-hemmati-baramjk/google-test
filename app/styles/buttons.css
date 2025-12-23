@@ -78,7 +78,7 @@
 .btn-turquoise-gradient {
   @apply bg-[linear-gradient(90deg,#036372_0%,#06b6d3_100%)] text-white;
 }
-.btn-magenta-gradient {
+.btn-magenta-gradients {
   @apply bg-[linear-gradient(90deg,#771746_0%,#d2297d_100%)] text-white;
 }
 .btn-white {
@@ -132,7 +132,7 @@
 .btn-outline.btn-primary-gradient,
 .btn-outline.btn-secondary-gradient,
 .btn-outline.btn-turquoise-gradient,
-.btn-outline.btn-magenta-gradient,
+.btn-outline.btn-magenta-gradients,
 .btn-outline.btn-orange-gradient,
 .btn-outline.btn-light-purple-gradient,
 .btn-outline.btn-light-blue-gradient,

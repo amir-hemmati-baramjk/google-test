@@ -1,7 +1,10 @@
 import { Config } from "tailwindcss";
 
 const config: Config = {
-  content: ["./app/**/*.{js,ts,jsx,tsx,mdx}"],
+  content: [
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./utils/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
   safelist: [
     "grid-cols-2",
     "grid-cols-3",
@@ -9,21 +12,32 @@ const config: Config = {
     "grid-cols-5",
     "grid-cols-6",
     "grid-cols-7",
+    "bg-primary-gradient",
+    "bg-light-blue-gradient",
+    "bg-orange-gradient",
+    "bg-magenta-gradient",
   ],
   theme: {
+    container: {
+      center: true,
+      screens: {
+        xs: "320px",
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
+        "2xl": "1536px",
+        "3xl": "1920px",
+      },
+    },
     extend: {
       keyframes: {
         "brand-shimmer": {
           "0%": { "background-position": "0% center" },
           "100%": { "background-position": "-200% center" },
         },
-        "slide-in": {
-          "0%": { transform: "translateX(100%)", opacity: "0" },
-          "100%": { transform: "translateX(0)", opacity: "1" },
-        },
       },
       animation: {
-        "slide-in": "slide-in 0.5s ease-out forwards",
         "brand-shimmer": "brand-shimmer 4s linear infinite",
       },
       colors: {
@@ -57,13 +71,12 @@ const config: Config = {
       },
       backgroundImage: {
         "primary-bg-gradient":
-          "radial-gradient(circle, #3f5efb 0%, #2b006b 100%)",
+          "radial-gradient(circle, #6200f6 0%, #2b006b 100%)",
         "primary-gradient": "linear-gradient(90deg, #2f0075 0%, #5d00ea 100%)",
         "secondary-gradient":
           "linear-gradient(90deg, #051b6e 0%, #0932c6 100%)",
         "turquoise-gradient":
           "linear-gradient(90deg, #036372 0%, #06b6d3 100%)",
-        "magenta-gradient": "linear-gradient(90deg, #771746 0%, #d2297d 100%)",
         "orange-gradient": "linear-gradient(90deg, #e90507 0%, #ff6600 100%)",
         "light-purple-gradient":
           "linear-gradient(90deg, #aa45ff 0%, #7412e9 100%)",
@@ -77,6 +90,9 @@ const config: Config = {
           "linear-gradient(90deg,rgba(79, 232, 154, 1) 0%, rgba(4, 156, 60, 1) 100%)",
         "brand-gradient":
           "linear-gradient(to right, #FFFFFF 0%, #E91E63 25%, #9C27B0 50%, #E91E63 75%, #FFFFFF 100%)",
+        "magenta-gradients": "linear-gradient(90deg, #791746 0%, #d2297d 100%)",
+        "package-magenta-gradients":
+          "linear-gradient(90deg, #791746 0%, #d2297d 100%)",
       },
       gridRow: {
         "span-7": "span 7 / span 7",

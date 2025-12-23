@@ -43,7 +43,7 @@ export default function PackagesPage() {
     <div className="text-white min-h-screen">
       <BackHeaderForRootPages />
 
-      <div className="lg:container m-auto flex flex-col gap-5 p-4 max-w-[1200px]">
+      <div className=" m-auto flex flex-col gap-5 p-4 max-w-[1400px]">
         <div className="space-y-2 lg:space-y-10 mt-4">
           <h1 className="text-3xl lg:text-6xl font-bold text-center">
             {t("title")}
@@ -52,7 +52,6 @@ export default function PackagesPage() {
             {t("description")}
           </p>
         </div>
-
         {isLoading ? (
           <div className="flex justify-center py-20 w-screen h-screen items-center backdrop-blur-3xl absolute top-0 left-0 z-[1000]">
             <LogoMotionLoading />
