@@ -96,7 +96,7 @@ export function useCategoryLogic(
 
     rawTags.forEach((tag: Tag) => {
       tag.categories?.forEach((cat) => {
-        if (!seenIds.has(cat.id)) {
+        if (!seenIds.has(cat.id) && !cat?.allQuestionUsed) {
           seenIds.add(cat.id);
           availablePool.push(cat.id);
         }
