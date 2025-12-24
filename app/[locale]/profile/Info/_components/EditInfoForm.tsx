@@ -47,15 +47,21 @@ export default function EditInfoForm() {
     }
   };
   useEffect(() => {
-    if (isInitialized) {
-      if (isLogin) {
-        setValue("email", user?.email ? user?.email : "");
-        setValue("phoneNumber", user?.phoneNumber ? user?.phoneNumber : "");
-        setValue("BirthDay", user?.birthDay ? user.birthDay.split("T")[0] : "");
-        setValue("fullName", user?.fullName ? user?.fullName : "");
+    if (isInitialized && isLogin && user) {
+      const rawDate = user?.birthDay;
+      let formattedDate = "";
+      if (rawDate) {
+        const dateObj = new Date(rawDate);
+        if (!isNaN(dateObj.getTime())) {
+          formattedDate = dateObj.toISOString().split("T")[0];
+        }
       }
+      setValue("fullName", user.fullName || "");
+      setValue("email", user.email || "");
+      setValue("phoneNumber", user.phoneNumber || "");
+      setValue("BirthDay", formattedDate);
     }
-  }, [isInitialized]);
+  }, [isInitialized, isLogin, user, setValue]);
   return (
     <form
       className="flex flex-col justify-center items-center gap-5 mt-5 lg:mt-10 w-full"

@@ -41,17 +41,17 @@ export default function DeleteAccountModal({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="flex flex-col justify-center items-center gap-5">
-        <div className="w-full flex justify-center items-center  bg-error/30 text-error rounded-[20px] py-4">
+        <div className="w-full flex justify-center items-center  bg-primary/30 text-primary rounded-[20px] py-4">
           <DeleteAccountIcon size={80} />
         </div>
-        <p className="text-error text-lg text-center font-bold">
+        <p className="text-primary text-lg text-center font-bold">
           {t("delete-account-desc")}
         </p>
         <div className="w-full flex justify-center items-center gap-5">
           <div className="w-1/2">
             <Button
               className="!w-full"
-              variant="error"
+              variant="primary"
               isOutline
               onClick={onClose}
             >
@@ -60,8 +60,8 @@ export default function DeleteAccountModal({
           </div>
           <div className="w-1/2 ">
             <Button
-              variant="error"
-              className="!w-full !border-[2px] !border-error"
+              variant="primary"
+              className="!w-full !border-[2px] !border-primary"
               onClick={handleDeleteAccount}
             >
               {t("yes")}

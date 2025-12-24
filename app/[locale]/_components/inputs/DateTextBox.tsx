@@ -11,9 +11,14 @@ export const DateTextBox: React.FC<TextboxProps> = ({
   size = "normal",
   ...rest
 }) => {
-  const classes = classNames("textbox", "w-full", className, {
-    [`textbox-${variant}`]: variant,
-  });
+  const classes = classNames(
+    "textbox",
+    "w-full !appearance-none outline-none",
+    className,
+    {
+      [`textbox-${variant}`]: variant,
+    }
+  );
   const labelClasses = classNames(
     "font-bold text-white block mx-1 mb-1 text-[14px]",
     {

@@ -23,6 +23,7 @@ import { ApiResponse } from "@/core/httpSercive.types";
 import { getLatestUserGame } from "@/core/game/get-latest-user-game";
 import { getAssistance } from "@/core/game/get-available-assistance";
 import { createGameService } from "@/core/game/create-game-service";
+import LogoMotionLoading from "../../_components/logoMotionLoading/LogoMotionLoading";
 
 const CreateGameForm: React.FC<CreateGameFormProps> = ({
   selectedCatItems,
@@ -128,7 +129,7 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
   if (isLastGameLoading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
-        <div className="text-lg">{t("loading") || "Loading..."}</div>
+        <LogoMotionLoading />
       </div>
     );
   }
