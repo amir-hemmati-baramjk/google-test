@@ -97,7 +97,6 @@ export default function LoginButtons() {
 
     return new Promise((resolve, reject) => {
       const onMessage = (ev: MessageEvent) => {
-        // Check message origin for security
         if (ev.origin !== AUTH_ORIGIN) return;
 
         const {
@@ -159,7 +158,6 @@ export default function LoginButtons() {
         reject(new Error("Timeout"));
       }, 12000);
 
-      // Cleanup function
       return () => {
         window.clearTimeout(timeout);
         window.removeEventListener("message", onMessage);
@@ -207,7 +205,6 @@ export default function LoginButtons() {
 
   return (
     <div className="flex flex-col gap-3 mt-5 text-[14px]">
-      {/* Social login buttons */}
       <div className="flex gap-3">
         <Button
           variant="white"
@@ -251,7 +248,6 @@ export default function LoginButtons() {
         </button> */}
       </div>
 
-      {/* Status display */}
       {status && (
         <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-blue-800 text-center text-sm">
           {status}

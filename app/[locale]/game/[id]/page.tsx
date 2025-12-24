@@ -56,7 +56,6 @@ export default function Page() {
   const [direction, setDirection] = useState(0);
   const router = useRouter();
 
-  // Unified Effect to handle Resize AND Layout Switching
   useEffect(() => {
     setIsMounted(true);
 
@@ -71,7 +70,7 @@ export default function Page() {
           : calculateVersion2Config(w, h);
 
       setConfig(newConfig);
-      // Reset page to 0 on layout switch to prevent "empty item" issues
+
       setCurrentPage(0);
     };
 
@@ -79,7 +78,12 @@ export default function Page() {
 
     window.addEventListener("resize", handleConfigUpdate);
     return () => window.removeEventListener("resize", handleConfigUpdate);
-  }, [game?.layoutType, setCurrentPage]); // Watch layoutType strictly
+  }, [
+    game?.layoutType,
+    setCurrentPage,
+    window?.innerHeight,
+    window?.innerWidth,
+  ]);
 
   const totalPages = useMemo(() => {
     const totalItems = game?.categories?.length || 0;
@@ -121,7 +125,6 @@ export default function Page() {
   return (
     <div className="h-full sm:h-fit lg:h-full w-full overflow-x-hidden">
       {game?.layoutType === "version1" ? (
-        /* --- VERSION 1 LAYOUT --- */
         <div className="flex justify-between sm:justify-center items-center gap-5 sm:gap-1 lg:gap-5 flex-col sm:flex-row h-full md:px-11">
           <div className="flex flex-col justify-center h-full items-center w-full relative">
             <motion.div
@@ -132,7 +135,7 @@ export default function Page() {
             >
               <AnimatePresence mode="wait" custom={direction}>
                 <motion.div
-                  key={`v1-${currentPage}`} // Key includes layout to force re-render
+                  key={`v1-${currentPage}`}
                   custom={direction}
                   variants={gridVariants}
                   initial="initial"
@@ -190,7 +193,6 @@ export default function Page() {
           </div>
         </div>
       ) : (
-        /* --- VERSION 2 LAYOUT --- */
         <div className="flex flex-col lg:h-full w-full xl:mt-10 lg:mt-0">
           <div className="py-2 flex flex-col justify-around h-full my-auto md:px-10 relative">
             <motion.div
@@ -201,7 +203,7 @@ export default function Page() {
             >
               <AnimatePresence mode="wait" custom={direction}>
                 <motion.div
-                  key={`v2-${currentPage}`} // Force re-render on layout change
+                  key={`v2-${currentPage}`}
                   custom={direction}
                   variants={gridVariants}
                   initial="initial"

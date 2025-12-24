@@ -10,7 +10,7 @@ import { RefreshCw } from "lucide-react";
 import { Game } from "@/type/api/game/game.type";
 import { getGameList } from "@/core/game/get-game-list-service";
 import { useTranslations } from "next-intl";
-import GameCardSkeleton from "./_components/GameCardSkeleton";
+
 import LogoMotionLoading from "../_components/logoMotionLoading/LogoMotionLoading";
 
 const PAGE_SIZE = 12;
@@ -75,7 +75,6 @@ export default function GamesPage() {
       </div>
 
       <div className="lg:container px-5 mx-auto mt-10">
-        {/* Games Grid */}
         {totalLoaded === 0 ? (
           <div className="text-center py-10">
             <p className="text-gray-500 text-lg">{t("noGamesFound")}</p>

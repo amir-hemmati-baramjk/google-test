@@ -150,7 +150,7 @@
 /* ----------------------- */
 /* Disabled */
 .btn:disabled {
-  @apply bg-none !bg-gray-400 cursor-not-allowed;
+  @apply !opacity-20 cursor-not-allowed;
 }
 
 /* ----------------------- */

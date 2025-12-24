@@ -37,13 +37,15 @@ export default function CategoryCard({
                 disabled={
                   q?.isAnswered || (game?.pendingDoublePoint && points !== 600)
                 }
-                className={`flex-1  text-white font-bold text-[16px] md:text-[16px] xl:text-[32px] rounded-[15px]   transition-transform active:scale-95 disabled:opacity-80 ${
+                className={`flex-1text-white font-bold text-[16px] md:text-[16px] xl:text-[32px] rounded-[15px] transition-transform active:scale-95 disabled:opacity-80 py-3 sm:p-2 md:py-1.5 lg:py-2 ${
                   q?.answeredBy !== null
                     ? q?.answeredBy == 1
-                      ? "bg-primary-gradient "
+                      ? "!bg-primary-gradient"
                       : q?.answeredBy == 2
-                      ? "bg-orange-gradient "
-                      : "bg-gray-500"
+                      ? "!bg-orange-gradient"
+                      : q?.answeredBy == 0
+                      ? "!bg-gray-500"
+                      : ""
                     : "bg-[#1000C7]"
                 }`}
               >
@@ -75,7 +77,7 @@ export default function CategoryCard({
         </div>
 
         {/* RIGHT BUTTONS COLUMN */}
-        <div className="flex flex-col gap-1 sm:gap-2 justify-between">
+        <div className="flex flex-col gap-1 sm:gap-2 justify-between ">
           {pointTiers.map((points) => {
             const questions = category.questions?.filter(
               (q: any) => q.points === points
@@ -88,11 +90,15 @@ export default function CategoryCard({
                 disabled={
                   q?.isAnswered || (game?.pendingDoublePoint && points !== 600)
                 }
-                className={`flex-1 bg-[#1000C7] text-white font-bold text-[16px]  xl:text-[32px] rounded-[15px]  transition-transform active:scale-95 disabled:opacity-80 py-3 sm:p-2 md:py-1.5 lg:py-2 ${
+                className={`flex-1 bg-[#1000C7] text-white font-bold text-[16px] xl:text-[32px] rounded-[15px]  transition-transform active:scale-95 disabled:opacity-80 py-3 sm:p-2 md:py-1.5 lg:py-2 ${
                   q?.answeredBy !== null
                     ? q?.answeredBy == 1
-                      ? "bg-primary-gradient "
-                      : "bg-orange-gradient "
+                      ? "!bg-primary-gradient"
+                      : q?.answeredBy == 2
+                      ? "!bg-orange-gradient"
+                      : q?.answeredBy == 0
+                      ? "!bg-gray-500"
+                      : ""
                     : "bg-[#1000C7]"
                 }`}
               >

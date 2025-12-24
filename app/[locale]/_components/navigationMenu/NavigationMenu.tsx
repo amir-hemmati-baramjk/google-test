@@ -59,7 +59,6 @@ export default function NavigationMenu() {
       className={`w-full hidden lg:block bg-primary-bg-gradient sticky top-0 left-0 right-0 z-50 shadow-lg translate-y-0 opacity-100`}
     >
       <div className="container mx-auto flex justify-between items-center p-5">
-        {/* Logo */}
         <div className="flex justify-center items-center gap-5 text-white">
           <Image
             alt="falta-logo"
@@ -73,7 +72,6 @@ export default function NavigationMenu() {
           </div>
         </div>
 
-        {/* Menu */}
         <div className="flex justify-center items-center gap-10">
           {menuItems.map((item, index) => {
             const isActive =
@@ -96,7 +94,6 @@ export default function NavigationMenu() {
           })}
         </div>
 
-        {/* Empty Right Section */}
         <div className="flex justify-center items-center gap-5 text-white w-[120px]"></div>
       </div>
     </div>

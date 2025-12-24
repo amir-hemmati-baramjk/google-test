@@ -114,8 +114,6 @@ const AssistantSelect: React.FC<AssistantSelectProps> = ({
         placeholder={t("selectAssistantPlaceholder")}
       />
 
-      {/* Max selection message */}
-
       {error && <p className="text-error text-[12px] mt-1">{error}</p>}
     </div>
   );

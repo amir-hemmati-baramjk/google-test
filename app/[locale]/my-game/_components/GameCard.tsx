@@ -21,7 +21,7 @@ export default function GameCard({ game }: GameCardProps) {
 
   return (
     <div className="p-5 relative bg-light-purple border-[2px] border-white rounded-[20px] w-full shadow-lg">
-      <div className="absolute -top-5 left-0 w-full flex justify-around items-center">
+      <div className="absolute -top-5 left-0 w-full flex items-center px-10">
         <Button
           onClick={() => setShowRestartModal(true)}
           className="!font-bold !text-[22px] !border-white !border-[2px]"
@@ -29,21 +29,12 @@ export default function GameCard({ game }: GameCardProps) {
         >
           {t("playGame")}
         </Button>
-        <Button
-          onClick={() => setShowInfoModal(true)}
-          className="!font-bold !text-[22px] !border-white !border-[2px]"
-          variant="error"
-          title={t("info")}
-        >
-          <InfoIcon size={24} />
-        </Button>
       </div>
 
       <p className="my-10 font-bold text-2xl text-center text-secondary">
         {game.name || t("gameNotFound")}
       </p>
 
-      {/* Show message if no categories */}
       {itemsToShow.length === 0 ? (
         <div className="flex justify-center items-center h-40">
           <p className="text-gray-500 text-center">

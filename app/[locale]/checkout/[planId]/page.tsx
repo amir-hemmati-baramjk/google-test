@@ -153,7 +153,6 @@ const PaymentPage: React.FC = () => {
 
   return (
     <div className="relative min-h-screen">
-      {/* Full Screen Loading Overlay */}
       {isRedirecting && (
         <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm">
           <LogoMotionLoading />

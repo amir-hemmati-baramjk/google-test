@@ -169,7 +169,7 @@ export default function Page() {
                   : "secondary"
               }
               isOutline={!(selectedOption === item?.id || !!answer)}
-              className="  lg:!font-bold whitespace- !text-xs lg:!text-xl !rounded-[6px]"
+              className="lg:!font-bold whitespace- !text-xs lg:!text-xl !rounded-[6px]"
             >
               {item?.text}
             </Button>

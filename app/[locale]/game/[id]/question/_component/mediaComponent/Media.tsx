@@ -30,7 +30,6 @@ const Media: React.FC<QuestionMediaProps> = React.memo(
 
     return (
       <div className="h-full w-full relative flex justify-center items-center">
-        {/* Loading Spinner */}
         {/* {isLoading && data?.mediaType === 0 && (
           <div className="absolute inset-0 flex items-center justify-center">
             <img
@@ -41,7 +40,6 @@ const Media: React.FC<QuestionMediaProps> = React.memo(
           </div>
         )} */}
 
-        {/* Image with Zoom */}
         {data?.mediaType === 0 && (
           <div className=" h-full overflow-hidden flex justify-center">
             <Lightbox
@@ -75,7 +73,6 @@ const Media: React.FC<QuestionMediaProps> = React.memo(
           </div>
         )}
 
-        {/* Video Player */}
         {data?.mediaType === 1 && (
           <div className="overflow-hidden flex justify-center h-full w-fit min-w-[300px]">
             <VideoPlayer
@@ -89,7 +86,6 @@ const Media: React.FC<QuestionMediaProps> = React.memo(
           </div>
         )}
 
-        {/* Audio Player */}
         {data?.mediaType === 2 && (
           <div className="flex justify-center items-center w-full">
             <AudioPlayer src={data?.downloadUrl} />

@@ -44,10 +44,8 @@ export const SeekBar: FC<SeekBarProps> = ({
       className="w-full h-3 relative cursor-pointer group"
       onMouseDown={handleSeek}
     >
-      {/* Background track */}
       <div className="absolute top-1/2 left-0 w-full h-1 bg-primary/20 rounded-full transform -translate-y-1/2" />
 
-      {/* Progress bar */}
       <div
         className="absolute top-1/2 left-0 h-1 bg-primary rounded-full transition-all duration-150"
         style={{ width: `${progress}%`, transform: "translateY(-50%)" }}

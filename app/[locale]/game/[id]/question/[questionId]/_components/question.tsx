@@ -63,7 +63,6 @@ export default function QuestionComponent() {
         {question.text}
       </p>
 
-      {/* Media content */}
       <div
         className="flex flex-col justify-between mt-auto"
         style={{ height: `calc(90% - ${textHeight}px)` }}
@@ -76,7 +75,6 @@ export default function QuestionComponent() {
         )}
       </div>
 
-      {/* Bottom button */}
       <div className="w-full px-3 sm:px-10 m-auto absolute -bottom-5 sm:-bottom-5 left-0 flex justify-between items-center">
         <Button
           onClick={handleShowAnswer}

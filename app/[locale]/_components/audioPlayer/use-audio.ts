@@ -166,7 +166,6 @@ const useAudio = (src: string, autoplay: boolean = false) => {
     };
   }, [src, autoplay]);
 
-  // Playback controls
   const play = () => audioRef.current?.play();
   const pause = () => audioRef.current?.pause();
   const seek = (delta: number) => {
@@ -179,7 +178,6 @@ const useAudio = (src: string, autoplay: boolean = false) => {
     if (audioRef.current) audioRef.current.playbackRate = rate;
   };
 
-  // Volume / mute
   const setVolume = (volume: number) => {
     if (audioRef.current && hasInteracted.current) {
       audioRef.current.volume = volume;

@@ -24,7 +24,6 @@ const AssistantSelect: React.FC<AssistantSelectProps> = ({
   const [isInitialized, setIsInitialized] = useState(false);
   const [showMaxMessage, setShowMaxMessage] = useState(false);
 
-  // Effect to set default values ONLY ONCE when component mounts
   useEffect(() => {
     if (
       !isInitialized &&
@@ -112,8 +111,6 @@ const AssistantSelect: React.FC<AssistantSelectProps> = ({
         }}
         placeholder={t("selectAssistantPlaceholder")}
       />
-
-      {/* Max selection message */}
 
       {error && <p className="text-error text-[12px] mt-1">{error}</p>}
     </div>

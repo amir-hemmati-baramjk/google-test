@@ -51,7 +51,6 @@ export default function Banner() {
       transition={{ duration: 0.6 }}
       className="m-auto max-w-[1400px] w-full bg-primary-bg-gradient p-6 lg:p-12 mt-5 flex flex-col lg:flex-row justify-between items-center text-white rounded-[24px] shadow-2xl overflow-hidden relative"
     >
-      {/* Animated Background Blur */}
       <motion.div
         animate={{ scale: [1, 1.2, 1], x: [0, 40, 0] }}
         transition={{ duration: 10, repeat: Infinity }}
@@ -61,7 +60,6 @@ export default function Banner() {
       <div className="flex flex-col gap-8 lg:gap-16 w-full lg:w-3/5 z-10">
         <div className="flex flex-col md:flex-row items-center gap-4 lg:gap-8">
           <div className="relative">
-            {/* Logo Pulse Effect */}
             <motion.div
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: [1, 2.5], opacity: [0.8, 0] }}
@@ -143,7 +141,6 @@ export default function Banner() {
         </div>
       </div>
 
-      {/* Stats Cards Section */}
       <motion.div
         variants={containerVariants}
         initial="hidden"

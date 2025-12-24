@@ -95,7 +95,7 @@ export default function WhoAnsweredComponent() {
           <Button
             onClick={handleTeamOneAnswer}
             disabled={whoAnsweredMutation.isPending}
-            variant="secondary"
+            variant="primary-gradient"
             size="large"
             className="!font-[700] w-1/2 disabled:opacity-50 disabled:cursor-not-allowed md:!text-lg lg:!text-2xl xl:!text-3xl"
           >
@@ -104,7 +104,7 @@ export default function WhoAnsweredComponent() {
           <Button
             onClick={handleTeamTwoAnswer}
             disabled={whoAnsweredMutation.isPending}
-            variant="secondary"
+            variant="orange-gradient"
             size="large"
             className="!font-[700] w-1/2 disabled:opacity-50 disabled:cursor-not-allowed md:!text-lg lg:!text-2xl xl:!text-3xl"
           >
@@ -118,13 +118,12 @@ export default function WhoAnsweredComponent() {
           size="large"
           shape="full"
           isOutline
-          className="!font-[700] disabled:opacity-50 disabled:cursor-not-allowed md:!text-lg lg:!text-2xl xl:!text-3xl"
+          className="!font-[700] disabled:opacity-50 disabled:cursor-not-allowed md:!text-lg lg:!text-2xl xl:!text-3xl !bg-gray-500 !text-white !border-gray-500"
         >
           {t("no-one")}
         </Button>
       </div>
 
-      {/* Bottom button */}
       <div className="w-full px-3 sm:px-10 m-auto absolute -bottom-2 sm:-bottom-5 left-0 flex justify-between items-center">
         <Button
           onClick={handleReturnToAnswer}

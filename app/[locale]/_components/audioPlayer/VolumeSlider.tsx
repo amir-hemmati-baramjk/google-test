@@ -1,7 +1,7 @@
 import { FC, MouseEvent } from "react";
 
 interface VolumeBarProps {
-  volume: number; // value between 0 and 1
+  volume: number;
   isMuted: boolean;
   onVolumeChange: (volume: number) => void;
   onMuteChange: (isMuted: boolean) => void;
@@ -34,8 +34,8 @@ const VolumeBar: FC<VolumeBarProps> = ({
       >
         {Array.from({ length: barCount }).map((_, i) => {
           const barVolume = (i + 1) / barCount;
-          const maxBarHeight = 20; // px
-          const minBarHeight = 4; // px
+          const maxBarHeight = 20;
+          const minBarHeight = 4;
           const height =
             minBarHeight + ((maxBarHeight - minBarHeight) * (i + 1)) / barCount;
 

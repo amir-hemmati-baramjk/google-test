@@ -452,5 +452,18 @@
     "changeQuestionSuccess": "Question changed!",
     "skipQuestionSuccess": "Question skipped!",
     "selectQuestion": "Now select a question to apply the assistant."
+  },
+  "report-qa": {
+    "help-correct-error": "Help Us Fix This",
+    "wrong-question-or-answer": "Is there something wrong with this question or answer?",
+    "question-not-clear": "The question is not clear",
+    "wrong-media": "The image/video is incorrect",
+    "wrong-answer": "The answer is wrong",
+    "write-your-message": "Write more details here...",
+    "submit": "Send Report",
+    "cancel": "Cancel",
+    "please-select-or-enter-description": "Please select an option or write a description",
+    "report-successfully-message": "Thank you! Report sent successfully.",
+    "something-went-wrong": "Something went wrong. Please try again."
   }
 }

@@ -39,16 +39,12 @@ export default function CategoriesPage() {
     MAX_SELECTION,
   } = useCategoryLogic(searchTerm, isLogin, isInitialized, user);
 
-  // --- FILTERING LOGIC ---
   const filteredData = useMemo(() => {
-    // If no tag is selected, show everything
     if (!activeTagId)
       return { sections: tagSections, grid: allUniqueCategories };
 
-    // Filter sections for List View
     const sections = tagSections.filter((tag: any) => tag.id === activeTagId);
 
-    // Filter categories for Grid View (Flattened)
     const gridItems = sections.length > 0 ? sections[0].categories : [];
 
     return { sections, grid: gridItems };
@@ -68,7 +64,7 @@ export default function CategoriesPage() {
 
   const handleTagSelect = (tagId: string) => {
     setActiveTagId(tagId);
-    // Reset scroll to top so user sees the start of the filtered results
+
     virtualizer.scrollToOffset(0);
   };
 
@@ -78,11 +74,11 @@ export default function CategoriesPage() {
     <div className="min-h-screen flex flex-col bg-main-bg overflow-hidden">
       <BackHeaderForsubPages title={t("createGame")} />
 
-      {/* Header Toolbar */}
+      {}
       <div className="px-4 mt-3 sticky top-0 left-0 z-40">
         <div className="px-4 py-3 bg-light-purple z-20 rounded-lg">
           <div className="flex items-center gap-1.5 md:gap-3">
-            {/* Desktop Search */}
+            {}
             <div className="hidden md:flex relative flex-1">
               <input
                 type="text"
@@ -97,7 +93,7 @@ export default function CategoriesPage() {
               />
             </div>
 
-            {/* Mobile Search Toggle */}
+            {}
             <button
               onClick={() => setIsSearchOpen(!isSearchOpen)}
               className="md:hidden p-2 bg-white rounded-full border border-primary text-primary"
@@ -105,7 +101,7 @@ export default function CategoriesPage() {
               <Search size={20} />
             </button>
 
-            {/* View Switcher */}
+            {}
             <div className="flex bg-white/10 p-1 rounded-full border border-white/10 shrink-0 gap-1.5">
               <button
                 onClick={() => setViewMode("grid")}
@@ -125,7 +121,7 @@ export default function CategoriesPage() {
               </button>
             </div>
 
-            {/* Tag Filter */}
+            {}
             <TagFilter
               tags={tagSections}
               activeTagId={activeTagId}
@@ -133,7 +129,7 @@ export default function CategoriesPage() {
               onSelect={handleTagSelect}
             />
 
-            {/* Random Pick */}
+            {}
             <button
               onClick={handleRandomSelect}
               className="bg-secondary text-white p-2.5 rounded-full flex justify-center items-center gap-5 md:px-5 shadow-md shrink-0 active:scale-90 transition-transform"
@@ -143,7 +139,7 @@ export default function CategoriesPage() {
             </button>
           </div>
 
-          {/* Mobile Search Drawer */}
+          {}
           {isSearchOpen && (
             <div className="md:hidden mt-3 relative animate-in slide-in-from-top-2 duration-200">
               <input
@@ -174,7 +170,7 @@ export default function CategoriesPage() {
         </div>
       </div>
 
-      {/* Main Virtual List */}
+      {}
       <div
         ref={parentRef}
         className="flex-1 overflow-y-auto relative md:px-4 pb-40 scroll-smooth h-[calc(100vh-200px)]"

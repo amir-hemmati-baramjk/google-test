@@ -132,7 +132,6 @@ const DesignSystem: React.FC = () => {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen space-y-12">
-      {/* Solid Colors */}
       <section>
         <h2 className="text-2xl font-bold mb-4">Solid Colors</h2>
         <div className="flex flex-wrap">
@@ -142,7 +141,6 @@ const DesignSystem: React.FC = () => {
         </div>
       </section>
 
-      {/* Gradients */}
       <section>
         <h2 className="text-2xl font-bold mb-4">Gradients</h2>
         <div className="flex flex-wrap">
@@ -152,7 +150,6 @@ const DesignSystem: React.FC = () => {
         </div>
       </section>
 
-      {/* Typography */}
       <section>
         <h2 className="text-2xl font-bold mb-4">Typography</h2>
         {baseTypography.map((t) => (

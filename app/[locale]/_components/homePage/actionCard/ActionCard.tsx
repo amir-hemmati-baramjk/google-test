@@ -2,7 +2,7 @@
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import React, { useState } from "react";
-import { motion, Variants } from "framer-motion"; // Added motion
+import { motion, Variants } from "framer-motion";
 import { Button } from "../../button/button";
 import { Variant } from "../../../../../type/components/variant.type";
 import { Link } from "@/i18n/routing";
@@ -45,7 +45,6 @@ export default function ActionCard() {
     },
   ];
 
-  // 1. Entrance Variants
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -82,11 +81,7 @@ export default function ActionCard() {
           }}
           className="flex bg-white justify-between items-center gap-5 p-4 lg:p-6 rounded-[16px] shadow-sm group relative overflow-hidden"
         >
-          {/* Subtle background flash on hover */}
-          <motion.div
-            className="absolute inset-0 bg-gray-50/50 opacity-0 group-hover:opacity-100 transition-opacity"
-            // pointerEvents="none"
-          />
+          <motion.div className="absolute inset-0 bg-gray-50/50 opacity-0 group-hover:opacity-100 transition-opacity" />
 
           <div className="flex flex-col gap-3 z-10">
             <p

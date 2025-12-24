@@ -20,7 +20,6 @@ export default meta;
 
 type Story = StoryObj<typeof Loading>;
 
-/* Size Variants */
 export const LoadingSpinner: Story = {
   render: () => (
     <>
@@ -32,7 +31,6 @@ export const LoadingSpinner: Story = {
   ),
 };
 
-/* Flat Color Variants */
 export const LoadingSpinnerWithColors: Story = {
   render: () => (
     <>
@@ -51,7 +49,6 @@ export const LoadingSpinnerWithColors: Story = {
   ),
 };
 
-/* Ring Variants */
 export const LoadingRing: Story = {
   render: () => (
     <>
@@ -63,7 +60,6 @@ export const LoadingRing: Story = {
   ),
 };
 
-/* Gradient Variants */
 export const LoadingSpinnerWithGradients: Story = {
   render: () => (
     <>
@@ -84,7 +80,6 @@ export const LoadingSpinnerWithGradients: Story = {
   ),
 };
 
-/* Ring + Color + Gradient */
 export const LoadingRingWithAllVariants: Story = {
   render: () => (
     <>

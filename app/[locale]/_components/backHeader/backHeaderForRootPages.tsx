@@ -32,7 +32,6 @@ export default function BackHeaderForRootPages() {
     if (typeof window === "undefined") return false;
     const w = window as any;
 
-    // 1. Explicit App Markers (Always hide in your app)
     if (
       !!w.flutter_inappwebview ||
       !!w.FaltaApp ||
@@ -40,24 +39,19 @@ export default function BackHeaderForRootPages() {
     )
       return true;
 
-    // 2. iOS Detection
     if (/iPhone|iPad|iPod/i.test(ua)) {
-      // Chrome on iOS uses "CriOS"
       const isIOSChrome = /CriOS/i.test(ua);
-      // Firefox on iOS uses "FxiOS"
+
       const isIOSFirefox = /FxiOS/i.test(ua);
-      // Standard Safari
+
       const isSafari =
         /Safari/i.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS/i.test(ua);
 
-      // If it's one of these, it's a REAL browser, not a WebView
       if (isIOSChrome || isIOSFirefox || isSafari) return false;
 
-      // Otherwise, if it has WebKit but isn't a known browser, it's likely a WebView (Instagram, FB, etc.)
       return !!w.webkit;
     }
 
-    // 3. Android Detection
     if (/Android/i.test(ua)) {
       return (
         /; wv\)/i.test(ua) ||
@@ -86,7 +80,6 @@ export default function BackHeaderForRootPages() {
     const webViewStatus = isWebView();
     const pwaStatus = isStandalonePWA();
 
-    // Logic: Is Mobile AND NOT in a WebView AND NOT installed as PWA
     const shouldShow = isMobile && !webViewStatus && !pwaStatus;
 
     const isDismissed = sessionStorage.getItem("app-banner-dismissed");

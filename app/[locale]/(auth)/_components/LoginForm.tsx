@@ -15,10 +15,7 @@ import { toast } from "react-toastify";
 import { sendAppTokenToServer } from "@/core/auth/set-app-token-notification";
 import EmailTextBox from "../../_components/inputs/EmailTextBox";
 import { SignIn, SignInWithEmail } from "@/type/api/auth/auth.types";
-import {
-  getSignInSchema,
-  getSignInWithEmailSchema,
-} from "@/type/api/auth/auth.schema";
+import { getSignInWithEmailSchema } from "@/type/api/auth/auth.schema";
 
 const LoginForm = () => {
   const t = useTranslations("login-form");

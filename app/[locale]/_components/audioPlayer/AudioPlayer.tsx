@@ -40,10 +40,8 @@ export const AudioPlayer: FC<AudioProps> = ({
     <div
       className={`bg-light-blue text-white rounded-lg  p-2 w-full max-w-2xl ${className}`}
     >
-      {/* Audio element */}
       <audio ref={audioRef} src={src} preload="metadata" />
 
-      {/* Playback Controls */}
       <div className="flex items-center gap-4">
         <button
           onClick={handlePlayPause}
@@ -56,7 +54,7 @@ export const AudioPlayer: FC<AudioProps> = ({
           {formatTime(currentTime)}
         </span>
 
-        {/* SeekBar */}
+        {}
         <SeekBar
           currentTime={currentTime}
           duration={duration}
@@ -64,7 +62,7 @@ export const AudioPlayer: FC<AudioProps> = ({
         />
       </div>
 
-      {/* Volume Controls */}
+      {}
       <div className="flex items-center gap-3 mt-3">
         {showVolume && (
           <button

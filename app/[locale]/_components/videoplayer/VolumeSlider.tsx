@@ -50,7 +50,6 @@ export const VolumeSlider: FC<VolumeSliderProps> = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Mute Icon */}
       <button
         onClick={handleMute}
         className="text-white focus:outline-none"
@@ -63,7 +62,6 @@ export const VolumeSlider: FC<VolumeSliderProps> = ({
         )}
       </button>
 
-      {/* Slider with transition */}
       <div
         className={`ml-2 overflow-hidden transition-all duration-300 ${
           isHovered ? "w-32 opacity-100" : "w-0 opacity-0"
@@ -73,13 +71,11 @@ export const VolumeSlider: FC<VolumeSliderProps> = ({
           className="relative h-1 bg-white/20 rounded-full cursor-pointer group w-full"
           onMouseDown={handleVolumeDrag}
         >
-          {/* Fill */}
           <div
             className="absolute top-0 left-0 h-full bg-white rounded-full transition-all duration-150"
             style={{ width: `${currentVolume * 100}%` }}
           />
 
-          {/* Thumb */}
           <div
             className={`absolute top-1/2 z-10 h-3 w-3 bg-white rounded-full shadow transition-opacity duration-200 ${
               isDragging ? "opacity-100" : "opacity-0 group-hover:opacity-100"

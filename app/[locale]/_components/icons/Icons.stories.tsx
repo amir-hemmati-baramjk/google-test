@@ -1,7 +1,6 @@
-// Icons.stories.tsx
 import React from "react";
 import { Meta, StoryObj } from "@storybook/react";
-import * as Icons from "./icons"; // مسیر فولدر آیکون‌ها
+import * as Icons from "./icons";
 
 const meta: Meta = {
   title: "Design System/Icons",
@@ -18,7 +17,6 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// تمام رنگ‌های Tailwind که میخوای استفاده کنی
 const COLORS = [
   "text-primary",
   "text-secondary",
@@ -33,7 +31,6 @@ const COLORS = [
   "text-ghost",
 ];
 
-// سایزهای مختلف
 const SIZES = [16, 24, 32, 48];
 
 export const AllIcons: Story = {
@@ -59,7 +56,6 @@ export const AllIcons: Story = {
             {name}
           </span>
 
-          {/* نمایش نمونه کد */}
           <div className="mt-2 p-2  rounded w-full overflow-x-auto">
             <pre className="text-xs">
               <code>{`<${name} size={24} className="text-primary" />`}</code>

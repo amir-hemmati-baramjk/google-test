@@ -103,7 +103,6 @@ const SignupForm = () => {
         disabled={isLoading}
       />
 
-      {/* ✅ New Confirm Password Field */}
       <PasswordTextbox
         {...register("ConfirmPassword")}
         name="ConfirmPassword"

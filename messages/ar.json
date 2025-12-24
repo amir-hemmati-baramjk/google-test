@@ -460,5 +460,18 @@
     "changeQuestionSuccess": "تم تغيير السؤال!",
     "skipQuestionSuccess": "تم تخطي السؤال!",
     "selectQuestion": "اختر سؤالًا لتطبيق المساعدة."
+  },
+  "report-qa": {
+    "help-correct-error": "ساعدنا في تصحيح الخطأ",
+    "wrong-question-or-answer": "هل هناك خطأ في هذا السؤال أو الإجابة؟",
+    "question-not-clear": "السؤال غير واضح",
+    "wrong-media": "الوسائط (صورة/فيديو) خاطئة",
+    "wrong-answer": "الإجابة غير صحيحة",
+    "write-your-message": "اكتب المزيد من التفاصيل هنا...",
+    "submit": "إرسال التقرير",
+    "cancel": "إلغاء",
+    "please-select-or-enter-description": "يرجى اختيار سبب أو كتابة وصف",
+    "report-successfully-message": "شكرًا لك! تم إرسال التقرير بنجاح.",
+    "something-went-wrong": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
   }
 }

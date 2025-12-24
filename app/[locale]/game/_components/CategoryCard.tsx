@@ -54,7 +54,7 @@ export default function CategoryCard({
           priority
         />
       </div>
-      <p className="text-center text-md sm:text-xs lg:text-lg xl:text-xl py-1 font-bold">
+      <p className="text-center text-md sm:text-xs lg:text-md xl:text-lg py-1 font-bold whitespace-nowrap truncate">
         {category?.name}
       </p>
       <div className="flex flex-col justify-center gap-1.5 w-full">

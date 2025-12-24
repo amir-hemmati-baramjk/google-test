@@ -73,13 +73,12 @@ html {
   display: none !important;
 }
 .inverted-radius {
-  --r: 12px; /* top radius */
-  --s: 15px; /* size of inner curve */
-  --x: 2px; /* horizontal offset */
-  --y: 2px; /* vertical offset */
-  --t: 1px; /* border thickness */
+  --r: 12px;
+  --s: 15px;
+  --x: 2px;
+  --y: 2px;
+  --t: 1px;
   --border-color: #5d00ea;
-
   aspect-ratio: 1;
   position: relative;
 
@@ -104,11 +103,47 @@ html {
 .inverted-radius::before {
   content: "";
   position: absolute;
-  /* 3. Inset top and sides, but NOT the bottom */
   inset: var(--t) var(--t) 0 var(--t);
-  /* background: #fff; */
   border-radius: calc(var(--r) - var(--t)) calc(var(--r) - var(--t)) 0 0;
 
   mask: var(--mask-shape);
   mask-repeat: no-repeat;
+}
+
+@keyframes rotate-border {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.danger-border-box {
+  position: relative;
+  border-radius: 8px;
+  z-index: 10;
+  overflow: hidden;
+  color: #dc2626 !important;
+}
+
+.danger-border-box::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(transparent, #dc2626, transparent 30%);
+  top: -50%;
+  left: -50%;
+  animation: rotate-border 2s linear infinite;
+  z-index: -1;
+}
+
+.danger-border-box::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  background: #f3e8ff;
+  border-radius: 5px;
+  z-index: -1;
 }

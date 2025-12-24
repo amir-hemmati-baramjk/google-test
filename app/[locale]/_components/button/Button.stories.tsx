@@ -20,9 +20,6 @@ export default meta;
 
 type Story = StoryObj<typeof Button>;
 
-/* -------------------------------------- */
-/* 🎨 Brand Colors */
-/* -------------------------------------- */
 export const BrandColors: Story = {
   render: () => (
     <>
@@ -90,9 +87,6 @@ export const OutlineButtons: Story = {
   ),
 };
 
-/* -------------------------------------- */
-/* 🚀 Button Sizes */
-/* -------------------------------------- */
 export const ButtonSizes: Story = {
   render: () => (
     <>
@@ -112,9 +106,6 @@ export const ButtonSizes: Story = {
   ),
 };
 
-/* -------------------------------------- */
-/* ⬜ Shapes */
-/* -------------------------------------- */
 export const WideButton: Story = {
   render: () => (
     <Button variant="primary" shape="wide">
@@ -202,9 +193,6 @@ export const SquareButtons: Story = {
   ),
 };
 
-/* -------------------------------------- */
-/* 🚫 Disabled Button */
-/* -------------------------------------- */
 export const DisabledButton: Story = {
   render: () => (
     <Button variant="primary" disabled>
@@ -213,9 +201,6 @@ export const DisabledButton: Story = {
   ),
 };
 
-/* -------------------------------------- */
-/* 🔗 Icon Buttons */
-/* -------------------------------------- */
 export const IconButton: Story = {
   render: () => (
     <>
@@ -257,9 +242,6 @@ export const IconButton: Story = {
   ),
 };
 
-/* -------------------------------------- */
-/* ⏳ Loading Buttons */
-/* -------------------------------------- */
 export const ButtonWithLoading: Story = {
   render: () => (
     <>

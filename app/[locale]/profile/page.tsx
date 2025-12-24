@@ -9,9 +9,8 @@ import {
   useSpring,
   useTransform,
   animate,
-} from "framer-motion"; // Added Framer Motion
+} from "framer-motion";
 
-// Icons ... (Your existing imports)
 import { PrivacyPolicyIcon } from "../_components/icons/PrivacyPolicyIcon";
 import { LanguageIcon } from "../_components/icons/LanguageIcon";
 import { ContactUsIcon } from "../_components/icons/ContactUsIcon";
@@ -204,7 +203,7 @@ export default function ProfilePage() {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="flex flex-col items-center gap-8 px-5 mt-10 mx-auto text-white lg:container"
+          className="flex flex-col items-center gap-8 px-5 mt-10 mx-auto text-white lg:max-w-[1400px]"
         >
           <motion.div
             variants={itemVariants}

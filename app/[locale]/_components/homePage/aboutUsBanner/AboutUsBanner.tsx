@@ -53,7 +53,6 @@ export default function AboutUsBanner() {
 
   return (
     <div className="flex flex-col justify-center items-center gap-5">
-      {/* SECTION 1 */}
       <div className="flex justify-between items-center gap-5 max-w-[1400px] mx-auto mt-10 flex-col lg:flex-row">
         <Image
           alt=""
@@ -72,7 +71,6 @@ export default function AboutUsBanner() {
         </div>
       </div>
 
-      {/* SECTION 2 */}
       <div className="flex justify-between items-center gap-5 max-w-[1400px] mx-auto mt-5 flex-col lg:flex-row">
         <Image
           alt=""
@@ -82,7 +80,6 @@ export default function AboutUsBanner() {
           src={"/staticImages/assistancebanner.png"}
         />
 
-        {/* GRID ITEMS */}
         <div className="text-secondary text-center w-full lg:w-1/2">
           <h2 className="text-xl text-white font-[700] lg:text-2xl xl:font-3xl mb-4">
             {t("means-of-assistance")}

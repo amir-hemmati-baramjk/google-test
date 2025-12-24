@@ -139,7 +139,6 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col justify-center items-center gap-3 w-full"
     >
-      {/* Game Name & Assistants Select */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-3 w-full">
         <Textbox
           variant="primary"
@@ -162,10 +161,7 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
           defaultValue={lastGame?.assistants || []}
         />
       </div>
-
-      {/* Team Details (A & B) */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-3 w-full">
-        {/* Team A */}
         <div className="flex flex-col lg:flex-row items-center gap-3">
           <Textbox
             variant="primary"
@@ -189,7 +185,6 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
           />
         </div>
 
-        {/* Team B */}
         <div className="flex flex-col lg:flex-row items-center gap-3">
           <Textbox
             variant="primary"
@@ -214,7 +209,6 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
         </div>
       </div>
 
-      {/* Time Controls */}
       <div className="flex flex-col md:flex-row gap-3 w-full">
         <div className="w-full lg:w-1/2">
           <CounterInput
@@ -257,7 +251,6 @@ const CreateGameForm: React.FC<CreateGameFormProps> = ({
         </div>
       </div>
 
-      {/* Submit Button */}
       <Button
         isLoading={isPending}
         isDisabled={isPending || selectedCatItems.length === 0}

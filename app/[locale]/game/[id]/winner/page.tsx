@@ -45,7 +45,6 @@ export default function WinnerPage() {
     return { isTie, winnerTeam, winnerName };
   }, [teamOneName, teamOnePoints, teamTwoName, teamTwoPoints]);
 
-  // Fix: Explicitly typed as Variants to resolve index signature error
   const containerVars: Variants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
@@ -68,7 +67,6 @@ export default function WinnerPage() {
         animate="visible"
         className="w-full max-w-5xl flex flex-col items-center gap-6 lg:gap-10"
       >
-        {/* 2. Main Header - Visible on ALL screens */}
         <motion.div
           variants={itemVars}
           className="text-center space-y-2 px-4 sm:hidden lg:block"
@@ -88,9 +86,7 @@ export default function WinnerPage() {
           )}
         </motion.div>
 
-        {/* 3. Responsive Cards Grid - Added md:grid-cols-[1fr_auto_1fr] for middle text */}
         <div className="grid grid-cols-2 md:grid-cols-[1fr_auto_1fr] gap-3 md:gap-8 w-full px-2   justify-items-center items-center">
-          {/* Team 1 Card */}
           <motion.div
             variants={itemVars}
             className={`bg-white p-3 flex flex-col gap-3 rounded-[15px] border-4 w-full md:max-w-[220px] lg:max-w-[280px] ${
@@ -138,7 +134,6 @@ export default function WinnerPage() {
             </p>
           </motion.div>
 
-          {/* New: Result text between cards (Visible on md and up) */}
           <motion.div
             variants={itemVars}
             className="hidden md:flex items-center justify-center"
@@ -163,7 +158,6 @@ export default function WinnerPage() {
             </motion.div>
           </motion.div>
 
-          {/* Team 2 Card */}
           <motion.div
             variants={itemVars}
             className={`bg-white p-3 flex flex-col gap-3 rounded-[15px] border-4 w-full md:max-w-[220px] lg:max-w-[280px] ${
@@ -212,7 +206,6 @@ export default function WinnerPage() {
           </motion.div>
         </div>
 
-        {/* 4. Action Button */}
         <motion.div variants={itemVars} className="w-full max-w-[240px] mt-4">
           <Button
             onClick={() => router.replace("/")}
