@@ -7,7 +7,7 @@ export default function page() {
   return (
     <div>
       <BackHeaderForsubPages title="Login" />
-      <div className="max-w-[400px] m-auto mt-10 lg:mt-20">
+      <div className="max-w-[600px] m-auto mt-10 lg:mt-20">
         <LoginForm />
         <LoginButtons />
       </div>

@@ -216,7 +216,7 @@ export default function LoginButtons() {
           animatedIcon
           size="large"
           shape="rounded"
-          className="!bg-[#F4F5F6] !text-accent !font-bold !text-[14px] !text-nowrap w-full !px-3 !gap-4"
+          className="!bg-[#F4F5F6] !text-accent !font-bold !text-[14px] !text-nowrap w-full !px-3 !gap-4 !whitespace-nowrap"
         >
           {loading === "gredir" ? t("redirecting") : t("loginGoogleRedirect")}
           <GoogleIcon size={36} className="bg-[#ccc] p-1 rounded-full" />
@@ -228,7 +228,7 @@ export default function LoginButtons() {
           animatedIcon
           shape="rounded"
           size="large"
-          className="!bg-[#F4F5F6] !text-accent !font-bold !text-[14px] !text-nowrap w-full !px-3 !gap-4"
+          className="!bg-[#F4F5F6] !text-accent !font-bold !text-[14px] !text-nowrap w-full !px-3 !gap-4 !whitespace-nowrap"
         >
           {loading === "aredir" ? t("redirecting") : t("loginAppleRedirect")}
           <AppleIcon size={36} className="bg-[#ccc] p-1 rounded-full" />
