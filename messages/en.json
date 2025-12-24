@@ -32,6 +32,20 @@
       "remove-two-options": "Remove 2 Options"
     }
   },
+  "home-page-banner": {
+    "brand-tagline": "The Ultimate Gaming Experience",
+    "browse-title": "Browse Games",
+    "free-game-hint-part1": "Each user has one ",
+    "free-game-hint-bold": "Free Game",
+    "free-game-hint-part2": " to experience the thrill.",
+    "falta": "Falta",
+    "stats": {
+      "players": "Active Players",
+      "questions": "Questions",
+      "tournaments": "Tournaments",
+      "countries": "Countries"
+    }
+  },
   "login-page": {
     "login": "Login",
     "dont-have-account": "You Dont Have Account ?",
@@ -93,6 +107,9 @@
   "profile": {
     "title": "MY Profile",
     "subtitle": "Accounting And Personal Information",
+    "welcome-guest": "Welcome Guest",
+    "login-hint": "Please Login To countinue Falta",
+    "login": "Login",
     "stats": {
       "tournament": "Tournament",
       "questionsAvailable": "Questions Available",

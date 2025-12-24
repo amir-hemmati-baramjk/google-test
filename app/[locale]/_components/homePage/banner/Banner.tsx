@@ -3,17 +3,28 @@
 import Image from "next/image";
 import React from "react";
 import { motion, Variants } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { CountriesIcon } from "../../icons/CountriesIcon";
 import { TournamentsWonIcon } from "../../icons/TournamentsWonIcon";
 import { QuestionsAvailableIcon } from "../../icons/QuestionsAvailableIcon";
 import { ProfileIcon } from "../../icons/ProfileIcon";
 
 export default function Banner() {
+  const t = useTranslations("home-page-banner");
+
   const bannerItems = [
-    { title: "Active Players", text: "10,000+", icon: <ProfileIcon /> },
-    { title: "Questions", text: "5,000+", icon: <QuestionsAvailableIcon /> },
-    { title: "Tournaments", text: "10,000+", icon: <TournamentsWonIcon /> },
-    { title: "Countries", text: "25+", icon: <CountriesIcon /> },
+    { title: t("stats.players"), text: "10,000+", icon: <ProfileIcon /> },
+    {
+      title: t("stats.questions"),
+      text: "45k+",
+      icon: <QuestionsAvailableIcon />,
+    },
+    {
+      title: t("stats.tournaments"),
+      text: "10,000+",
+      icon: <TournamentsWonIcon />,
+    },
+    { title: t("stats.countries"), text: "25+", icon: <CountriesIcon /> },
   ];
 
   const containerVariants: Variants = {
@@ -40,6 +51,7 @@ export default function Banner() {
       transition={{ duration: 0.6 }}
       className="m-auto max-w-[1400px] w-full bg-primary-bg-gradient p-6 lg:p-12 mt-5 flex flex-col lg:flex-row justify-between items-center text-white rounded-[24px] shadow-2xl overflow-hidden relative"
     >
+      {/* Animated Background Blur */}
       <motion.div
         animate={{ scale: [1, 1.2, 1], x: [0, 40, 0] }}
         transition={{ duration: 10, repeat: Infinity }}
@@ -49,6 +61,7 @@ export default function Banner() {
       <div className="flex flex-col gap-8 lg:gap-16 w-full lg:w-3/5 z-10">
         <div className="flex flex-col md:flex-row items-center gap-4 lg:gap-8">
           <div className="relative">
+            {/* Logo Pulse Effect */}
             <motion.div
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: [1, 2.5], opacity: [0.8, 0] }}
@@ -68,7 +81,7 @@ export default function Banner() {
                 type: "spring",
                 stiffness: 120,
                 damping: 12,
-                delay: 0.4, // Occurs after banner starts appearing
+                delay: 0.4,
               }}
               style={{ perspective: "1000px" }}
               className="relative p-3 bg-white/10 rounded-2xl backdrop-blur-xl border border-white/30"
@@ -81,58 +94,56 @@ export default function Banner() {
                 className="w-[60px] h-[60px] lg:w-[100px] lg:h-[100px] object-contain"
               />
             </motion.div>
-
-            <motion.div
-              className="absolute inset-0 pointer-events-none"
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            />
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col items-center md:items-start">
             <motion.h1
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.6 }}
               className="text-6xl lg:text-8xl xl:text-9xl font-black tracking-tighter bg-brand-gradient bg-[length:200%_auto] animate-brand-shimmer bg-clip-text text-transparent"
             >
-              Falta
+              {t("falta")}
             </motion.h1>
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.8 }}
               transition={{ delay: 1 }}
-              className="text-sm lg:text-xl font-light opacity-80 uppercase tracking-[0.3em]"
+              className="text-sm lg:text-xl font-light opacity-80 uppercase tracking-[0.3em] text-center md:text-left"
             >
-              The Ultimate Gaming Experience
+              {t("brand-tagline")}
             </motion.p>
           </div>
         </div>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 items-center md:items-start">
           <motion.h2
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2 }}
             className="text-3xl lg:text-5xl font-bold"
           >
-            Browse Games
+            {t("browse-title")}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.9 }}
             transition={{ delay: 1.4 }}
-            className="text-sm lg:text-xl font-light opacity-90 max-w-xl"
+            className="text-sm lg:text-xl font-light opacity-90 max-w-xl text-center md:text-left rtl:md:text-right flex flex-wrap justify-center md:justify-start"
+            dir="auto"
           >
-            Each user has one{" "}
-            <span className="font-bold text-secondary-light underline">
-              Free Game
-            </span>{" "}
-            to experience the thrill.
+            <span>{t("free-game-hint-part1")}</span>
+
+            <span className="font-bold text-secondary-light underline mx-1">
+              {t("free-game-hint-bold")}
+            </span>
+
+            <span>{t("free-game-hint-part2")}</span>
           </motion.p>
         </div>
       </div>
 
+      {/* Stats Cards Section */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -148,11 +159,11 @@ export default function Banner() {
             <div className="bg-secondary text-white rounded-2xl p-4 shadow-xl">
               {React.cloneElement(item.icon as React.ReactElement)}
             </div>
-            <div className="flex flex-col text-center lg:text-left text-white lg:text-secondary">
+            <div className="flex flex-col   text-white lg:text-secondary">
               <span className="font-black text-2xl lg:text-4xl leading-none">
                 {item.text}
               </span>
-              <span className="font-medium text-xs lg:text-sm uppercase tracking-widest opacity-70">
+              <span className="font-medium text-xs lg:text-sm   opacity-70">
                 {item.title}
               </span>
             </div>

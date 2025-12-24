@@ -28,6 +28,7 @@ import { useUser } from "@/stores/userContext";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { toast } from "react-toastify";
 import LoginModal from "../create-game/_components/LoginModal";
+import { Button } from "../_components/button/button";
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -216,8 +217,25 @@ export default function ProfilePage() {
               {t("subtitle")}
             </p>
           </motion.div>
-
-          <motion.div
+          {!isLogin && (
+            <div className="bg-white rounded-[24px] px-5 py-6 lg:py-10 flex gap-4 justify-between items-center w-full group shadow-md transition-all lg:max-w-[50%] text-start border border-transparent hover:border-secondary/20">
+              <div>
+                <p className="text-primary font-black text-lg lg:text-2xl">
+                  {t("welcome-guest")}
+                </p>
+                <p className="text-primary/60 text-sm lg:text-xl font-medium">
+                  {t("login-hint")}
+                </p>
+              </div>
+              <Button
+                className="font-bold !text-[14px] lg:!text-[20px] whitespace-nowrap"
+                variant="secondary"
+              >
+                {t("login")}
+              </Button>
+            </div>
+          )}
+          {/* <motion.div
             variants={containerVariants}
             className="grid grid-cols-2 lg:grid-cols-4 w-full gap-2 lg:gap-5"
           >
@@ -242,7 +260,7 @@ export default function ProfilePage() {
                 </p>
               </motion.div>
             ))}
-          </motion.div>
+          </motion.div> */}
 
           <motion.div
             variants={containerVariants}

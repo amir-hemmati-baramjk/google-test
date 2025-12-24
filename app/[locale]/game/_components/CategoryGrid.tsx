@@ -78,7 +78,7 @@ export default function CategoryGrid({
             ${
               itemsPerPage === 4
                 ? "sm:grid-cols-2 md:grid-cols-4"
-                : "sm:grid-cols-4 md:grid-cols-6"
+                : "sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6"
             }`}
         >
           {displayCategories.map((category: Category | null, index: number) => (

@@ -32,11 +32,6 @@ export default function TeamScoreCard({
     : questionId;
 
   const isQuestionPage = !!validQuestionId;
-
-  const primaryColor = isQuestionPage ? "light-purple" : "primary";
-  const textColor = isQuestionPage ? "primary" : "light-purple";
-  const borderColor = isQuestionPage ? "light-purple" : "primary";
-  const hoverColor = isQuestionPage ? "primary/10" : "light-purple/10";
   const loadingBg = isQuestionPage ? "light-purple/10" : "primary/10";
 
   useEffect(() => {
@@ -123,7 +118,7 @@ export default function TeamScoreCard({
           {teamName}
         </p>
 
-        <div className="w-full flex justify-between items-center gap-2 p-1 m-auto rounded-[8px] h-fit">
+        <div className="w-full flex justify-between items-center gap-2  m-auto rounded-[8px] h-fit">
           {/* Subtract Points Button */}
           <Button
             className={`!p-1 !rounded-[5px] w-9 h-9 sm:w-7 sm:h-7  lg:w-10 lg:h-10 3xl:w-14 3xl:h-14

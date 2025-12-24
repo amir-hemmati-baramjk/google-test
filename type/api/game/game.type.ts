@@ -31,6 +31,7 @@ export type Question = {
   correctOption: Option | null;
   options: Option[];
   answerNote: string;
+  answeredBy: number | null;
 };
 
 export type Category = {

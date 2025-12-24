@@ -10,7 +10,6 @@ import NavigationControls from "../_components/NavigationControls";
 import CategoryGrid from "../_components/CategoryGrid";
 import NewCategoryGrid from "../_components/NewCategoryGrid";
 
-// --- Configuration Helpers ---
 const calculateVersion1Config = (w: number, h: number) => {
   if (w < 640) return { items: 3, shift: 3 };
   if (h < 900) return { items: 4, shift: 4 };
@@ -18,7 +17,8 @@ const calculateVersion1Config = (w: number, h: number) => {
 };
 
 const calculateVersion2Config = (w: number, h: number) => {
-  if (w >= 740) return { items: 6, shift: 6 };
+  if (w >= 740 && w < 1200) return { items: 5, shift: 5 };
+  if (w >= 1200) return { items: 6, shift: 6 };
   return { items: 4, shift: 4 };
 };
 
