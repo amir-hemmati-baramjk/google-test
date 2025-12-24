@@ -228,6 +228,7 @@ export default function ProfilePage() {
                 </p>
               </div>
               <Button
+                onClick={() => router.push("/login")}
                 className="font-bold !text-[14px] lg:!text-[20px] whitespace-nowrap"
                 variant="secondary"
               >

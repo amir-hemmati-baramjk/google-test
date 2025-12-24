@@ -18,7 +18,7 @@ export const PackageVisualCard: React.FC<PackageVisualCardProps> = ({
 }) => (
   <div className="w-full rounded-xl shadow-2xl mb-6">
     <div
-      className={`bg-${variant} flex flex-col justify-center items-center gap-3 text-white rounded-lg p-6`}
+      className={`${variant} flex flex-col justify-center items-center gap-3 text-white rounded-lg p-6`}
     >
       <h1 className="text-xl lg:text-3xl font-extrabold text-center">{name}</h1>
       <IconComponent size={65} />
