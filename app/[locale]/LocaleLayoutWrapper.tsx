@@ -83,7 +83,7 @@ export default async function LocaleLayoutWrapper({
       </head>
       <body
         suppressHydrationWarning
-        className="antialiased bg-main-bg !select-none flex flex-col"
+        className="antialiased bg-main-bg min-h-screen  !select-none flex flex-col justify-between "
       >
         <NextTopLoader showSpinner={false} />
         <QueryProvider>

@@ -12,9 +12,9 @@ export default function page() {
     ));
   return (
     <div>
-      <BackHeaderForsubPages title="Privacy Policy" />
+      <BackHeaderForsubPages title={t("title")} />
       <div className="w-full flex flex-col items-center justify-center pt-[37px] text-white px-6 pb-[90px] max-w-[1200px] mx-auto">
-        <h1 className="text-3xl font-bold mb-4">{t("title")}</h1>
+        {/* <h1 className="text-3xl font-bold mb-4">{t("title")}</h1> */}
         <section className="mt-6">
           <h2 className="text-lg lg:text-xl xl:text-2xl font-semibold mb-2">
             {t("sections.1.title")}

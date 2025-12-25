@@ -89,9 +89,19 @@ const LoginForm = () => {
         shape="full"
         size="large"
         className="mt-5 w-full"
-        variant="primary"
+        variant="secondary"
       >
         {t("login")}
+      </Button>
+      <Button
+        onClick={() => router.push("/sign-up")}
+        shape="full"
+        size="large"
+        className="w-full "
+        variant="secondary"
+        isOutline
+      >
+        {t("sign-up")}
       </Button>
     </form>
   );

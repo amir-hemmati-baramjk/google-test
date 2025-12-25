@@ -7,7 +7,7 @@ export default function page() {
   const t = useTranslations("about");
   return (
     <div>
-      <BackHeaderForsubPages title="About Falta" />
+      <BackHeaderForsubPages title={t("title")} />
       <div className="flex flex-col justify-center items-center gap-5 p-5">
         <Image
           alt=""

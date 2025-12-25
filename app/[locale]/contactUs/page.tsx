@@ -12,7 +12,7 @@ export default function page() {
   const t = useTranslations("contactUs");
   return (
     <div className="pb-10">
-      <BackHeaderForsubPages title="Contact Us" />
+      <BackHeaderForsubPages title={t("title")} />
       <div className="p-5 lg:container m-auto">
         <ContactForm />
       </div>

@@ -69,7 +69,8 @@
     "passwords-dont-match": "Passwords do not match",
     "login-success": "Login successful",
     "login-failed": "Login failed. Please try again.",
-    "required": "This field is required"
+    "required": "This field is required",
+    "sign-up": "Sign up"
   },
   "social-login": {
     "loginGooglePopup": "Login with Google (popup)",
@@ -96,7 +97,8 @@
     "optional": "Optional",
     "registration-success": "Registration completed successfully",
     "registration-failed": "Registration failed. Please try again.",
-    "required": "This field is required"
+    "required": "This field is required",
+    "login": "Login"
   },
   "sign-up-page": {
     "sign-up": "Sign up",
@@ -406,7 +408,8 @@
     "min-char-size-for-description": "Description must be at least 10 characters",
     "max-char-size-for-description": "Description cannot exceed 500 characters",
     "social-media": "Social Media",
-    "contact-management": "Contact Management"
+    "contact-management": "Contact Management",
+    "title": "Contact Us"
   },
   "tournament": {
     "new-Game": "New Game",
@@ -520,6 +523,7 @@
     }
   },
   "about": {
+    "title": "About Falta",
     "about-us-head": "Welcome to Falta, the real best Trivia Game!",
     "about-us-item-one-head": "Play Smart. Connect Smarter. Win Boldly! ",
     "about-us-item-one-one": "We're a passionate Kuwaiti team dedicated to entertainment, believing it offers far more than just casual fun. At Falta!, we view entertainment as a powerful way to create engaging experiences, deliver real value, encourage personal growth, and even open pathways to financial success.",
