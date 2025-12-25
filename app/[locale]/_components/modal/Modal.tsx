@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react"; // Import Lucide Icon
 import { ModalProps } from "./modal.types";
 
 export default function Modal({
@@ -11,72 +13,76 @@ export default function Modal({
   className = "",
 }: ModalProps) {
   const [mounted, setMounted] = useState(false);
-  const [show, setShow] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     setMounted(true);
+    const el = document.createElement("div");
+    el.setAttribute("data-modal-portal", "true");
+    document.body.appendChild(el);
+    containerRef.current = el;
 
-    if (!containerRef.current) {
-      const el = document.createElement("div");
-      el.setAttribute("data-modal-portal", "true");
-      containerRef.current = el;
-      document.body.appendChild(el);
-    }
-
-    return () => {};
+    return () => {
+      if (document.body.contains(el)) {
+        document.body.removeChild(el);
+      }
+    };
   }, []);
 
   useEffect(() => {
-    if (!mounted) return;
-
-    let closeTimeout: NodeJS.Timeout;
-
     if (isOpen) {
       document.body.style.overflow = "hidden";
-
-      requestAnimationFrame(() => setShow(true));
-    } else if (show) {
-      setShow(false);
-      closeTimeout = setTimeout(() => {
-        document.body.style.overflow = "";
-      }, 350);
     } else {
       document.body.style.overflow = "";
     }
-
     return () => {
-      clearTimeout(closeTimeout);
+      document.body.style.overflow = "";
     };
-  }, [isOpen, mounted, show]);
+  }, [isOpen]);
 
-  const handleBackdropClick = () => {
-    if (closeOnBackdrop) {
-      onClose();
-    }
-  };
-
-  const handleContentClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, [onClose]);
 
   if (!mounted || !containerRef.current) return null;
 
-  if (!isOpen && !show) return null;
-
   return createPortal(
-    <div
-      className={`modal-overlay ${show ? "open" : "close"}`}
-      onClick={handleBackdropClick}
-    >
-      <div className="modal-backdrop" />
-      <div
-        className={`modal-content ${show ? "open" : "close"} ${className}`}
-        onClick={handleContentClick}
-      >
-        {children}
-      </div>
-    </div>,
+    <AnimatePresence mode="wait">
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={closeOnBackdrop ? onClose : undefined}
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 "
+        >
+          <motion.div
+            initial={{ scale: 0.95, opacity: 0, y: 15 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.95, opacity: 0, y: 10 }}
+            transition={{ type: "spring", duration: 0.4, bounce: 0.3 }}
+            onClick={(e) => e.stopPropagation()}
+            className={`relative w-full max-w-lg xl:max-w-xl 2xl:max-w-2xl rounded-2xl  bg-white p-4 shadow-2xl ${className}`}
+          >
+            {/* Close Button */}
+            <button
+              onClick={onClose}
+              className="absolute -left-2 -top-2 rounded-full p-1 !bg-white transition-colors text-error z-50 w-fit h-fit"
+              aria-label="Close modal"
+            >
+              <X size={24} strokeWidth={3.5} />
+            </button>
+
+            {/* Content Slot */}
+            <div className="">{children}</div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>,
     containerRef.current
   );
 }

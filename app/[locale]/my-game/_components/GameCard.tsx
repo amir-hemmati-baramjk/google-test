@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Button } from "../../_components/button/button";
-import { InfoIcon } from "lucide-react";
 import Image from "next/image";
 import { Game } from "@/type/api/game/game.type";
 import { useTranslations } from "next-intl";
 import RestartGameModal from "./RestartGameModal";
 import GameInfoModal from "./GameInfoModal";
+import { InformationIcon } from "../../_components/icons/InformationIcon";
 
 interface GameCardProps {
   game: Game;
@@ -21,13 +21,21 @@ export default function GameCard({ game }: GameCardProps) {
 
   return (
     <div className="p-5 relative bg-light-purple border-[2px] border-white rounded-[20px] w-full shadow-lg">
-      <div className="absolute -top-5 left-0 w-full flex items-center px-10">
+      <div className="absolute -top-5 left-0 w-full flex justify-around items-center">
         <Button
           onClick={() => setShowRestartModal(true)}
           className="!font-bold !text-[22px] !border-white !border-[2px]"
           variant="secondary"
         >
           {t("playGame")}
+        </Button>
+        <Button
+          onClick={() => setShowInfoModal(true)}
+          className="!font-bold !text-[22px] !border-white !border-[2px]"
+          variant="error"
+          title={t("info")}
+        >
+          <InformationIcon size={24} />
         </Button>
       </div>
 

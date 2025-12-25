@@ -7,6 +7,7 @@ import { UserProvider } from "@/stores/userContext";
 import { getUserProfile } from "@/core/user/user-profile-service";
 import { useQuery } from "@tanstack/react-query";
 import "../toast-custom.css";
+import Footer from "./_components/footer/Footer";
 interface ClientLayoutWrapperProps {
   children: React.ReactNode;
   locale: string;
@@ -36,6 +37,7 @@ export default function ClientLayoutWrapper({
         {showNavigation && <NavigationMenu />}
         {children}
         {showNavigation && <BottomDoc />}
+        <Footer />
       </UserProvider>
     </>
   );

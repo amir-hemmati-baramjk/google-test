@@ -89,7 +89,7 @@ const config: Config = {
         "green-gradient":
           "linear-gradient(90deg,rgba(79, 232, 154, 1) 0%, rgba(4, 156, 60, 1) 100%)",
         "brand-gradient":
-          "linear-gradient(to right, #e90507 0%, #06b6d3 25%, #ff6600 50%, #791746 75%, #e90507 100%)",
+          "linear-gradient(to right, #e90507 0%, #06b6d3 25%, #036372 50%, #791746 75%, #e90507 100%)",
         "magenta-gradients": "linear-gradient(90deg, #791746 0%, #d2297d 100%)",
         "package-magenta-gradients":
           "linear-gradient(90deg, #791746 0%, #d2297d 100%)",

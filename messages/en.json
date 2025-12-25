@@ -202,7 +202,10 @@
     "followup-from-where-you-left": "Follow up from where you left",
     "restart-browsed-game-message": "Would you like to start over or continue from where you left off?",
     "start-again-browsed-game": "Start Again",
-    "keep-going-browsed-game": "Keep Going"
+    "keep-going-browsed-game": "Keep Going",
+    "players": "Players",
+    "totalScore": "Total Score",
+    "liveGameReport": "Live Game Report"
   },
   "GamePage": {
     "gameboard": {

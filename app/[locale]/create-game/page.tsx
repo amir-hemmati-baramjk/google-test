@@ -74,11 +74,9 @@ export default function CategoriesPage() {
     <div className="min-h-screen flex flex-col bg-main-bg overflow-hidden">
       <BackHeaderForsubPages title={t("createGame")} />
 
-      {}
       <div className="px-4 mt-3 sticky top-0 left-0 z-40">
         <div className="px-4 py-3 bg-light-purple z-20 rounded-lg">
           <div className="flex items-center gap-1.5 md:gap-3">
-            {}
             <div className="hidden md:flex relative flex-1">
               <input
                 type="text"
@@ -93,7 +91,6 @@ export default function CategoriesPage() {
               />
             </div>
 
-            {}
             <button
               onClick={() => setIsSearchOpen(!isSearchOpen)}
               className="md:hidden p-2 bg-white rounded-full border border-primary text-primary"
@@ -101,7 +98,6 @@ export default function CategoriesPage() {
               <Search size={20} />
             </button>
 
-            {}
             <div className="flex bg-white/10 p-1 rounded-full border border-white/10 shrink-0 gap-1.5">
               <button
                 onClick={() => setViewMode("grid")}
@@ -121,7 +117,6 @@ export default function CategoriesPage() {
               </button>
             </div>
 
-            {}
             <TagFilter
               tags={tagSections}
               activeTagId={activeTagId}
@@ -129,7 +124,6 @@ export default function CategoriesPage() {
               onSelect={handleTagSelect}
             />
 
-            {}
             <button
               onClick={handleRandomSelect}
               className="bg-secondary text-white p-2.5 rounded-full flex justify-center items-center gap-5 md:px-5 shadow-md shrink-0 active:scale-90 transition-transform"
@@ -139,7 +133,6 @@ export default function CategoriesPage() {
             </button>
           </div>
 
-          {}
           {isSearchOpen && (
             <div className="md:hidden mt-3 relative animate-in slide-in-from-top-2 duration-200">
               <input

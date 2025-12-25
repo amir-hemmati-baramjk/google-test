@@ -201,7 +201,10 @@
     "followup-from-where-you-left": "المتابعة من حيث توقفت",
     "restart-browsed-game-message": "هل تود البدء من جديد أم المتابعة من حيث توقفت؟",
     "start-again-browsed-game": "البدء من جديد",
-    "keep-going-browsed-game": "المتابعة"
+    "keep-going-browsed-game": "المتابعة",
+    "players": "لاعبين",
+    "totalScore": "إجمالي النقاط",
+    "liveGameReport": "تقرير المباراة المباشر"
   },
   "GamePage": {
     "gameboard": {

@@ -145,7 +145,7 @@ export default function Banner() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="grid grid-cols-2 lg:flex lg:flex-col gap-4 lg:gap-6 bg-white/10 lg:bg-white p-6 lg:p-10 rounded-[32px] w-full lg:w-auto mt-8 lg:mt-0 backdrop-blur-xl lg:backdrop-blur-none z-10 border border-white/20 lg:border-none shadow-2xl"
+        className="grid grid-cols-2 lg:flex lg:flex-col gap-4 lg:gap-6 bg-white/10  p-6 lg:p-10 rounded-[32px] w-full lg:w-auto mt-8 lg:mt-0 backdrop-blur-xl  z-10 border border-white/20  shadow-2xl"
       >
         {bannerItems.map((item, index) => (
           <motion.div
@@ -156,7 +156,7 @@ export default function Banner() {
             <div className="bg-secondary text-white rounded-2xl p-4 shadow-xl">
               {React.cloneElement(item.icon as React.ReactElement)}
             </div>
-            <div className="flex flex-col   text-white lg:text-secondary">
+            <div className="flex flex-col   text-white ">
               <span className="font-black text-2xl lg:text-4xl leading-none">
                 {item.text}
               </span>

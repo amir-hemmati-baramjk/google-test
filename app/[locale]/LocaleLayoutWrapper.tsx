@@ -11,7 +11,7 @@ import ClientLayoutWrapper from "./ClientLayoutWrapper";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../toast-custom.css";
-import Footer from "./_components/footer/Footer";
+
 const cairo = Cairo({
   display: "swap",
   variable: "--font-cario",
@@ -83,7 +83,7 @@ export default async function LocaleLayoutWrapper({
       </head>
       <body
         suppressHydrationWarning
-        className="antialiased bg-main-bg !select-none"
+        className="antialiased bg-main-bg !select-none flex flex-col"
       >
         <NextTopLoader showSpinner={false} />
         <QueryProvider>
@@ -99,7 +99,6 @@ export default async function LocaleLayoutWrapper({
             </ClientLayoutWrapper>
           </NextIntlClientProvider>
         </QueryProvider>
-        <Footer />
       </body>
     </html>
   );

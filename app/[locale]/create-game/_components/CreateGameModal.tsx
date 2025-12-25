@@ -25,16 +25,7 @@ export const CreateGameModal: React.FC<CreateGameModalProps> = ({
       <div className=" w-full  h-full bg-white overflow-scroll">
         <div className=" w-full m-auto">
           <div className=" w-full bg-white  overflow-y-scroll no-scrollbar mx-auto">
-            <div
-              style={{ direction: "ltr" }}
-              className="flex justify-between items-center w-full"
-            >
-              <div
-                onClick={handleClose}
-                className="w-8 h-8 flex justify-center items-center cursor-pointer text-error"
-              >
-                <X />
-              </div>
+            <div style={{ direction: "ltr" }} className=" w-full">
               <p className="text-secondary text-center font-bold text-xl">
                 {t("select-team-info")}
               </p>

@@ -54,17 +54,7 @@ export default function ReportQuestionModal({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="w-full  ">
-        {/* Header */}
-        <div className="flex items-center justify-end mb-4 ">
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-error transition-colors"
-          >
-            <X size={24} />
-          </button>
-        </div>
-
-        <p className="text-primary mb-6 font-bold">
+        <p className="text-primary mb-6 font-bold text-center lg:text-xl">
           {t("wrong-question-or-answer")}
         </p>
 

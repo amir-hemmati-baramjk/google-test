@@ -9,7 +9,7 @@ export default function Footer() {
   const IOS_APPSTORE_URL =
     "https://apps.apple.com/us/app/falta-%D9%81%D9%84%D8%AA%D9%87/id6743669553";
   return (
-    <footer className="w-full bg-[#2D0066] py-6 px-4 md:px-12 lg:px-20 hidden lg:block">
+    <footer className="w-full bg-[#2D0066] py-6 px-4 md:px-12 lg:px-20 hidden lg:block mt-10 ">
       <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
         {/* Copyright Text */}
         <div className="text-white text-sm md:text-base lg:text-lg font-medium order-3 md:order-1 flex-1">
