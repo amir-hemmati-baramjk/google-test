@@ -11,6 +11,7 @@ import ClientLayoutWrapper from "./ClientLayoutWrapper";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../toast-custom.css";
+import Footer from "./_components/footer/Footer";
 const cairo = Cairo({
   display: "swap",
   variable: "--font-cario",
@@ -98,6 +99,7 @@ export default async function LocaleLayoutWrapper({
             </ClientLayoutWrapper>
           </NextIntlClientProvider>
         </QueryProvider>
+        <Footer />
       </body>
     </html>
   );

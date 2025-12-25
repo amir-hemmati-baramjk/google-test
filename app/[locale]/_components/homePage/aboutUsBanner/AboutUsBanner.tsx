@@ -9,7 +9,7 @@ import { FiftyByFiftyIcon } from "../../icons/FiftyByFiftyIcon";
 
 export default function AboutUsBanner() {
   const t = useTranslations("homepage.Assistance");
-
+  const aboutT = useTranslations("about");
   const gradientMap: Record<string, string> = {
     "secondary-gradient": "bg-secondary-gradient",
     "light-orange-gradient": "bg-light-orange-gradient",
@@ -63,10 +63,10 @@ export default function AboutUsBanner() {
         />
         <div className="flex flex-col justify-center items-center gap-5 w-full lg:w-1/2">
           <h2 className="text-3xl lg:text-4xl font-[700] text-white text-center">
-            Falta Is The Ultimate Trivia Game
+            {aboutT("about-us-head")}
           </h2>
           <p className="text-white text-center text-md lg:text-xl max-w-lg">
-            We’re A Kuwaiti Team That Believes...
+            {aboutT("about-us-item-one-head")}
           </p>
         </div>
       </div>

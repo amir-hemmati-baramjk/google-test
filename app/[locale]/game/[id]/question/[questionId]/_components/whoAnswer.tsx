@@ -54,15 +54,13 @@ export default function WhoAnsweredComponent() {
           whoAnswered(
             gameId,
             Array.isArray(questionId) ? questionId[0] : questionId || "",
-            data.data
+            data.data,
+            team
           );
         }
-
-        queryClient.invalidateQueries({ queryKey: ["game", gameId] });
-
+        router.replace(`/game/${gameId}`);
         clearWhoAnswer();
         clearAnswer();
-        router.replace(`/game/${gameId}`);
       } else {
         toast.error(data?.errors);
       }

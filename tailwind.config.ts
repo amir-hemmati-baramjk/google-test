@@ -26,8 +26,8 @@ const config: Config = {
         md: "768px",
         lg: "1024px",
         xl: "1280px",
-        "2xl": "1536px",
-        "3xl": "1920px",
+        "2xl": "1300px",
+        "3xl": "1536px",
       },
     },
     extend: {
@@ -64,7 +64,7 @@ const config: Config = {
         lg: "1024px",
         xl: "1280px",
         "2xl": "1536px",
-        "3xl": "1920px",
+        "3xl": "1620px",
       },
       boxShadow: {
         custom: "0px 24px 39px -30px #093143",
@@ -89,7 +89,7 @@ const config: Config = {
         "green-gradient":
           "linear-gradient(90deg,rgba(79, 232, 154, 1) 0%, rgba(4, 156, 60, 1) 100%)",
         "brand-gradient":
-          "linear-gradient(to right, #FFFFFF 0%, #E91E63 25%, #9C27B0 50%, #E91E63 75%, #FFFFFF 100%)",
+          "linear-gradient(to right, #e90507 0%, #06b6d3 25%, #ff6600 50%, #791746 75%, #e90507 100%)",
         "magenta-gradients": "linear-gradient(90deg, #791746 0%, #d2297d 100%)",
         "package-magenta-gradients":
           "linear-gradient(90deg, #791746 0%, #d2297d 100%)",

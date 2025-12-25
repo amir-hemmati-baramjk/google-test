@@ -65,7 +65,7 @@ export default function ChangePasswordForm() {
         isDisabled={isLoading || !isValid}
         type="submit"
         shape="full"
-        variant="primary"
+        variant="secondary"
       >
         {t("submit")}
       </Button>

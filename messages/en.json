@@ -465,5 +465,67 @@
     "please-select-or-enter-description": "Please select an option or write a description",
     "report-successfully-message": "Thank you! Report sent successfully.",
     "something-went-wrong": "Something went wrong. Please try again."
+  },
+  "privacy": {
+    "privacy-policy": "Privacy Policy",
+    "title": "Privacy Policy - Falta",
+    "sections": {
+      "1": {
+        "title": "1. Introduction",
+        "body": "Welcome to Falta! Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your personal information when you use our trivia game. By using Falta, you agree to the terms of this policy."
+      },
+      "2": {
+        "title": "2. Information We Collect",
+        "list": [
+          "Personal Information: When you register, we may collect your name, email, and other account details.",
+          "Gameplay Data: Information related to your game progress, scores, and achievements.",
+          "Device & Usage Data: Such as your device type, operating system, and IP address to improve your experience."
+        ]
+      },
+      "3": {
+        "title": "3. How We Use Your Information",
+        "list": [
+          "Provide, personalize, and improve the game experience.",
+          "Save your progress and maintain leaderboards.",
+          "Send important updates and notifications.",
+          "Protect against fraud and ensure fair gameplay."
+        ]
+      },
+      "4": {
+        "title": "4. Data Sharing & Security",
+        "list": [
+          "We do not sell or share your personal data with third parties for marketing purposes.",
+          "Your data is stored securely and protected against unauthorized access."
+        ]
+      },
+      "5": {
+        "title": "5. Your Rights & Choices",
+        "list": [
+          "You can update or delete your account information at any time.",
+          "You can disable certain data collection through your device settings.",
+          "If you have any privacy concerns, you can contact us at info@beFalta.com."
+        ]
+      },
+      "6": {
+        "title": "6. Changes to This Policy",
+        "body": "We may update this Privacy Policy from time to time. Any changes will be posted in the app, and continued use of Falta means acceptance of the new terms."
+      },
+      "7": {
+        "title": "7. Contact Us",
+        "body": "If you have any questions, please reach out to us at info@beFalta.com."
+      }
+    }
+  },
+  "about": {
+    "about-us-head": "Welcome to Falta, the real best Trivia Game!",
+    "about-us-item-one-head": "Play Smart. Connect Smarter. Win Boldly! ",
+    "about-us-item-one-one": "We're a passionate Kuwaiti team dedicated to entertainment, believing it offers far more than just casual fun. At Falta!, we view entertainment as a powerful way to create engaging experiences, deliver real value, encourage personal growth, and even open pathways to financial success.",
+    "about-us-item-one-two": "With our deep background in the entertainment sector, we understand exactly what brings people together: multiplayer games and interactive activities. These aren't just casual pastimes—they encourage creative thinking, foster genuine connections, and fuel friendly competition.",
+    "about-us-item-one-three": "We observed the significant time people spend on social media and saw an exciting opportunity: combining entertainment and social connection into one engaging and innovative platform. Picture a lively online community where both players and fans can connect, laugh, compete, and form new friendships, while brands creatively engage their audiences in real-time. This idea is the core inspiration behind Falta!",
+    "about-us-item-one-four": "We selected the name Falta because, in Kuwaiti slang, it represents someone exceptionally skilled, clever, and naturally outstanding. This aligns perfectly with our goal: to highlight the unique talents and competitive spirit of every player, provide enjoyable experiences, and create opportunities for financial rewards.",
+    "about-us-item-two-head": "Falta! More Than Just a Game",
+    "about-us-item-two-one": "Falta! offers an exciting world filled with quick trivia challenges, dynamic multiplayer games, thrilling live tournaments, and advanced virtual reality and metaverse experiences.",
+    "about-us-item-two-two": "We're not just building another game—we're creating a vibrant community and launching a cultural movement. Proudly designed and developed in Kuwait for a global audience, Falta! invites everyone to showcase their talents, quick wit, and competitive drive.",
+    "about-footer": "We're not just building another game—we're creating a vibrant community and launching a cultural movement. Proudly designed and developed in Kuwait for a global audience, Falta! invites everyone to showcase their talents, quick wit, and competitive drive."
   }
 }

@@ -34,7 +34,8 @@ interface GameState extends Game {
   whoAnswered: (
     gameId: string,
     questionId: string,
-    data: Omit<Game, "categories">
+    data: Omit<Game, "categories">,
+    answeredBy: number
   ) => void;
   changeTakePoint: (gameId: string, team: number) => void;
   changeSkipQuestion: (
@@ -341,12 +342,14 @@ export const useGameStore = create<GameState>()(
             teamTwoPoints: team === 2 ? updatedPoints : state.teamTwoPoints,
           };
         }),
-      whoAnswered: (gameId, questionId, data) =>
+      whoAnswered: (gameId, questionId, data, answeredBy) =>
         set((state) => {
           const updatedGame = { ...state, ...data };
           const updatedCategories = state.categories.map((cat) => {
             const updatedQuestions = cat.questions.map((q) =>
-              q.id === questionId ? { ...q, isAnswered: true } : q
+              q.id === questionId
+                ? { ...q, isAnswered: true, answeredBy: answeredBy }
+                : q
             );
             return {
               ...cat,

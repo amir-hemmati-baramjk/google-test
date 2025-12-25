@@ -105,7 +105,7 @@ export default function EditInfoForm() {
         isDisabled={isLoading || !isValid}
         type="submit"
         shape="default"
-        variant="primary"
+        variant="secondary"
         size="large"
         className="w-full md:w-1/2 mt-5"
       >

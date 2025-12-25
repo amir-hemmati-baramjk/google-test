@@ -164,7 +164,6 @@ export default function TopBar({ questionPoints }: TopBarProps) {
         shape="square"
         variant="magenta-gradients"
       >
-        {/* <DeleteAccountIcon size={36} /> */}
         VAR
       </Button>
       <ReportQuestionModal
