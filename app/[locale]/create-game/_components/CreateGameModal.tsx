@@ -22,9 +22,9 @@ export const CreateGameModal: React.FC<CreateGameModalProps> = ({
 
   return (
     <Modal isOpen={show} onClose={handleClose}>
-      <div className=" w-full  h-full bg-white overflow-scroll">
+      <div className=" w-full  h-fit bg-white max-h-[90vh] overflow-y-auto">
         <div className=" w-full m-auto">
-          <div className=" w-full bg-white  overflow-y-scroll no-scrollbar mx-auto">
+          <div className=" w-full bg-white   mx-auto">
             <div style={{ direction: "ltr" }} className=" w-full">
               <p className="text-secondary text-center font-bold text-xl">
                 {t("select-team-info")}

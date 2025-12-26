@@ -66,19 +66,21 @@ export default function Modal({
             exit={{ scale: 0.95, opacity: 0, y: 10 }}
             transition={{ type: "spring", duration: 0.4, bounce: 0.3 }}
             onClick={(e) => e.stopPropagation()}
-            className={`relative w-full max-w-lg xl:max-w-xl 2xl:max-w-2xl rounded-2xl  bg-white p-4 shadow-2xl ${className}`}
+            className={`relative w-full max-w-lg xl:max-w-xl 2xl:max-w-2xl rounded-2xl bg-white shadow-2xl ${className}`}
           >
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute -left-2 -top-2 rounded-full p-1 !bg-white transition-colors text-error z-50 w-fit h-fit"
+              className="absolute -left-3 -top-3 p-1 z-[60] flex text-error items-center justify-center rounded-full bg-white"
               aria-label="Close modal"
             >
               <X size={24} strokeWidth={3.5} />
             </button>
 
             {/* Content Slot */}
-            <div className="">{children}</div>
+            <div className="max-h-[95vh] overflow-y-auto p-6 custom-scrollbar rounded-2xl">
+              {children}
+            </div>
           </motion.div>
         </motion.div>
       )}
