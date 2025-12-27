@@ -28,7 +28,7 @@ export default function NavigationMenu() {
       name: t("home"),
       href: "/",
       icon: <HomeIcon />,
-      variant: "light-blue-gradient",
+      variant: "light-purple-gradient",
     },
     ...(process.env.NEXT_PUBLIC_DISABLE_PAYMENT === "true"
       ? []
@@ -37,7 +37,7 @@ export default function NavigationMenu() {
             name: t("packages"),
             href: "/plans",
             icon: <PackagesIcon />,
-            variant: "light-blue-gradient",
+            variant: "orange-gradient",
           },
         ]),
     // {
@@ -85,7 +85,9 @@ export default function NavigationMenu() {
                 variant={isActive ? (item.variant as Variant) : "white"}
                 animatedIcon
                 shape="rounded"
-                className="text-xl xl:!text-2xl !font-bold !whitespace-nowrap"
+                className={`text-xl xl:!text-2xl !font-bold !whitespace-nowrap ${
+                  isActive ? "border-[2px] border-white " : ""
+                }`}
               >
                 {item.icon}
                 {item.name}

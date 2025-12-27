@@ -63,6 +63,9 @@
 html {
   font-family: var(--font-cario);
 }
+body {
+  background-color: #18023a !important;
+}
 * {
   font-family: var(--font-cario) !important;
 }

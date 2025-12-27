@@ -21,7 +21,7 @@ export default function BottomDoc() {
       name: t("home"),
       href: "/",
       icon: <HomeIcon />,
-      variant: "light-blue-gradient",
+      variant: "light-purple-gradient",
     },
     ...(process.env.NEXT_PUBLIC_DISABLE_PAYMENT === "true"
       ? []
@@ -30,7 +30,7 @@ export default function BottomDoc() {
             name: t("packages"),
             href: "/plans",
             icon: <PackagesIcon />,
-            variant: "light-blue-gradient",
+            variant: "orange-gradient",
           },
         ]),
     // {
@@ -66,7 +66,9 @@ export default function BottomDoc() {
                 variant={isActive ? (item.variant as Variant) : "white"}
                 animatedIcon
                 shape={"rounded"}
-                className="!px-5 !text-[16px] sm:!text-[18px] !gap-1"
+                className={`!px-5 !text-[16px] sm:!text-[18px] !gap-1 ${
+                  isActive ? "border-[2px] border-white " : ""
+                }`}
               >
                 {item.icon}
                 {isActive && item.name}
