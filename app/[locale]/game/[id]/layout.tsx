@@ -142,6 +142,7 @@ export default function GameLayout({
       <GameOverModal
         isOpen={showGameOverMOdal}
         onClose={() => setShowGameOverModal(false)}
+        
       />
     </div>
   );

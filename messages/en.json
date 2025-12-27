@@ -534,5 +534,50 @@
     "about-us-item-two-one": "Falta! offers an exciting world filled with quick trivia challenges, dynamic multiplayer games, thrilling live tournaments, and advanced virtual reality and metaverse experiences.",
     "about-us-item-two-two": "We're not just building another game—we're creating a vibrant community and launching a cultural movement. Proudly designed and developed in Kuwait for a global audience, Falta! invites everyone to showcase their talents, quick wit, and competitive drive.",
     "about-footer": "We're not just building another game—we're creating a vibrant community and launching a cultural movement. Proudly designed and developed in Kuwait for a global audience, Falta! invites everyone to showcase their talents, quick wit, and competitive drive."
+  },
+  "restart-game-form": {
+    "restartBrowsedGameMessage": "Would you like to start over or continue from where you left off?",
+    "startAgain": "Start Again",
+    "keepGoing": "Keep Going",
+    "loading": "Loading...",
+    "gameName": "Game Name",
+    "please-enter": "Please enter",
+    "select-assistants": "Select Assistants",
+    "team-a": "Team A",
+    "team-b": "Team B",
+    "time-200": "200 Points Time",
+    "time-400": "400 Points Time",
+    "time-600": "600 Points Time",
+    "please-select-three-assistants": "Please select exactly 3 assistants",
+    "ready-to-play": "Ready to Play",
+    "unknown-error": "An unknown error occurred",
+    "playerCountTeamA": "Team A Players",
+    "playerCountTeamB": "Team B Players",
+    "nameRequired": "Game name is required",
+    "teamOneNameRequired": "Team A name is required",
+    "teamOneShouldHave1Player": "Team A should have at least 1 player",
+    "teamOneMaxPlayers": "Team A cannot have more than 500 players",
+    "teamTwoNameRequired": "Team B name is required",
+    "teamTwoShouldHave1Player": "Team B should have at least 1 player",
+    "teamTwoMaxPlayers": "Team B cannot have more than 500 players",
+    "selectExactlyThreeOption": "Please select exactly 3 assistants",
+    "timeRequired": "Time is required",
+    "timeMax": "Time cannot exceed maximum limit",
+    "select-team-info": "Select Team Information",
+
+    "assistantOptions": {
+      "DoublePoints": "Double Points",
+      "TakePoints": "Take Points",
+      "ChangeQuestion": "Change Question",
+      "SkipQuestion": "Skip Question",
+      "UseSilence": "Red Card",
+      "Remove2Options": "Remove 2 Options"
+    },
+
+    "maxAssistantsSelected": "You have selected the maximum number of assistants. Please remove one to select another.",
+    "selectAssistantPlaceholder": "Select up to 3 assistants...",
+    "loadingAssistants": "Loading assistants...",
+    "failedToLoadAssistants": "Failed to load assistants",
+    "retry": "Retry"
   }
 }

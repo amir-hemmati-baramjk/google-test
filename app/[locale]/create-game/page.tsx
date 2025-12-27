@@ -68,7 +68,12 @@ export default function CategoriesPage() {
     virtualizer.scrollToOffset(0);
   };
 
-  if (isLoading || !isInitialized) return <LogoMotionLoading />;
+  if (isLoading || !isInitialized)
+    return (
+      <div className="flex justify-center py-20 w-screen h-screen items-center backdrop-blur-3xl absolute top-0 left-0 z-[1000]">
+        <LogoMotionLoading />
+      </div>
+    );
 
   return (
     <div className="min-h-screen flex flex-col bg-main-bg overflow-hidden">

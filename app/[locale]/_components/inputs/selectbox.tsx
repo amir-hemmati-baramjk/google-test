@@ -9,6 +9,7 @@ interface AssistantSelectProps {
   onChange: (values: string[]) => void;
   error?: string;
   defaultValue?: string[];
+  isDisabled?: boolean;
 }
 
 const AssistantSelect: React.FC<AssistantSelectProps> = ({
@@ -17,6 +18,7 @@ const AssistantSelect: React.FC<AssistantSelectProps> = ({
   onChange,
   error,
   defaultValue = [],
+  isDisabled = false,
 }) => {
   const [selected, setSelected] = useState<
     MultiValue<{ label: string; value: string }>
@@ -70,8 +72,11 @@ const AssistantSelect: React.FC<AssistantSelectProps> = ({
             "You have selected the maximum number of assistants. Please remove one to select another."}
         </p>
       )}
-      <label className="font-medium block mx-1 mb-1 text-[14px]">{label}</label>
+      <label className="font-bold block mx-1 mb-1 text-[14px] text-secondary">
+        {label}
+      </label>
       <Select
+        isDisabled={isDisabled}
         isSearchable={false}
         isMulti
         options={options}
@@ -84,27 +89,27 @@ const AssistantSelect: React.FC<AssistantSelectProps> = ({
         styles={{
           control: (base, state) => ({
             ...base,
-            backgroundColor: "white",
-            borderColor: state.isFocused ? "#2563eb" : "#d1d5db",
+            backgroundColor: "#eee5fd",
+            borderColor: state.isFocused ? "#2f00754d" : "#d1d5db",
             borderRadius: "8px",
-            padding: "2px 6px",
+            padding: "5px 6px",
             boxShadow: state.isFocused ? "0 0 0 1px #2563eb" : "none",
-            "&:hover": { borderColor: "#2563eb" },
+            "&:hover": { borderColor: "#2f0075" },
           }),
           multiValue: (base) => ({
             ...base,
-            backgroundColor: "#e0f2fe",
+            backgroundColor: "white",
             borderRadius: "6px",
             padding: "0 4px",
           }),
           multiValueLabel: (base) => ({
             ...base,
-            color: "#0369a1",
+            color: "#2f0075",
             fontWeight: "500",
           }),
           multiValueRemove: (base) => ({
             ...base,
-            color: "#0369a1",
+            color: "#d53430",
             cursor: "pointer",
             ":hover": { backgroundColor: "#bae6fd", color: "#0c4a6e" },
           }),
