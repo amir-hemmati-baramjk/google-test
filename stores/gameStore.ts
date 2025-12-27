@@ -228,7 +228,14 @@ export const useGameStore = create<GameState>()(
         set({ usedRemoveOptionTeamOne: value }),
       setUsedRemoveOptionTeamTwo: (value) =>
         set({ usedRemoveOptionTeamTwo: value }),
-      setGame: (game) => set((state) => ({ ...state, ...game })),
+      setGame: (game) =>
+        set((state) => ({
+          ...state,
+          ...game,
+          isGameFinished: game.isGameFinished ?? false,
+          answer: null,
+          whoAnswer: null,
+        })),
       setAnswer: (value) => set({ answer: value }),
       clearAnswer: () => set({ answer: null }),
       setWhoAnswer: (value) => set({ whoAnswer: value }),

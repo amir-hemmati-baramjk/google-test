@@ -22,6 +22,7 @@ export default function GameLayout({
   const isWinnerPage = pathname.includes("/winner");
   const setGame = useGameStore((s) => s.setGame);
   const reset = useGameStore((state) => state.resetGame);
+  const game = useGameStore();
   const headerRef = useRef<HTMLDivElement>(null);
   const [headerHeight, setHeaderHeight] = useState(0);
   const [mediaUrls, setMediaUrls] = useState<string[]>([]);
@@ -37,10 +38,13 @@ export default function GameLayout({
     staleTime: 0,
     gcTime: 0,
   });
-
+  useEffect(() => {
+    if (id) {
+      reset();
+    }
+  }, [id, reset]);
   useEffect(() => {
     if (gameData?.success) {
-      reset();
       setGame(gameData.data as Game);
 
       if (gameData?.data) {
@@ -94,7 +98,13 @@ export default function GameLayout({
       return () => window.removeEventListener("resize", handleResize);
     }
   }, [gameData]);
-
+  useEffect(() => {
+    if (game.id === id && game.isGameFinished && !isWinnerPage) {
+      setShowGameOverModal(true);
+    } else {
+      setShowGameOverModal(false);
+    }
+  }, [game.isGameFinished, game.id, id, isWinnerPage]);
   usePreloadMedia(mediaUrls, {
     audioPreload: "metadata",
     videoPreload: "metadata",

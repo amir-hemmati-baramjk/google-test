@@ -14,7 +14,7 @@ export default function GameOverModal({ isOpen, onClose }: ChildModalProps) {
   const router = useRouter();
   const { id } = useParams();
   return (
-    <Modal closeOnBackdrop={false} isOpen={isOpen} onClose={onClose}>
+    <Modal closeOnBackdrop={false} isOpen={isOpen} onClose={() => {}}>
       <div className="flex flex-col justify-center items-center gap-5 ">
         <div className="w-full flex justify-center items-center bg-secondary text-primary rounded-[20px] py-8 text-xl font-bold">
           <Image
