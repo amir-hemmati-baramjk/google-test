@@ -59,10 +59,8 @@ export default async function LocaleLayoutWrapper({
       suppressHydrationWarning
     >
       <head>
-        <head>
-          <link rel="manifest" href="/manifest.webmanifest" />
-          <meta name="theme-color" content="#2f0075" />
-        </head>
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <meta name="theme-color" content="#2f0075" />
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-56YLDC1BFD"
           strategy="afterInteractive"

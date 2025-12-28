@@ -45,7 +45,7 @@ export default function ClientLayoutWrapper({
     <>
       <UserProvider>
         {showNavigation && <NavigationMenu />}
-        {children}
+        <div className="flex-1">{children}</div>
         {showNavigation && <BottomDoc />}
         <Footer />
       </UserProvider>

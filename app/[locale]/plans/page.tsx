@@ -40,7 +40,7 @@ export default function PackagesPage() {
   };
 
   return (
-    <div className="text-white min-h-screen">
+    <div className="text-white ">
       <BackHeaderForRootPages />
 
       <div className=" m-auto flex flex-col gap-5 p-4 max-w-[1400px]">
