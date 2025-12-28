@@ -8,6 +8,7 @@ import { getUserProfile } from "@/core/user/user-profile-service";
 import { useQuery } from "@tanstack/react-query";
 import "../toast-custom.css";
 import Footer from "./_components/footer/Footer";
+import { useEffect } from "react";
 interface ClientLayoutWrapperProps {
   children: React.ReactNode;
   locale: string;
@@ -30,7 +31,16 @@ export default function ClientLayoutWrapper({
     ? pathname.slice(`/${locale}`.length) || "/"
     : pathname;
   const showNavigation = visibleRoutes.includes(pathWithoutLocale);
-
+  useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/sw.js").then(
+          (reg) => console.log("SW registered"),
+          (err) => console.log("SW failed", err)
+        );
+      });
+    }
+  }, []);
   return (
     <>
       <UserProvider>

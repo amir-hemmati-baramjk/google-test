@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
 import "../globals.css";
 import QueryProvider from "@/stores/QueryProvider";
@@ -19,24 +19,10 @@ const cairo = Cairo({
   weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
-export const viewport: Viewport = {
-  themeColor: "#fff",
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-};
-
 export const metadata: Metadata = {
   title: "FALTA GAME - لعبة فلته",
   description:
     'فريق كويتي يؤمن إن الترفيه مو بس "فلّه ووناسه"، لكن وراه أثر وفايدة… ويمكن حتى دخل ودخل قوي بعد. من خلال تجربتنا الطويلة بعالم الترفيه',
-  manifest: "../manifest.json",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "default",
-    title: "FALTA GAME",
-  },
   icons: {
     icon: "/icons/favicon.ico",
     shortcut: "/icons/icon-96x96.png",
@@ -70,8 +56,13 @@ export default async function LocaleLayoutWrapper({
       dir={locale === "ar" ? "rtl" : "ltr"}
       lang={locale}
       className={cairo.variable}
+      suppressHydrationWarning
     >
       <head>
+        <head>
+          <link rel="manifest" href="/manifest.webmanifest" />
+          <meta name="theme-color" content="#2f0075" />
+        </head>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-56YLDC1BFD"
           strategy="afterInteractive"
