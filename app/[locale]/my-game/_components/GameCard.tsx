@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "../../_components/button/button";
 import Image from "next/image";
-import { Game } from "@/type/api/game/game.type";
+import { Game, LastCreatedGame } from "@/type/api/game/game.type";
 import { useTranslations } from "next-intl";
 import RestartGameModal from "./RestartGameModal";
 import GameInfoModal from "./GameInfoModal";
@@ -77,7 +77,7 @@ export default function GameCard({ game }: GameCardProps) {
       )}
 
       <RestartGameModal
-        game={game}
+        game={game as LastCreatedGame}
         isOpen={showRestartModal}
         onClose={() => setShowRestartModal(false)}
       />
