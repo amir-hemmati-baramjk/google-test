@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Login Bridge</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Cache-Control" content="no-store" />
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #fff;
+        color: #111;
+        font: 14px/1.4 system-ui, Segoe UI, Roboto, Helvetica, Arial;
+      }
+      .wrap {
+        max-width: 600px;
+        margin: 18vh auto 0;
+        padding: 0 16px;
+        text-align: center;
+      }
+      .muted {
+        color: #6b7280;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Signing you in…</h1>
+      <p class="muted">Please wait while we redirect to the provider.</p>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+      import {
+        getAuth,
+        getRedirectResult,
+        onAuthStateChanged,
+        signInWithRedirect,
+        GoogleAuthProvider,
+        OAuthProvider,
+      } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCztssqxJ5ilzjunSzRMOrf8OrMTTYx8zo",
+        authDomain: "auth.befalta.com",
+        projectId: "falta-782a4",
+      };
+
+      const START_KEY = "bridge:started";
+      const MAX_AGE_MS = 30_000;
+
+      const qs = new URLSearchParams(location.search);
+      const providerName = (qs.get("provider") || "apple").toLowerCase();
+      const continueUrl = qs.get("continue") || "";
+
+      function isHttpUrl(u) {
+        try {
+          const x = new URL(u);
+          return x.protocol === "http:" || x.protocol === "https:";
+        } catch {
+          return false;
+        }
+      }
+
+      const b64 = (o) => {
+        try {
+          return btoa(JSON.stringify(o));
+        } catch {
+          return "";
+        }
+      };
+
+      function genSid() {
+        const a = new Uint8Array(16);
+        (self.crypto || window.crypto).getRandomValues(a);
+        return Array.from(a, (x) => x.toString(16).padStart(2, "0")).join("");
+      }
+
+      function goFail() {
+        try {
+          sessionStorage.removeItem(START_KEY);
+        } catch {}
+        const dest = isHttpUrl(continueUrl)
+          ? new URL(continueUrl)
+          : new URL("/", location.origin);
+        dest.searchParams.set("social", "fail");
+        location.replace(String(dest));
+      }
+
+      function finalizeAndGo(payload) {
+        try {
+          sessionStorage.removeItem(START_KEY);
+        } catch {}
+
+        try {
+          window.name = "SOCIAL|" + b64(payload);
+        } catch {}
+
+        let sid = "";
+        try {
+          sid = genSid();
+          localStorage.setItem(`relay:${sid}`, JSON.stringify(payload));
+        } catch {}
+
+        const dest = isHttpUrl(continueUrl)
+          ? new URL(continueUrl)
+          : new URL("/", location.origin);
+        dest.searchParams.set("social", "wn");
+        if (sid) dest.searchParams.set("sid", sid);
+        dest.searchParams.set("provider", String(payload.provider));
+        dest.hash = "wn=" + encodeURIComponent(b64(payload));
+
+        location.replace(String(dest));
+      }
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      let provider;
+      if (providerName === "google") {
+        provider = new GoogleAuthProvider();
+        provider.setCustomParameters({ prompt: "select_account" });
+      } else {
+        provider = new OAuthProvider("apple.com");
+
+        try {
+          provider.addScope("email");
+          provider.addScope("name");
+        } catch {}
+      }
+
+      let marker = null;
+      try {
+        marker = JSON.parse(sessionStorage.getItem(START_KEY) || "null");
+      } catch {}
+      const tooOld = marker && Date.now() - (marker.t || 0) > MAX_AGE_MS;
+      if (tooOld) {
+        try {
+          sessionStorage.removeItem(START_KEY);
+        } catch {}
+        marker = null;
+      }
+
+      if (!marker) {
+        try {
+          sessionStorage.setItem(
+            START_KEY,
+            JSON.stringify({ t: Date.now(), p: providerName })
+          );
+          await signInWithRedirect(auth, provider);
+        } catch (e) {
+          goFail();
+        }
+      }
+
+      let cred = null;
+      try {
+        cred = await getRedirectResult(auth);
+      } catch {}
+
+      if (!cred || !cred.user) {
+        await new Promise((resolve) => {
+          const t = setTimeout(resolve, 4000);
+          onAuthStateChanged(auth, (u) => {
+            if (u) {
+              clearTimeout(t);
+              resolve();
+            }
+          });
+        });
+      }
+
+      const u = auth.currentUser;
+      if (!u) {
+        goFail();
+      } else {
+        try {
+          const idToken = await u.getIdToken();
+          const providers = (u.providerData || [])
+            .map((p) => p.providerId)
+            .join("|");
+          const providerCode = providers.includes("google") ? 1 : 2;
+          const payload = {
+            idToken,
+            provider: providerCode,
+            email: u.email ?? null,
+            name: u.displayName ?? u.providerData?.[0]?.displayName ?? null,
+            exp: Date.now() + 60_000, // 60s
+          };
+          finalizeAndGo(payload);
+        } catch {
+          goFail();
+        }
+      }
+    </script>
+  </body>
+</html>

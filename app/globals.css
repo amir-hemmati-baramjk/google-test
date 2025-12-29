@@ -68,6 +68,7 @@ body {
 }
 * {
   font-family: var(--font-cario) !important;
+  -webkit-tap-highlight-color: transparent;
 }
 ::-webkit-scrollbar {
   display: none;

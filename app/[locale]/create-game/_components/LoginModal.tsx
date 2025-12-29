@@ -27,7 +27,7 @@ export default function LoginModal({ isOpen, onClose }: ChildModalProps) {
         <div className="w-full flex justify-center items-center gap-5">
           <div className="w-1/2">
             <Button
-              className="!w-full"
+              className="!w-full whitespace-nowrap"
               variant="primary"
               isOutline
               onClick={() => {
@@ -41,7 +41,7 @@ export default function LoginModal({ isOpen, onClose }: ChildModalProps) {
           <div className="w-1/2 ">
             <Button
               variant="primary"
-              className="!w-full !border-[2px] !border-primary"
+              className="!w-full !border-[2px] !border-primary whitespace-nowrap"
               onClick={() => {
                 router.push("/sign-up");
                 onClose;

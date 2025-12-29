@@ -9,7 +9,7 @@ export default function page() {
   return (
     <>
       <BackHeaderForsubPages title={t("login")} />
-      <div className="w-full max-w-[600px] m-auto mt-10 lg:mt-20">
+      <div className="w-full max-w-[600px] m-auto mt-10 lg:mt-20 px-5">
         <LoginForm />
         <LoginButtons />
       </div>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Token Relay</title>
+  </head>
+  <body>
+    <script>
+      (function () {
+        const qs = new URLSearchParams(location.search);
+        const sid = qs.get("sid") || "";
+        const target = qs.get("origin");
+
+        function send(data) {
+          try {
+            parent.postMessage(
+              { type: "social-relay", sid, data },
+              target || "*"
+            );
+          } catch {}
+        }
+
+        if (!sid) return send({ ok: false, reason: "missing_sid" });
+
+        const key = `relay:${sid}`;
+        let payload = null;
+        try {
+          payload = JSON.parse(localStorage.getItem(key));
+        } catch {}
+        if (!payload) return send({ ok: false, reason: "missing_payload" });
+        if (payload.exp && Date.now() > payload.exp) {
+          localStorage.removeItem(key);
+          return send({ ok: false, reason: "expired" });
+        }
+
+        localStorage.removeItem(key);
+        send({
+          ok: true,
+          token: payload.idToken,
+          provider: payload.provider,
+          email: payload.email,
+          name: payload.name,
+        });
+      })();
+    </script>
+  </body>
+</html>
