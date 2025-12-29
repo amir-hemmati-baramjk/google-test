@@ -20,21 +20,6 @@ export default function RestartGameModal({
 }: RestartGameModalProps) {
   const t = useTranslations("restart-game-form");
 
-  // const handleKeepGoing = () => {
-  //   startKeepGoingTransition(() => {
-  //     router.push(`/game/${game?.id}`);
-  //   });
-  // };
-
-  // const handleRestartGame = async () => {
-  //   startRestartTransition(async () => {
-  //     const response = await restartGame({ id: game.id! });
-  //     if (response.success) {
-  //       router.push(`/game/${game?.id}`);
-  //     }
-  //   });
-  // };
-
   return (
     <Modal closeOnBackdrop isOpen={isOpen} onClose={onClose}>
       <div className=" w-full  h-fit bg-white max-h-[90vh] overflow-y-auto">
@@ -42,7 +27,7 @@ export default function RestartGameModal({
           <div className=" w-full bg-white   mx-auto">
             <div style={{ direction: "ltr" }} className=" w-full">
               <p className="text-secondary text-center font-bold text-xl">
-                {t("restartBrowsedGameMessage")}
+                {t("restart-browsed-game-message")}
               </p>
               <div className="w-8 h-8"></div>
             </div>
