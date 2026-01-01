@@ -122,7 +122,7 @@ export default function LeaderboardPage() {
                 <StatRow
                   icon={<PrizeIcon size={24} className="text-white" />}
                   label={t("prize")}
-                  value={`$${tournament?.prize || "1,000"}`}
+                  value={`$${"1,000"}`}
                 />
                 <StatRow
                   icon={<ChangeQuestionIcon size={24} className="text-white" />}
@@ -181,7 +181,7 @@ export default function LeaderboardPage() {
                     <StatRow
                       icon={<PrizeIcon size={24} className="text-white" />}
                       label={t("prize")}
-                      value={`$${tournament?.prize || "1,000"}`}
+                      value={`$${"1,000"}`}
                     />
                     <StatRow
                       icon={
