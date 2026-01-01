@@ -4,9 +4,10 @@ import React, { useEffect, useState, useTransition } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import { useTranslations } from "next-intl";
+import { motion, AnimatePresence } from "framer-motion";
 
-import TournamentCard from "../_components/TournamentCard";
-import { Loading } from "../../_components/loading/loading";
+import TournamentCard from "../../_components/TournamentCard";
+import { Loading } from "../../../_components/loading/loading";
 import { getJoinedTournaments } from "@/core/tournament/get-joined-tournament-service";
 
 export default function JoinedTournamentsPage() {
@@ -51,9 +52,13 @@ export default function JoinedTournamentsPage() {
 
   if (isError) {
     return (
-      <div className="flex justify-center py-20 text-red-500 font-bold">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="flex justify-center py-20 text-red-500 font-bold"
+      >
         {error instanceof Error ? error.message : t("fetchError")}
-      </div>
+      </motion.div>
     );
   }
 
@@ -67,7 +72,11 @@ export default function JoinedTournamentsPage() {
   return (
     <div className="px-3 pb-20 max-w-[1200px] m-auto">
       {/* Filter Section */}
-      <div className="relative w-full max-w-[500px] m-auto mt-4 border-[2px] border-primary overflow-hidden rounded-[10px] bg-white shadow-sm">
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative w-full max-w-[500px] m-auto mt-4 border-[2px] border-primary overflow-hidden rounded-[10px] bg-white shadow-sm"
+      >
         <div className="flex justify-center items-center gap-2 overflow-x-auto no-scrollbar p-1 lg:p-2">
           {filterOptions.map((option) => (
             <button
@@ -88,42 +97,54 @@ export default function JoinedTournamentsPage() {
             </button>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* Grid List Section */}
-      <div
-        className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6 transition-opacity duration-300 ${
-          isPending || isGlobalLoading ? "opacity-50" : "opacity-100"
-        }`}
+      <motion.div
+        layout
+        className="w-full flex flex-wrap justify-center items-center gap-4 mt-6"
       >
         {isGlobalLoading ? (
           <div className="col-span-full flex justify-center py-20">
             <Loading size="large" variant="primary" />
           </div>
         ) : joinedTournaments.length > 0 ? (
-          joinedTournaments.map((tournament) => (
-            <TournamentCard
-              key={tournament.id}
-              {...tournament}
-              formatDate={(iso) => new Date(iso).toLocaleString("en-GB")}
-            />
-          ))
+          <AnimatePresence mode="popLayout">
+            {joinedTournaments.map((tournament, index) => (
+              <motion.div
+                className="w-full md:w-[48%] lg:w-[30%]"
+                key={tournament.id}
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+              >
+                <TournamentCard
+                  {...tournament}
+                  formatDate={(iso) => new Date(iso).toLocaleString("en-GB")}
+                />
+              </motion.div>
+            ))}
+          </AnimatePresence>
         ) : (
-          /* Centered Empty State */
-          <div className="col-span-full flex justify-center items-center">
-            <div className="text-center py-20 bg-white text-secondary w-full max-w-[500px] rounded-[10px] shadow-sm border border-gray-50">
-              <p className="font-medium">{t("noTournaments")}</p>
+          /* Empty State Section */
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="col-span-full flex justify-center items-center w-full"
+          >
+            <div className="text-center py-20 bg-white text-secondary w-full max-w-[500px] rounded-[10px] shadow-sm border border-gray-100">
+              <p className="font-bold text-lg">{t("noTournaments")}</p>
             </div>
-          </div>
+          </motion.div>
         )}
-      </div>
+      </motion.div>
 
-      {/* Infinite Scroll Trigger */}
       <div ref={ref} className="h-10" />
 
       {isFetchingNextPage && (
         <div className="flex justify-center py-4">
-          <Loading size="small" variant="primary" />
+          <Loading size="small" variant="light-blue-gradient" />
         </div>
       )}
     </div>

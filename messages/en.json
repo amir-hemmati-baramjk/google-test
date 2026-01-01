@@ -412,6 +412,12 @@
     "title": "Contact Us"
   },
   "tournament": {
+    "prize": "Prize",
+    "questions": "Questions",
+    "participants": "Participants",
+    "gameStart": "Game Start",
+    "viewDetails": "View Details",
+    "join-now": "Join Now",
     "new-Game": "New Game",
     "joined": "Joined",
     "leaderboard": "Leaderboard",
@@ -419,16 +425,13 @@
     "in-progress": "In Progress",
     "started": "Started",
     "upcoming": "Upcoming",
-    "prize": "Prize:",
-    "questions": "Questions:",
-    "participants": "Participants:",
-    "gameStart": "Game Start:",
-    "alreadyJoined": "Already Joined",
-    "noTournaments": "No tournaments found.",
-    "fetchError": "Failed to fetch tournaments.",
+    "noTournaments": "No Tournaments Found",
+    "fetchError": "Error fetching data",
     "participantsCount": "Participants",
-    "participant_one": "1 Participant",
-    "participant_other": "{count} Participants"
+    "anonymous": "Anonymous",
+    "confirm": "Confirm",
+    "seconds": "Seconds",
+    "rankingSoon": "Ranking will be revealed soon!"
   },
   "plans": {
     "title": "Game Packages",

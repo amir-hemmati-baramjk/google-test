@@ -7,6 +7,8 @@ interface GameState extends Game {
   layoutType: "version1" | "version2";
   toggleLayout: () => void;
   currentPage: number;
+  isRehydrated: boolean;
+  setRehydrated: (state: boolean) => void;
   setCurrentPage: (page: number) => void;
   answer: string | null;
   whoAnswer: string | null;
@@ -85,6 +87,8 @@ export const useGameStore = create<GameState>()(
         set((state) => ({
           layoutType: state.layoutType === "version1" ? "version2" : "version1",
         })),
+      isRehydrated: false,
+      setRehydrated: (state) => set({ isRehydrated: state }),
       currentPage: 0,
       setCurrentPage: (page) => set({ currentPage: page }),
       answer: null,
@@ -401,6 +405,9 @@ export const useGameStore = create<GameState>()(
     {
       name: "falta-game-storage",
       storage: createJSONStorage(() => localStorage),
+      onRehydrateStorage: () => (state) => {
+        state?.setRehydrated(true);
+      },
     }
   )
 );

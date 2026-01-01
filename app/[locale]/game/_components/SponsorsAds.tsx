@@ -79,7 +79,6 @@ export default function SponsorsAds() {
       onMouseDown={(e) => handleStart(e.clientX)}
       onMouseUp={(e) => handleEnd(e.clientX)}
       onMouseLeave={() => (isDragging.current = false)}
-      title={t("visitSponsor") || "Visit Sponsor"}
     >
       <p className="text-white">Sponsered By</p>
       <div

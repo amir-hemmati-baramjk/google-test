@@ -6,6 +6,9 @@ import { PrizeIcon } from "../../_components/icons/PrizeIcon";
 import { ChangeQuestionIcon } from "../../_components/icons/ChangeQuestionIcon";
 import { ParticipantsIcon } from "../../_components/icons/ParticipantsIcon";
 import { GameStartIcon } from "../../_components/icons/GameStartIcon";
+import { useRouter } from "next/navigation";
+import { joinTournament } from "@/core/tournament/join-tournament-service";
+import { toast } from "react-toastify";
 
 interface TournamentCardProps {
   id: string;
@@ -27,12 +30,28 @@ export default function TournamentCard({
   participantCount = 0,
   startAt,
   isUserJoined,
+  id,
   formatDate,
 }: TournamentCardProps) {
   const t = useTranslations("tournament");
-
+  const router = useRouter();
+  const handleJoin = async () => {
+    const response = await joinTournament(id);
+    if (response?.success) {
+      router.push(`/tournament/${id}`);
+    } else {
+      toast.error(response?.message);
+    }
+  };
+  const handleClick = () => {
+    if (isUserJoined) {
+      router.push(`/tournament/${id}`);
+    } else {
+      handleJoin();
+    }
+  };
   return (
-    <div className="bg-white rounded-[24px] overflow-hidden shadow-sm p-3 flex flex-col gap-4 border border-gray-50">
+    <div className="bg-white rounded-[24px] overflow-hidden shadow-sm p-3 flex flex-col gap-4 border border-gray-50 w-full">
       {/* Banner Image */}
       <div className="relative w-full aspect-[16/9] rounded-[18px] overflow-hidden bg-primary/10">
         <Image
@@ -48,7 +67,7 @@ export default function TournamentCard({
 
       {/* Content */}
       <div className="flex flex-col gap-3 px-1">
-        <h3 className="text-primary text-center text-[20px] font-bold mb-1">
+        <h3 className="text-primary text-center text-[20px] font-bold mb-1 truncate max-h-10">
           {name}
         </h3>
 
@@ -80,14 +99,14 @@ export default function TournamentCard({
       {/* Action Button */}
       <div className="mt-2 flex justify-center">
         <button
-          disabled={isUserJoined}
+          onClick={handleClick}
           className={`w-fit min-w-[160px] py-3 px-8 rounded-full text-[16px] font-medium transition-all ${
             isUserJoined
-              ? "bg-[#EBE2FF] text-primary cursor-default"
-              : "bg-primary text-white shadow-md active:scale-95"
+              ? "bg-[#EBE2FF] text-primary hover:bg-[#decfff]"
+              : "bg-primary text-white shadow-md active:scale-95 hover:opacity-90"
           }`}
         >
-          {isUserJoined ? t("alreadyJoined") : t("join-now")}
+          {isUserJoined ? t("viewDetails") : t("join-now")}
         </button>
       </div>
     </div>

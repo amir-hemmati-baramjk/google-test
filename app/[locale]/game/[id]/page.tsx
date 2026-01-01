@@ -1,6 +1,12 @@
 "use client";
 import { useGameStore } from "@/stores/gameStore";
-import React, { useState, useEffect, useMemo } from "react";
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  useCallback,
+} from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import SponsorsAds from "../_components/SponsorsAds";
@@ -49,47 +55,70 @@ const gridVariants: Variants = {
 };
 
 export default function Page() {
-  const game = useGameStore();
-  const { currentPage, setCurrentPage } = useGameStore();
+  const router = useRouter();
+  const {
+    currentPage,
+    setCurrentPage,
+    layoutType,
+    categories,
+    id,
+    setPendingDoublePoint,
+    setPendingTakePoint,
+    setPendingSilence,
+  } = useGameStore();
+
   const [config, setConfig] = useState({ items: 6, shift: 6 });
   const [isMounted, setIsMounted] = useState(false);
   const [direction, setDirection] = useState(0);
-  const router = useRouter();
+  const prevLayoutRef = useRef(layoutType);
+
+  const handleConfigUpdate = useCallback(() => {
+    if (typeof window === "undefined") return;
+
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+
+    const newConfig =
+      layoutType === "version1"
+        ? calculateVersion1Config(w, h)
+        : calculateVersion2Config(w, h);
+
+    setConfig(newConfig);
+
+    if (prevLayoutRef.current !== layoutType) {
+      setCurrentPage(0);
+      prevLayoutRef.current = layoutType;
+    }
+  }, [layoutType, setCurrentPage]);
 
   useEffect(() => {
     setIsMounted(true);
-
-    const handleConfigUpdate = () => {
-      if (typeof window === "undefined") return;
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-
-      const newConfig =
-        game?.layoutType === "version1"
-          ? calculateVersion1Config(w, h)
-          : calculateVersion2Config(w, h);
-
-      setConfig(newConfig);
-
-      setCurrentPage(0);
-    };
-
     handleConfigUpdate();
 
-    window.addEventListener("resize", handleConfigUpdate);
-    return () => window.removeEventListener("resize", handleConfigUpdate);
-  }, [
-    game?.layoutType,
-    setCurrentPage,
-    window?.innerHeight,
-    window?.innerWidth,
-  ]);
+    const orientationMediaQuery = window.matchMedia("(orientation: portrait)");
+
+    const onResize = () => handleConfigUpdate();
+
+    window.addEventListener("resize", onResize);
+    orientationMediaQuery.addEventListener("change", onResize);
+
+    return () => {
+      window.removeEventListener("resize", onResize);
+      orientationMediaQuery.removeEventListener("change", onResize);
+    };
+  }, [handleConfigUpdate]);
 
   const totalPages = useMemo(() => {
-    const totalItems = game?.categories?.length || 0;
+    const totalItems = categories?.length || 0;
     if (totalItems <= config.items) return 1;
     return Math.ceil((totalItems - config.items) / config.shift) + 1;
-  }, [game?.categories, config]);
+  }, [categories, config]);
+
+  useEffect(() => {
+    if (isMounted && currentPage >= totalPages && totalPages > 0) {
+      setCurrentPage(totalPages - 1);
+    }
+  }, [totalPages, currentPage, isMounted, setCurrentPage]);
 
   const handlePageChange = (newIdx: number) => {
     if (newIdx >= 0 && newIdx < totalPages) {
@@ -98,33 +127,44 @@ export default function Page() {
     }
   };
 
-  const onDragEnd = (event: any, info: any) => {
+  const onDragEnd = (_: any, info: any) => {
     const threshold = 50;
     if (info.offset.x < -threshold) handlePageChange(currentPage + 1);
     else if (info.offset.x > threshold) handlePageChange(currentPage - 1);
   };
 
   const handleQuestionClick = (questionId: string) => {
-    const gameStore = useGameStore.getState();
-    let url = `/game/${game.id}/question/${questionId}`;
-    if (gameStore.pendingDoublePoint) {
+    const state = useGameStore.getState();
+    let url = `/game/${id}/question/${questionId}`;
+
+    if (state.pendingDoublePoint) {
       url += "?assistant=doublePoint";
-      gameStore.setPendingDoublePoint(false);
-    } else if (gameStore.pendingTakePoint) {
+      setPendingDoublePoint(false);
+    } else if (state.pendingTakePoint) {
       url += "?assistant=takePoint";
-      gameStore.setPendingTakePoint(false);
-    } else if (gameStore.pendingSilence) {
+      setPendingTakePoint(false);
+    } else if (state.pendingSilence) {
       url += "?assistant=silence";
-      gameStore.setPendingSilence(false);
+      setPendingSilence(false);
     }
+
     router.push(url);
   };
 
   if (!isMounted) return null;
 
+  const sharedGridProps = {
+    categories: categories || [],
+    currentPage: currentPage,
+    itemsPerPage: config.items,
+    shiftAmount: config.shift,
+    onQuestionClick: handleQuestionClick,
+    game: useGameStore.getState(),
+  };
+
   return (
     <div className="h-full sm:h-fit lg:h-full w-full overflow-x-hidden">
-      {game?.layoutType === "version1" ? (
+      {layoutType === "version1" ? (
         <div className="flex justify-between sm:justify-center items-center gap-5 sm:gap-1 lg:gap-5 flex-col sm:flex-row h-full md:px-11">
           <div className="flex flex-col justify-center h-full items-center w-full relative">
             <motion.div
@@ -135,7 +175,7 @@ export default function Page() {
             >
               <AnimatePresence mode="wait" custom={direction}>
                 <motion.div
-                  key={`v1-${currentPage}`}
+                  key={`v1-${currentPage}-${config.items}`}
                   custom={direction}
                   variants={gridVariants}
                   initial="initial"
@@ -143,14 +183,7 @@ export default function Page() {
                   exit="exit"
                   className="w-full h-full"
                 >
-                  <NewCategoryGrid
-                    categories={game?.categories || []}
-                    currentPage={currentPage}
-                    itemsPerPage={config.items}
-                    shiftAmount={config.shift}
-                    onQuestionClick={handleQuestionClick}
-                    game={game}
-                  />
+                  <NewCategoryGrid {...sharedGridProps} />
                 </motion.div>
               </AnimatePresence>
             </motion.div>
@@ -170,23 +203,20 @@ export default function Page() {
             onNext={() => handlePageChange(currentPage + 1)}
           />
           <div className="flex flex-row sm:flex-col gap-3 md:gap-10 3xl:gap-14 w-full sm:w-1/3 bg-light-purple sm:bg-transparent p-2 py-1 pb-10 md:pb-1">
-            <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              className="w-1/2 sm:w-full flex flex-col gap-2"
-            >
-              <TeamScoreCard teamName={game?.teamOneName} teamNumber={1} />
+            <div className="w-1/2 sm:w-full flex flex-col gap-2">
+              <TeamScoreCard
+                teamName={useGameStore.getState().teamOneName}
+                teamNumber={1}
+              />
               <AssistanceBox team={1} context="gameboard" />
-            </motion.div>
-            <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.1 }}
-              className="w-1/2 sm:w-full flex flex-col gap-2"
-            >
-              <TeamScoreCard teamName={game?.teamTwoName} teamNumber={2} />
+            </div>
+            <div className="w-1/2 sm:w-full flex flex-col gap-2">
+              <TeamScoreCard
+                teamName={useGameStore.getState().teamTwoName}
+                teamNumber={2}
+              />
               <AssistanceBox team={2} context="gameboard" />
-            </motion.div>
+            </div>
             <div className="hidden lg:block">
               <SponsorsAds />
             </div>
@@ -203,7 +233,7 @@ export default function Page() {
             >
               <AnimatePresence mode="wait" custom={direction}>
                 <motion.div
-                  key={`v2-${currentPage}`}
+                  key={`v2-${currentPage}-${config.items}`}
                   custom={direction}
                   variants={gridVariants}
                   initial="initial"
@@ -211,14 +241,7 @@ export default function Page() {
                   exit="exit"
                   className="w-full h-full"
                 >
-                  <CategoryGrid
-                    categories={game?.categories || []}
-                    currentPage={currentPage}
-                    itemsPerPage={config.items}
-                    shiftAmount={config.shift}
-                    onQuestionClick={handleQuestionClick}
-                    game={game}
-                  />
+                  <CategoryGrid {...sharedGridProps} />
                 </motion.div>
               </AnimatePresence>
             </motion.div>
@@ -231,7 +254,10 @@ export default function Page() {
           </div>
           <div className="p-2 py-1 lg:py-3 xl:py-5 bg-light-purple w-full flex justify-center items-center h-fit pb-10 md:pb-1 md:px-10">
             <div className="w-1/2 sm:w-2/5 px-2 flex gap-2 justify-center items-center flex-col sm:flex-row ">
-              <TeamScoreCard teamName={game?.teamOneName} teamNumber={1} />
+              <TeamScoreCard
+                teamName={useGameStore.getState().teamOneName}
+                teamNumber={1}
+              />
               <div className="w-full sm:w-2/3">
                 <AssistanceBox team={1} context="gameboard" />
               </div>
@@ -241,7 +267,10 @@ export default function Page() {
               <div className="w-full sm:w-2/3">
                 <AssistanceBox team={2} context="gameboard" />
               </div>
-              <TeamScoreCard teamName={game?.teamTwoName} teamNumber={2} />
+              <TeamScoreCard
+                teamName={useGameStore.getState().teamTwoName}
+                teamNumber={2}
+              />
             </div>
           </div>
         </div>

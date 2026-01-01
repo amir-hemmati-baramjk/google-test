@@ -4,10 +4,10 @@ import React, { useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { usePathname, useRouter } from "next/navigation";
 import { Link } from "@/i18n/navigation";
-import { NewGameIcon } from "../_components/icons/NewGameIcon";
-import { JoinedIcon } from "../_components/icons/JoinedIcon";
-import { LeaderboardIcon } from "../_components/icons/LeaderboardIcon";
-import BackHeaderForRootPages from "../_components/backHeader/backHeaderForRootPages";
+import { NewGameIcon } from "../../_components/icons/NewGameIcon";
+import { JoinedIcon } from "../../_components/icons/JoinedIcon";
+import { LeaderboardIcon } from "../../_components/icons/LeaderboardIcon";
+import BackHeaderForRootPages from "../../_components/backHeader/backHeaderForRootPages";
 
 interface TournamentLayoutProps {
   children: React.ReactNode;

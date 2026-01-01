@@ -6,6 +6,28 @@ export interface Media {
   downloadUrl: string;
 }
 
+export type Option = {
+  id: string;
+  displayOrder: number;
+  englishText: string | null;
+  arabicText: string | null;
+  text: string;
+  media: Media | null;
+  mediaId: string | null;
+};
+
+export type Question = {
+  id: string;
+  text: string;
+  options: Option[];
+  points: number;
+  time: number;
+  isAnswered: boolean;
+  answerType: number;
+  questionMedia: Media | null;
+  answerMedia: Media | null;
+};
+
 export interface Tournament {
   id: string;
   name: string;
@@ -17,6 +39,10 @@ export interface Tournament {
   questionCount: number;
   participantCount?: number;
   picture?: Media;
+  isStarted?: boolean;
+  isInProgress?: boolean;
+  isFinished?: boolean;
+  isFinishedByUser?: boolean;
 }
 
 export interface TournamentResponse {
@@ -34,3 +60,17 @@ export interface LeaderboardItem {
   seconds: number;
   picture?: Media;
 }
+export type TournamentStore = {
+  tournament: Tournament | null;
+  questions: Question[];
+  currentQuestionIndex: number;
+  questionAnswers: Record<string, string>;
+  setTournament: (data: Tournament) => void;
+  setQuestions: (data: Question[]) => void;
+  setAnswered: (id: string) => void;
+  setQuestionAnswer: (questionId: string, optionId: string) => void;
+  goToNextQuestion: () => void;
+  goToPreviousQuestion: () => void;
+  checkIfFinished: () => void;
+  reset: () => void;
+};

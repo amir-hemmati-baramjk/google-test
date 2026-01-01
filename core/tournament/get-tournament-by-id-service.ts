@@ -1,9 +1,9 @@
 import { ApiResponse } from "../httpSercive.types";
 import { httpService } from "../httpService";
 
-export const joinTournament = async (id: string): Promise<ApiResponse> => {
+export const getTournamentById = async (id: string): Promise<ApiResponse> => {
   try {
-    const response = await httpService.get(`/tournament/join/${id}`);
+    const response = await httpService.get(`/tournament/${id}`);
     return response;
   } catch (error: any) {
     return {

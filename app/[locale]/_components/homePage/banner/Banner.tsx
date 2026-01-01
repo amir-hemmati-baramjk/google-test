@@ -141,7 +141,7 @@ export default function Banner() {
         </div>
       </div>
 
-      <motion.div
+      {/* <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -166,7 +166,7 @@ export default function Banner() {
             </div>
           </motion.div>
         ))}
-      </motion.div>
+      </motion.div> */}
     </motion.div>
   );
 }

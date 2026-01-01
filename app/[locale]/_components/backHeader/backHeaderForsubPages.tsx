@@ -43,7 +43,7 @@ export const BackHeaderForsubPages: React.FC<backHeaderType> = ({
         >
           <ArrowLeftIcon size={36} />
         </button>
-        <p className="text-white text-lg lg:text-3xl xl:text-4xl font-[700]">
+        <p className="text-white text-lg lg:text-3xl xl:text-4xl font-[700] truncate max-w-[90%]">
           {title}
         </p>
         <div className="w-8"></div>

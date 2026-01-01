@@ -80,8 +80,8 @@ export default function AboutUsBanner() {
           src={"/staticImages/assistancebanner.png"}
         />
 
-        <div className="text-secondary text-center w-full lg:w-1/2">
-          <h2 className="text-xl text-white font-[700] lg:text-2xl xl:font-3xl mb-4">
+        <div className="text-secondary  w-full lg:w-1/2">
+          <h2 className="text-xl text-white font-[700] lg:text-2xl xl:font-3xl mb-4 text-center">
             {t("means-of-assistance")}
           </h2>
 
@@ -99,7 +99,7 @@ export default function AboutUsBanner() {
                   {item.icon}
                 </div>
 
-                <div className="text-left">
+                <div>
                   <h3 className="text-lg font-[700]">{item.name}</h3>
                   <p className="text-sm">{item.description}</p>
                 </div>
