@@ -59,8 +59,10 @@ export default function WhoAnsweredComponent() {
           );
         }
         router.replace(`/game/${gameId}`);
-        clearWhoAnswer();
-        clearAnswer();
+        setTimeout(() => {
+          clearAnswer();
+          clearWhoAnswer();
+        }, 1000);
       } else {
         toast.error(data?.errors);
       }

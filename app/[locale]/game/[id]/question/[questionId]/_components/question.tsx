@@ -55,6 +55,7 @@ export default function QuestionComponent() {
   return (
     <>
       <p
+        dir="auto"
         ref={textRef}
         className={`text-sm md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-[900] text-primary text-center my-3 lg:mt-5 ${
           isSpecialScenario && !showQuestionText ? "invisible" : "visible"
