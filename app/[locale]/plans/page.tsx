@@ -38,6 +38,11 @@ export default function PackagesPage() {
   const handleChoosePackage = (planId: string) => {
     router.push(`/checkout/${planId}`);
   };
+  useEffect(() => {
+    if (process.env.NEXT_PUBLIC_DISABLE_PAYMENT === "true") {
+      router.replace("/");
+    }
+  }, [router]);
 
   return (
     <div className="text-white ">

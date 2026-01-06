@@ -34,7 +34,7 @@ export default function DeleteAccountModal({
       accessTokenLs.remove();
       userDataSS.remove();
       isLoginLS.remove();
-      router.push("/login");
+      router.replace("/login");
       onClose();
     }
   };

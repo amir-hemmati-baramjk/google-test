@@ -28,7 +28,7 @@ export default function LogoutModal({ isOpen, onClose }: ChildModalProps) {
     accessTokenLs.remove();
     userDataSS.remove();
     isLoginLS.remove();
-    router.push("/login");
+    router.replace("/login");
   };
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

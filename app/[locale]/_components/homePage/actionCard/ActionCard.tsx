@@ -34,15 +34,20 @@ export default function ActionCard() {
       link: "/create-game",
       requiresAuth: false,
     },
-    {
-      title: t("remaining-games"),
-      buttonText: t("buy-games"),
-      buttonVarient: "turquoise-gradient",
-      key: "GameCount",
-      textVarient: "secondary",
-      link: "/plans",
-      requiresAuth: false,
-    },
+
+    ...(process.env.NEXT_PUBLIC_DISABLE_PAYMENT !== "true"
+      ? [
+          {
+            title: t("remaining-games"),
+            buttonText: t("buy-games"),
+            buttonVarient: "turquoise-gradient",
+            key: "GameCount",
+            textVarient: "secondary",
+            link: "/plans",
+            requiresAuth: false,
+          },
+        ]
+      : []),
   ];
 
   const containerVariants: Variants = {

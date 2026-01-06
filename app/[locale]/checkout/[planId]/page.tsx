@@ -39,7 +39,11 @@ const PaymentPage: React.FC = () => {
 
   const [isPendingApplyDiscount, startApplyDiscount] = useTransition();
   const [isPendingGatewayFetch, startGatewayFetch] = useTransition();
-
+  useEffect(() => {
+    if (process.env.NEXT_PUBLIC_DISABLE_PAYMENT === "true") {
+      router.replace("/");
+    }
+  }, [router]);
   const { data: packageResponse, isLoading: isLoadingPackage } = useQuery({
     queryKey: ["gamePackage", planId, selectedCurrency],
     queryFn: () =>

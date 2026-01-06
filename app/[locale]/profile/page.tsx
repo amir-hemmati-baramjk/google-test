@@ -313,11 +313,11 @@ export default function ProfilePage() {
           onClose={() => setShowLoginModal(false)}
         />
       </div>
-
+      {/* 
       <LoginModal
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
-      />
+      /> */}
     </>
   );
 }
