@@ -16,6 +16,7 @@ import { sendAppTokenToServer } from "@/core/auth/set-app-token-notification";
 import EmailTextBox from "../../_components/inputs/EmailTextBox";
 import { SignIn, SignInWithEmail } from "@/type/api/auth/auth.types";
 import { getSignInWithEmailSchema } from "@/type/api/auth/auth.schema";
+import { isLoginLS } from "@/localeStorage/storage";
 
 const LoginForm = () => {
   const t = useTranslations("login-form");
@@ -38,6 +39,7 @@ const LoginForm = () => {
     try {
       const result = await loginUser(data);
       if (result.success) {
+        isLoginLS.set(true);
         setIsLogin(true);
         await sendAppTokenToServer();
         toast.success(t("login-success"));

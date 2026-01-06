@@ -52,19 +52,29 @@ interface UserProviderProps {
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLogin, setIsLogin] = useState<boolean>(false);
-  const [language, setLanguage] = useState<string>("en");
+  const [language, setLanguage] = useState<string>("ar");
   const [isInitialized, setIsInitialized] = useState(false);
 
   const APP_LANG_COOKIE = "APP_LANG";
 
   // Function to set language cookie
   const setAppLangCookie = useCallback((locale: "en" | "ar") => {
-    if (typeof document !== "undefined") {
-      document.cookie =
-        `${APP_LANG_COOKIE}=${locale}; Path=/; Max-Age=${
-          60 * 60 * 24 * 365
-        }; SameSite=Lax` + (location.protocol === "https:" ? "; Secure" : "");
+    if (typeof document === "undefined" || typeof window === "undefined")
+      return;
+
+    const cookieName = APP_LANG_COOKIE;
+    const cookieValue = encodeURIComponent(locale);
+    const maxAge = 60 * 60 * 24 * 365;
+
+    const isSecure = window.location.protocol === "https:";
+
+    let cookieString = `${cookieName}=${cookieValue}; Path=/; Max-Age=${maxAge}; SameSite=Lax`;
+
+    if (isSecure) {
+      cookieString += "; Secure";
     }
+
+    document.cookie = cookieString;
   }, []);
 
   // Function to update partial user data
@@ -105,39 +115,25 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   useEffect(() => {
     const loadInitialData = () => {
       try {
-        // Load user data
+        const savedLogin = isLoginLS.get();
+        const loginStatus = savedLogin === true || savedLogin === "true";
+        setIsLogin(loginStatus);
+
         const rawUser = userDataSS.get();
-        if (typeof rawUser === "string") {
+        if (rawUser && typeof rawUser === "string") {
           try {
-            const parsedUser: User = JSON.parse(rawUser);
+            const parsedUser = JSON.parse(rawUser);
             setUser(parsedUser);
-          } catch (error) {
-            console.error("Error parsing user data:", error);
-            userDataSS.remove(); // Remove corrupted data
+          } catch (e) {
+            userDataSS.remove();
           }
         }
-
-        // Load login status
-        const rawLogin = isLoginLS.get();
-        if (typeof rawLogin === "string") {
-          setIsLogin(rawLogin === "true");
-        } else if (typeof rawLogin === "boolean") {
-          setIsLogin(rawLogin);
-        }
-
-        // Load language preference
         const rawLang = localLangLS.get();
-        if (
-          typeof rawLang === "string" &&
-          (rawLang === "en" || rawLang === "ar")
-        ) {
+        if (rawLang === "en" || rawLang === "ar") {
           setLanguage(rawLang);
-        } else {
-          // Default language
-          setLanguage("en");
         }
       } catch (error) {
-        console.error("Error loading initial data:", error);
+        console.error("Initialization error:", error);
       } finally {
         setIsInitialized(true);
       }
