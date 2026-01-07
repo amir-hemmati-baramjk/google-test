@@ -81,7 +81,7 @@ export default function CategoriesPage() {
       <BackHeaderForsubPages title={t("createGame")} />
 
       <div className="px-4 mt-3 sticky top-0 left-0 z-40">
-        <div className="px-4 py-3 bg-light-purple z-20 pt-10 lg:pt-3 rounded-lg">
+        <div className="px-4 py-3 bg-light-purple z-20 pt-10 md:pt-3 rounded-lg">
           <div className="flex items-center gap-1.5 md:gap-3 relative">
             <div className="hidden md:flex flex-1">
               <input
