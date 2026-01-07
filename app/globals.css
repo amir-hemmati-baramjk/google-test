@@ -6,6 +6,7 @@
 @layer base {
   :root {
     --font-cario: "Cairo", sans-serif;
+    --font-noto-kufi: "Noto Kufi Arabic", sans-serif;
     --primary-color: #2f0075;
     --secondry-color: #6200f6;
     --accent-color: #411fca;
@@ -60,6 +61,7 @@
     );
   }
 }
+
 html {
   font-family: var(--font-cario);
 }
@@ -69,6 +71,9 @@ body {
 * {
   font-family: var(--font-cario) !important;
   -webkit-tap-highlight-color: transparent;
+}
+.font-kufi {
+  font-family: var(--font-noto-kufi) !important;
 }
 ::-webkit-scrollbar {
   display: none;

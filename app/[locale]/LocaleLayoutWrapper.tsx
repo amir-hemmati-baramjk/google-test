@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cairo } from "next/font/google";
+import { Cairo, Noto_Kufi_Arabic } from "next/font/google";
 import "../globals.css";
 import QueryProvider from "@/stores/QueryProvider";
 import { getMessages } from "next-intl/server";
@@ -18,7 +18,12 @@ const cairo = Cairo({
   subsets: ["arabic"],
   weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
 });
-
+const notoKufi = Noto_Kufi_Arabic({
+  display: "swap",
+  subsets: ["arabic"],
+  variable: "--font-noto-kufi",
+  weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
+});
 export const metadata: Metadata = {
   title: "FALTA GAME - لعبة فلته",
   description:
@@ -55,7 +60,7 @@ export default async function LocaleLayoutWrapper({
     <html
       dir={locale === "ar" ? "rtl" : "ltr"}
       lang={locale}
-      className={cairo.variable}
+      className={`${cairo.variable} ${notoKufi.variable}`}
       suppressHydrationWarning
     >
       <head>

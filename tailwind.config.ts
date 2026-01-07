@@ -31,6 +31,10 @@ const config: Config = {
       },
     },
     extend: {
+      fontFamily: {
+        kufi: ["var(--font-noto-kufi)", "sans-serif"],
+        cairo: ["var(--font-cario)", "sans-serif"],
+      },
       keyframes: {
         "brand-shimmer": {
           "0%": { "background-position": "0% center" },
