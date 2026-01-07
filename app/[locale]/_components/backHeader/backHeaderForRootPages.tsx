@@ -101,7 +101,7 @@ export default function BackHeaderForRootPages() {
       return { href: IOS_APPSTORE_URL, label: "Get" };
     return { href: ANDROID_PLAY_URL, label: "Get" };
   }, [ua]);
-
+  const isPaymentDisabled = process.env.NEXT_PUBLIC_DISABLE_PAYMENT === "true";
   if (!isMounted) return null;
 
   return (
@@ -164,18 +164,31 @@ export default function BackHeaderForRootPages() {
           </div>
         </div>
 
-        <Link
-          href="/plans"
-          className="mt-1 relative bg-white rounded-md text-error px-3 py-1.5 flex items-center gap-1.5 w-fit shadow-sm"
-        >
-          <span className="text-[16px] font-bold whitespace-nowrap">
-            {t("remaining-games")}:{" "}
-            {user?.gPoint ? Math.round(user.gPoint / 100) : 0}
-          </span>
-          <div className="bg-error text-white rounded-full p-0.5 shadow-sm absolute -top-2 -right-2">
-            <PlusIcon size={20} />
+        {isPaymentDisabled ? (
+          <div className="mt-1 relative bg-white rounded-md text-error px-3 py-1.5 flex items-center gap-1.5 w-fit shadow-sm active:scale-95 transition-transform">
+            <span className="text-[16px] font-bold whitespace-nowrap">
+              {t("remaining-games")}:{" "}
+              {user?.gPoint ? Math.round(user.gPoint / 100) : 0}
+            </span>
+
+            {/* <div className="bg-gray-400 text-white rounded-full p-0.5 shadow-sm absolute -top-2 -right-2">
+              <PlusIcon size={20} />
+            </div> */}
           </div>
-        </Link>
+        ) : (
+          <Link
+            href="/plans"
+            className="mt-1 relative bg-white rounded-md text-error px-3 py-1.5 flex items-center gap-1.5 w-fit shadow-sm active:scale-95 transition-transform"
+          >
+            <span className="text-[16px] font-bold whitespace-nowrap">
+              {t("remaining-games")}:{" "}
+              {user?.gPoint ? Math.round(user.gPoint / 100) : 0}
+            </span>
+            <div className="bg-error text-white rounded-full p-0.5 shadow-sm absolute -top-2 -right-2">
+              <PlusIcon size={20} />
+            </div>
+          </Link>
+        )}
       </div>
     </header>
   );

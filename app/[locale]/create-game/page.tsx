@@ -170,7 +170,6 @@ export default function CategoriesPage() {
         </div>
       </div>
 
-      {}
       <div
         ref={parentRef}
         className="flex-1 overflow-y-auto relative md:px-4 pb-40 scroll-smooth h-[calc(100vh-200px)]"
