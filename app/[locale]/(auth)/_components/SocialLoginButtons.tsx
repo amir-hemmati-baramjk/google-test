@@ -205,7 +205,7 @@ export default function LoginButtons() {
 
   return (
     <div className="flex flex-col gap-3 mt-5 text-[14px]">
-      <div className="flex gap-3">
+      <div className="flex flex-col sm:flex-row gap-3">
         <Button
           variant="white"
           onClick={() => handleSocialLogin("google")}
@@ -213,7 +213,7 @@ export default function LoginButtons() {
           animatedIcon
           size="large"
           shape="rounded"
-          className="!bg-[#F4F5F6] !text-accent !font-bold !text-[14px] !text-nowrap w-full !px-3 !gap-4 !whitespace-nowrap"
+          className="!bg-[#F4F5F6] !text-accent !font-bold !text-[14px] !text-nowrap w-full !px-3 !gap-4 !whitespace-nowrap !py-1 sm:!py-2"
         >
           {loading === "gredir" ? t("redirecting") : t("loginGoogleRedirect")}
           <GoogleIcon size={36} className="bg-[#ccc] p-1 rounded-full" />
@@ -225,7 +225,7 @@ export default function LoginButtons() {
           animatedIcon
           shape="rounded"
           size="large"
-          className="!bg-[#F4F5F6] !text-accent !font-bold !text-[14px] !text-nowrap w-full !px-3 !gap-4 !whitespace-nowrap"
+          className="!bg-[#F4F5F6] !text-accent !font-bold !text-[14px] !text-nowrap w-full !px-3 !gap-4 !whitespace-nowrap !py-1 sm:!py-2"
         >
           {loading === "aredir" ? t("redirecting") : t("loginAppleRedirect")}
           <AppleIcon size={36} className="bg-[#ccc] p-1 rounded-full" />
