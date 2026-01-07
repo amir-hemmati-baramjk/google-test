@@ -12,7 +12,7 @@ export function useCategoryLogic(
   user: any
 ) {
   const [debouncedSearch, setDebouncedSearch] = useState("");
-
+  const [blacklist, setBlacklist] = useState<Set<string>>(new Set());
   useEffect(() => {
     const handler = setTimeout(() => setDebouncedSearch(searchTerm), 300);
     return () => clearTimeout(handler);
@@ -22,7 +22,16 @@ export function useCategoryLogic(
     const stored = SelectedCategoryForCreateGameLs.get();
     return stored ? JSON.parse(stored as string) : [];
   });
+  const clearAll = useCallback(() => {
+    setBlacklist((prevSet) => {
+      const newSet = new Set(prevSet);
+      selectedCatItems.forEach((id) => newSet.add(id));
+      return newSet;
+    });
 
+    setSelectedCatItems([]);
+    SelectedCategoryForCreateGameLs.set(JSON.stringify([]));
+  }, [selectedCatItems]);
   const { data: tagResponse, isLoading } = useQuery({
     queryKey: ["Tag", isLogin],
     queryFn: isLogin ? getUserTag : getGuestTag,
@@ -74,14 +83,28 @@ export function useCategoryLogic(
   const handleCategoryToggle = useCallback(
     (id: string) => {
       setSelectedCatItems((prev) => {
-        const newItems = prev.includes(id)
-          ? prev.filter((item) => item !== id)
-          : prev.length < MAX_SELECTION
-          ? [...prev, id]
-          : prev;
+        const isRemoving = prev.includes(id);
 
-        SelectedCategoryForCreateGameLs.set(JSON.stringify(newItems));
-        return newItems;
+        if (isRemoving) {
+          // Add to blacklist so "Random" won't pick it again this session
+          setBlacklist((prevSet) => new Set(prevSet).add(id));
+          const newItems = prev.filter((item) => item !== id);
+          SelectedCategoryForCreateGameLs.set(JSON.stringify(newItems));
+          return newItems;
+        } else {
+          // If adding, remove from blacklist in case it was there
+          setBlacklist((prevSet) => {
+            const newSet = new Set(prevSet);
+            newSet.delete(id);
+            return newSet;
+          });
+          if (prev.length < MAX_SELECTION) {
+            const newItems = [...prev, id];
+            SelectedCategoryForCreateGameLs.set(JSON.stringify(newItems));
+            return newItems;
+          }
+          return prev;
+        }
       });
     },
     [MAX_SELECTION]
@@ -91,26 +114,32 @@ export function useCategoryLogic(
     const remaining = MAX_SELECTION - selectedCatItems.length;
     if (remaining <= 0) return;
 
+    const currentSelection = new Set(selectedCatItems);
     const availablePool: string[] = [];
-    const seenIds = new Set(selectedCatItems);
 
     rawTags.forEach((tag: Tag) => {
       tag.categories?.forEach((cat) => {
-        if (!seenIds.has(cat.id) && !cat?.allQuestionUsed) {
-          seenIds.add(cat.id);
+        if (
+          !currentSelection.has(cat.id) &&
+          !blacklist.has(cat.id) && // CHECK BLACKLIST
+          !cat?.allQuestionUsed
+        ) {
           availablePool.push(cat.id);
         }
       });
     });
 
-    const randomPicks = [...availablePool]
+    // Remove duplicates from pool
+    const uniquePool = Array.from(new Set(availablePool));
+
+    const randomPicks = uniquePool
       .sort(() => 0.5 - Math.random())
       .slice(0, remaining);
 
     const finalSelection = [...selectedCatItems, ...randomPicks];
     setSelectedCatItems(finalSelection);
     SelectedCategoryForCreateGameLs.set(JSON.stringify(finalSelection));
-  }, [MAX_SELECTION, selectedCatItems, rawTags]);
+  }, [MAX_SELECTION, selectedCatItems, rawTags, blacklist]);
 
   return {
     tagSections,
@@ -122,5 +151,6 @@ export function useCategoryLogic(
     isLoading,
     MAX_SELECTION,
     debouncedSearch,
+    clearAll,
   };
 }

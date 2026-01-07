@@ -302,7 +302,9 @@
     "noResultsDesc": "Try searching for a different term",
     "searchPlaceholder": "Search categories...",
     "tags": "All Tags",
-    "random": "Randomize"
+    "random": "Randomize",
+    "removeAll": "Remove All",
+    "selectedItems": "Selected"
   },
   "loginModal": {
     "you-not-registered": "Already have an account?",

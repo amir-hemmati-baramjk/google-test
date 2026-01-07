@@ -34,7 +34,7 @@ export const BackHeaderForsubPages: React.FC<backHeaderType> = ({
   return (
     <div
       style={{ direction: "ltr" }}
-      className="select-none bg-primary-bg-gradient p-2 sticky top-0 left-0 lg:p-5 lg:mt-5 w-full pt-12 lg:pt-5 z-50"
+      className="select-none bg-primary-bg-gradient p-2  lg:p-5 lg:mt-5 w-full pt-12 lg:pt-5 z-50 "
     >
       <div className="flex items-center justify-between w-full gap-4">
         <button

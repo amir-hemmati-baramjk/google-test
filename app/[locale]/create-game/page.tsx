@@ -35,6 +35,7 @@ export default function CategoriesPage() {
     selectedObjects,
     handleCategoryToggle,
     handleRandomSelect,
+    clearAll,
     isLoading,
     MAX_SELECTION,
   } = useCategoryLogic(searchTerm, isLogin, isInitialized, user);
@@ -76,13 +77,13 @@ export default function CategoriesPage() {
     );
 
   return (
-    <div className="min-h-screen flex flex-col bg-main-bg overflow-hidden">
+    <div className="min-h-screen flex flex-col bg-main-bg ">
       <BackHeaderForsubPages title={t("createGame")} />
 
       <div className="px-4 mt-3 sticky top-0 left-0 z-40">
         <div className="px-4 py-3 bg-light-purple z-20 rounded-lg">
-          <div className="flex items-center gap-1.5 md:gap-3">
-            <div className="hidden md:flex relative flex-1">
+          <div className="flex items-center gap-1.5 md:gap-3 relative">
+            <div className="hidden md:flex flex-1">
               <input
                 type="text"
                 value={searchTerm}
@@ -161,6 +162,7 @@ export default function CategoriesPage() {
           )}
 
           <SelectedItemsBar
+            onClearAll={clearAll}
             selectedCategories={selectedObjects}
             onRemove={handleCategoryToggle}
             t={t}
