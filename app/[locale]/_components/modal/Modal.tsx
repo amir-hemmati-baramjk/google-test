@@ -78,7 +78,7 @@ export default function Modal({
             </button>
 
             {/* Content Slot */}
-            <div className="max-h-[95vh] overflow-y-auto p-6 custom-scrollbar rounded-2xl">
+            <div className="max-h-[90vh] overflow-y-auto p-6 custom-scrollbar rounded-2xl">
               {children}
             </div>
           </motion.div>
