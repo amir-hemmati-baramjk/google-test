@@ -27,7 +27,8 @@ export default function TopBar({ questionPoints }: TopBarProps) {
   const time200 = useGameStore((s) => s.time200);
   const time400 = useGameStore((s) => s.time400);
   const time600 = useGameStore((s) => s.time600);
-
+  const answer = useGameStore((s) => s.answer);
+  const whoAnswer = useGameStore((s) => s.whoAnswer);
   const calculateInitialTime = useCallback(
     (points: number) => {
       if (points <= 200 && time200 != null) return time200;
@@ -44,7 +45,13 @@ export default function TopBar({ questionPoints }: TopBarProps) {
     setTimeLeft(calculatedTime);
     setIsPaused(false);
   }, [questionPoints, calculateInitialTime]);
-
+  useEffect(() => {
+    if (answer || whoAnswer) {
+      setIsPaused(true);
+    } else {
+      setIsPaused(false);
+    }
+  }, [answer, whoAnswer]);
   useEffect(() => {
     if (isPaused || timeLeft <= 0) return;
     const timer = setInterval(() => {
