@@ -31,16 +31,19 @@ export default function ClientLayoutWrapper({
     ? pathname.slice(`/${locale}`.length) || "/"
     : pathname;
   const showNavigation = visibleRoutes.includes(pathWithoutLocale);
-  useEffect(() => {
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("/sw.js").then(
-          (reg) => console.log("SW registered"),
-          (err) => console.log("SW failed", err)
-        );
-      });
-    }
-  }, []);
+
+  // TODO
+  // useEffect(() => {
+  //   if ("serviceWorker" in navigator) {
+  //     window.addEventListener("load", () => {
+  //       navigator.serviceWorker.register("/sw.js").then(
+  //         (reg) => console.log("SW registered"),
+  //         (err) => console.log("SW failed", err)
+  //       );
+  //     });
+  //   }
+  // }, []);
+
   return (
     <>
       <UserProvider>

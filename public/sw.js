@@ -3,7 +3,7 @@ const OFFLINE_ASSETS = ["/en/offline", "/ar/offline"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(OFFLINE_ASSETS))
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(OFFLINE_ASSETS)),
   );
   self.skipWaiting();
 });
@@ -45,6 +45,6 @@ self.addEventListener("fetch", (event) => {
             return caches.match(offlinePath);
           }
         });
-    })
+    }),
   );
 });

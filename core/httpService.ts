@@ -26,7 +26,7 @@ interface QueuedRequest {
 }
 
 const DEFAULT_CONFIG = {
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL || "https://api.befalta.com/api/",
   headers: { "Content-Type": "application/json" },
   timeout: 20000,
   timeoutErrorMessage: "Request timeout",
@@ -53,12 +53,12 @@ class HttpService {
   private setupInterceptors() {
     this.client.interceptors.request.use(
       this.handleRequest.bind(this),
-      this.handleRequestError.bind(this)
+      this.handleRequestError.bind(this),
     );
 
     this.client.interceptors.response.use(
       this.handleResponse.bind(this),
-      this.handleResponseError.bind(this)
+      this.handleResponseError.bind(this),
     );
   }
 
@@ -130,7 +130,7 @@ class HttpService {
       originalRequest.headers = originalRequest.headers || {};
       (originalRequest.headers as AxiosHeaders).set(
         "Authorization",
-        `Bearer ${newTokens.accessToken}`
+        `Bearer ${newTokens.accessToken}`,
       );
 
       return this.client(originalRequest);
@@ -169,10 +169,10 @@ class HttpService {
         config.headers = config.headers || {};
         (config.headers as AxiosHeaders).set(
           "Authorization",
-          `Bearer ${accessToken}`
+          `Bearer ${accessToken}`,
         );
         this.client(config).then(resolve).catch(reject);
-      })
+      }),
     );
 
     this.refreshQueue = [];
@@ -201,7 +201,7 @@ class HttpService {
   public async post<T>(
     url: string,
     data?: any,
-    config?: InternalAxiosRequestConfig
+    config?: InternalAxiosRequestConfig,
   ) {
     return this.request<T>("POST", url, data, config);
   }
@@ -209,7 +209,7 @@ class HttpService {
   public async put<T>(
     url: string,
     data?: any,
-    config?: InternalAxiosRequestConfig
+    config?: InternalAxiosRequestConfig,
   ) {
     return this.request<T>("PUT", url, data, config);
   }
@@ -217,7 +217,7 @@ class HttpService {
   public async patch<T>(
     url: string,
     data?: any,
-    config?: InternalAxiosRequestConfig
+    config?: InternalAxiosRequestConfig,
   ) {
     return this.request<T>("PATCH", url, data, config);
   }
@@ -230,7 +230,7 @@ class HttpService {
     method: string,
     url: string,
     data?: any,
-    config?: InternalAxiosRequestConfig
+    config?: InternalAxiosRequestConfig,
   ): Promise<ApiResponse<T>> {
     try {
       const res = await this.client({ method, url, data, ...config });
@@ -241,7 +241,7 @@ class HttpService {
   }
 
   private mapSuccess<T>(
-    response: AxiosResponse<BaseApiResponse<T>>
+    response: AxiosResponse<BaseApiResponse<T>>,
   ): ApiResponse<T> {
     const data = response.data;
 
@@ -311,7 +311,7 @@ class HttpService {
   public async publicPost<T>(
     url: string,
     data?: any,
-    config?: InternalAxiosRequestConfig
+    config?: InternalAxiosRequestConfig,
   ) {
     return this.post<T>(url, data, {
       ...config,
