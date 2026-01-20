@@ -58,9 +58,7 @@ export default function GamePackageCard({
         <p
           className={`${textColor} text-center text-sm font-bold leading-relaxed`}
         >
-          {gameCount > 0
-            ? t("descriptionTemplate", { count: gameCount })
-            : plan.description}
+          {plan.description}
         </p>
       </div>
 
