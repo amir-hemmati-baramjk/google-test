@@ -9,7 +9,7 @@
   "homepage": {
     "my-game": "My Games",
     "choose-categories": "Choose Categories",
-    "remaining-games": "Remaining-Games",
+    "remaining-games": "Remaining Games",
     "play-random-falta": "Play Random Falta",
     "create-game": "Create Game",
     "continue": "Continue",
@@ -105,7 +105,6 @@
     "have-account": "Do You Have Account ?",
     "login-now": "Login Now"
   },
-
   "profile": {
     "title": "MY Profile",
     "subtitle": "Accounting And Personal Information",
@@ -344,7 +343,6 @@
     "timeRequired": "Time is required",
     "timeMax": "Time cannot exceed maximum limit",
     "select-team-info": "Select Team Information",
-
     "assistantOptions": {
       "DoublePoints": "Double Points",
       "TakePoints": "Take Points",
@@ -480,6 +478,9 @@
   "privacy": {
     "privacy-policy": "Privacy Policy",
     "title": "Privacy Policy - Falta",
+    "effective": "Effective Date",
+    "updated": "Last Updated",
+    "dir": "ltr",
     "sections": {
       "1": {
         "title": "1. Introduction",
@@ -541,6 +542,9 @@
     "about-footer": "We're not just building another game—we're creating a vibrant community and launching a cultural movement. Proudly designed and developed in Kuwait for a global audience, Falta! invites everyone to showcase their talents, quick wit, and competitive drive."
   },
   "restart-game-form": {
+    "restart-browsed-game-message": "Would you like to start over or continue from where you left off?",
+    "start-again-browsed-game": "Start Over",
+    "keep-going-browsed-game": "Continue",
     "restartBrowsedGameMessage": "Would you like to start over or continue from where you left off?",
     "startAgain": "Start Again",
     "keepGoing": "Keep Going",
@@ -569,7 +573,6 @@
     "timeRequired": "Time is required",
     "timeMax": "Time cannot exceed maximum limit",
     "select-team-info": "Select Team Information",
-
     "assistantOptions": {
       "DoublePoints": "Double Points",
       "TakePoints": "Take Points",
@@ -578,7 +581,6 @@
       "UseSilence": "Red Card",
       "Remove2Options": "Remove 2 Options"
     },
-
     "maxAssistantsSelected": "You have selected the maximum number of assistants. Please remove one to select another.",
     "selectAssistantPlaceholder": "Select up to 3 assistants...",
     "loadingAssistants": "Loading assistants...",
