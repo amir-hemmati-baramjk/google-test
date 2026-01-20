@@ -44,7 +44,7 @@ export default function CategoryCard({
   }
 
   return (
-    <div className="w-full  bg-primary-gradient p-2 lg:p-3 xl:p-4 rounded-[20px] lg:rounded-[20px]">
+    <div className="w-full  bg-primary-gradient p-2 lg:p-3 xl:p-4 rounded-[20px] lg:rounded-[20px] h-full flex flex-col">
       <div className="relative w-full aspect-square bg-white rounded-[20px] overflow-hidden shadow-sm group ">
         <Image
           alt={category.name || t("emptyCategory")}
@@ -54,9 +54,13 @@ export default function CategoryCard({
           priority
         />
       </div>
-      <p className="text-center text-md sm:text-xs lg:text-md xl:text-lg py-1 font-bold whitespace-nowrap truncate">
+      <div className="flex-1" />
+
+      <p className="text-center text-md sm:text-md md:text-lg xl:text-xl py-2 font-bold whitespace-pre-wrap truncate">
         {category?.name}
       </p>
+
+      <div className="flex-1" />
       <div className="flex flex-col justify-center gap-1.5 w-full">
         {[200, 400, 600].map((points) => (
           <div
@@ -74,7 +78,7 @@ export default function CategoryCard({
                     (game?.pendingDoublePoint && q.points !== 600) ||
                     (game?.pendingTakePoint && q.points !== 600)
                   }
-                  className={`text-center flex font-bold justify-center items-center text-primary cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 ${
+                  className={`text-center xs:text-xl md:text-xl lg:text-2xl flex font-bold justify-center items-center text-primary cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 ${
                     qIndex === 0 && locale == "ar"
                       ? "border-l-secondary border-l-[1px]"
                       : "border-r-secondary border-r-[1px]"
@@ -83,8 +87,8 @@ export default function CategoryCard({
                       ? q?.answeredBy == 1
                         ? " !text-secondary"
                         : q?.answeredBy == 2
-                        ? "!text-orange-600"
-                        : "!text-gray-500 "
+                          ? "!text-orange-600"
+                          : "!text-gray-500 "
                       : ""
                   }`}
                 >

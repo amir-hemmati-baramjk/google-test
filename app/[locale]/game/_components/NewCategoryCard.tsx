@@ -28,7 +28,7 @@ export default function CategoryCard({
         <div className="flex flex-col h-full gap-1 sm:gap-2 justify-between">
           {pointTiers.map((points) => {
             const q = category.questions?.find(
-              (q: Question) => q.points === points
+              (q: Question) => q.points === points,
             );
             return (
               <button
@@ -37,15 +37,15 @@ export default function CategoryCard({
                 disabled={
                   q?.isAnswered || (game?.pendingDoublePoint && points !== 600)
                 }
-                className={`flex-1text-white font-bold text-[16px] md:text-[16px] xl:text-[32px] rounded-[15px] transition-transform active:scale-95 disabled:opacity-80 py-3 sm:p-2 md:py-1.5 lg:py-2 ${
+                className={`flex-1text-white font-bold text-[28px] xl:text-[32px] rounded-[15px] transition-transform active:scale-95 disabled:opacity-80 py-3 sm:p-2 md:py-1.5 lg:py-2 ${
                   q?.answeredBy !== null
                     ? q?.answeredBy == 1
                       ? "!bg-primary-gradient"
                       : q?.answeredBy == 2
-                      ? "!bg-orange-gradient"
-                      : q?.answeredBy == 0
-                      ? "!bg-gray-500"
-                      : ""
+                        ? "!bg-orange-gradient"
+                        : q?.answeredBy == 0
+                          ? "!bg-gray-500"
+                          : ""
                     : "bg-[#1000C7]"
                 }`}
               >
@@ -70,7 +70,7 @@ export default function CategoryCard({
               />
             </div>
             {/* Label text at the bottom */}
-            <p className="text-[#6200EE] font-bold text-[12px]  md:text-[12px] lg:text-[18px] xl;text-[22px]  text-center uppercase tracking-tight">
+            <p className="text-[#6200EE] font-bold text-[18px]  md:text-[20px] lg:text-[22px] xl;text-[22px]  text-center uppercase tracking-tight">
               {category.name}
             </p>
           </div>
@@ -80,7 +80,7 @@ export default function CategoryCard({
         <div className="flex flex-col gap-1 sm:gap-2 justify-between ">
           {pointTiers.map((points) => {
             const questions = category.questions?.filter(
-              (q: any) => q.points === points
+              (q: any) => q.points === points,
             );
             const q = questions?.[1] || questions?.[0];
             return (
@@ -90,15 +90,15 @@ export default function CategoryCard({
                 disabled={
                   q?.isAnswered || (game?.pendingDoublePoint && points !== 600)
                 }
-                className={`flex-1 bg-[#1000C7] text-white font-bold text-[16px] xl:text-[32px] rounded-[15px]  transition-transform active:scale-95 disabled:opacity-80 py-3 sm:p-2 md:py-1.5 lg:py-2 ${
+                className={`flex-1 bg-[#1000C7] text-white font-bold text-[28px] xl:text-[32px] rounded-[15px]  transition-transform active:scale-95 disabled:opacity-80 py-3 sm:p-2 md:py-1.5 lg:py-2 ${
                   q?.answeredBy !== null
                     ? q?.answeredBy == 1
                       ? "!bg-primary-gradient"
                       : q?.answeredBy == 2
-                      ? "!bg-orange-gradient"
-                      : q?.answeredBy == 0
-                      ? "!bg-gray-500"
-                      : ""
+                        ? "!bg-orange-gradient"
+                        : q?.answeredBy == 0
+                          ? "!bg-gray-500"
+                          : ""
                     : "bg-[#1000C7]"
                 }`}
               >

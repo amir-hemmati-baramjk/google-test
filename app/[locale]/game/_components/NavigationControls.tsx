@@ -34,7 +34,7 @@ export default function NavigationControls({
           disabled={currentPage === 0}
           className="!p-[2px] !min-w-fit disabled:opacity-30 flex items-center justify-center !rounded-lg"
         >
-          <ArrowLeftIcon className="rotate-180" />
+          <ArrowLeftIcon />
         </Button>
       </motion.div>
 
@@ -66,7 +66,7 @@ export default function NavigationControls({
           disabled={currentPage === totalPages - 1}
           className="!p-[2px] !min-w-fit disabled:opacity-30 flex items-center justify-center !rounded-lg"
         >
-          <ArrowLeftIcon />
+          <ArrowLeftIcon className="rotate-180" />
         </Button>
       </motion.div>
     </div>

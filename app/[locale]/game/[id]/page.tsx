@@ -23,9 +23,10 @@ const calculateVersion1Config = (w: number, h: number) => {
 };
 
 const calculateVersion2Config = (w: number, h: number) => {
-  if (w >= 740 && w < 1200) return { items: 5, shift: 5 };
-  if (w >= 1200) return { items: 6, shift: 6 };
-  return { items: 4, shift: 4 };
+  if (w < 640) return { items: 2, shift: 2 };
+  if (w < 768) return { items: 2, shift: 2 };
+  if (w < 1024) return { items: 4, shift: 4 };
+  return { items: 5, shift: 5 };
 };
 
 const gridVariants: Variants = {
@@ -72,6 +73,7 @@ export default function Page() {
   const [direction, setDirection] = useState(0);
   const prevLayoutRef = useRef(layoutType);
 
+  console.log("layout type: ", layoutType);
   const handleConfigUpdate = useCallback(() => {
     if (typeof window === "undefined") return;
 
@@ -187,6 +189,7 @@ export default function Page() {
                 </motion.div>
               </AnimatePresence>
             </motion.div>
+
             <NavigationControls
               className="flex sm:hidden"
               currentPage={currentPage}
@@ -241,10 +244,14 @@ export default function Page() {
                   exit="exit"
                   className="w-full h-full"
                 >
-                  <CategoryGrid {...sharedGridProps} />
+                  <CategoryGrid
+                    handlePageChange={handlePageChange}
+                    {...sharedGridProps}
+                  />
                 </motion.div>
               </AnimatePresence>
             </motion.div>
+
             <NavigationControls
               currentPage={currentPage}
               totalPages={totalPages}
